@@ -33,11 +33,22 @@
                 <div class="mb-3">
                     <label class="form-label">Propietario</label>
                     <select name="propietario_id" class="form-control" required>
-                    <option value="">Selecciona un propietario</option>
-                    @foreach($propietarios as $prop)
-                        <option value="{{ $prop->id }}">{{ $prop->nombres }} {{ $prop->apellido_paterno }} {{ $prop->apellido_materno }}</option>
-                    @endforeach
+                        <option value="">Selecciona un propietario</option>
+                        @foreach($propietarios as $prop)
+                            <option value="{{ $prop->id }}">{{ $prop->nombres }} {{ $prop->apellido_paterno }}
+                                {{ $prop->apellido_materno }}</option>
+                        @endforeach
                     </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Co-Propietario</label>
+                    <input type="text" name="co_propietario" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Observaciones</label>
+                    <textarea name="observaciones" class="form-control" rows="4"></textarea>
                 </div>
 
                 <input type="hidden" name="edificio_id" value="{{ $edificio_id }}">

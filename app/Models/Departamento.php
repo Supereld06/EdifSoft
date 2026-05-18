@@ -13,18 +13,20 @@ class Departamento extends Model
         'tipo_departamento',
         'numero_departamento',
         'piso',
+        'co_propietario',
+        'observaciones',
         'propietario_id',
         'edificio_id',
     ];
 
     public function propietario()
-{
-    return $this->belongsTo(Propietario::class, 'id'); // o la FK que uses
-}
+    {
+        return $this->belongsTo(Propietario::class, 'id'); // o la FK que uses
+    }
 
-public function edificio()
-{
-    return $this->belongsTo(Edificio::class, 'edificio_id'); // o la FK que uses
-}
+    public function edificio()
+    {
+        return $this->belongsTo(Edificio::class, 'edificio_id'); // o la FK que uses
+    }
 
 }

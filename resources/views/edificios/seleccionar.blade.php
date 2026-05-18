@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Seleccionar Edificio</title>
+    <title>🏣 Seleccionar Edificio</title>
 
     <!-- Sketchy -->
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/sketchy/bootstrap.min.css" rel="stylesheet">
@@ -27,8 +27,8 @@
 
                     <button type="submit" class="card w-100 shadow text-center p-4 border-0 card-custom">
 
-                        <div class="fs- mb-2">🏢</div>
-
+                        <div class="fs- mb-2"><img src="{{ asset('storage/' . $edificio->logo_edificio) }}" width="70"
+                                        class="img-thumbnail"></div>
                         <h5 class="mb-0">{{ $edificio->nombre }}</h5>
 
                     </button>

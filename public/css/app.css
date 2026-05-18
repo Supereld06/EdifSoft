@@ -93,3 +93,9 @@ body::before {
     margin-bottom: 10px;
 }
 
+.text-muted{
+    font-size: 12px;
+    font-family: Consolas, "Courier New", monospace;
+}
+
+

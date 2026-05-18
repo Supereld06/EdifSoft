@@ -23,15 +23,15 @@ class EdificioController extends Controller
     {
         $edificio = Edificio::findOrFail($id);
 
-         session([
-                'edificio_id' => $edificio->id,
-                'edificio_nombre' => $edificio->nombre
+        session([
+            'edificio_id' => $edificio->id,
+            'edificio_nombre' => $edificio->nombre
         ]);
 
-    return redirect('/dashboard');
+        return redirect('/dashboard');
     }
 
-        // LISTAR EDIFICIOS
+    // LISTAR EDIFICIOS
     public function index()
     {
         $edificios = Edificio::all();
@@ -48,19 +48,51 @@ class EdificioController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+
             'nombre' => 'required|string|max:255',
-            'direccion' => 'nullable|string|max:255',
-            'numero_departamentos' => 'nullable|integer'
+            'direccion' => 'required|string|max:255',
+            'numero_departamentos' => 'required|integer',
+
+            'pais' => 'nullable|string|max:255',
+            'ciudad' => 'nullable|string|max:255',
+            'zona' => 'nullable|string|max:255',
+
+            'imagen_edificio' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'logo_edificio' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+
         ]);
+
+        $imagen = null;
+        $logo = null;
+
+        if ($request->hasFile('imagen_edificio')) {
+            $imagen = $request->file('imagen_edificio')
+                ->store('edificios', 'public');
+        }
+
+        if ($request->hasFile('logo_edificio')) {
+            $logo = $request->file('logo_edificio')
+                ->store('logos', 'public');
+        }
 
         Edificio::create([
+
             'nombre' => $request->nombre,
             'direccion' => $request->direccion,
-            'numero_departamentos' => $request->numero_departamentos
+            'numero_departamentos' => $request->numero_departamentos,
+
+            'pais' => $request->pais,
+            'ciudad' => $request->ciudad,
+            'zona' => $request->zona,
+
+            'imagen_edificio' => $imagen,
+            'logo_edificio' => $logo
+
         ]);
 
-        return redirect()->route('edificios.index')
-            ->with('success', 'Edificio creado correctamente');
+        return redirect()
+            ->route('edificios.index')
+            ->with('success', 'Edificio registrado correctamente');
     }
 
     // FORMULARIO EDITAR
@@ -73,13 +105,53 @@ class EdificioController extends Controller
     {
         $edificio = Edificio::findOrFail($id);
 
-        $edificio->update([
-            'nombre' => $request->nombre,
-            'ubicacion' => $request->ubicacion
+        $request->validate([
+
+            'nombre' => 'required|string|max:255',
+            'direccion' => 'required|string|max:255',
+            'numero_departamentos' => 'required|integer',
+
+            'pais' => 'nullable|string|max:255',
+            'ciudad' => 'nullable|string|max:255',
+            'zona' => 'nullable|string|max:255',
+
+            'imagen_edificio' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'logo_edificio' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+
         ]);
 
-        return redirect()->route('edificios.index')->with('success', 'Edificio actualizado');
+        $imagen = $edificio->imagen_edificio;
+        $logo = $edificio->logo_edificio;
+
+        if ($request->hasFile('imagen_edificio')) {
+            $imagen = $request->file('imagen_edificio')
+                ->store('edificios', 'public');
+        }
+
+        if ($request->hasFile('logo_edificio')) {
+            $logo = $request->file('logo_edificio')
+                ->store('logos', 'public');
+        }
+
+        $edificio->update([
+
+            'nombre' => $request->nombre,
+            'direccion' => $request->direccion,
+            'numero_departamentos' => $request->numero_departamentos,
+
+            'pais' => $request->pais,
+            'ciudad' => $request->ciudad,
+            'zona' => $request->zona,
+
+            'imagen_edificio' => $imagen,
+            'logo_edificio' => $logo
+
+        ]);
+
+        return redirect()
+            ->route('edificios.index')
+            ->with('success', 'Edificio actualizado correctamente');
     }
 
-    
+
 }

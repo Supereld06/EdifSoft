@@ -14,9 +14,12 @@ class EdificioSeeder extends Seeder
     public function run(): void
     {
         Edificio::create([
-        'nombre' => 'Torre Central',
-        'direccion' => 'Calle Principal 123',
-        'numero_departamentos' => '20'
+        'nombre' => 'Edificio "AVE PARAISO"',
+        'direccion' => 'Av. J. Ballivian N-688',
+        'numero_departamentos' => '20',
+        'pais' => 'Bolivia',
+        'ciudad' => 'Cocahamba',
+        'zona' => 'Zona Central Noreste',
         ]);
     
         Edificio::create([

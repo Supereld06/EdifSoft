@@ -44,16 +44,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/edificios/{id}/edit', [EdificioController::class, 'edit'])->name('edificios.edit');
     Route::put('/edificios/{id}', [EdificioController::class, 'update'])->name('edificios.update');
 
+    // Rutas para pdf de edificio
+    Route::get('/propietarios/pdf/reporte', [PropietarioController::class, 'pdf'])->name('propietarios.pdf');
+
     // 🏢 CRUD Propietario
-    
+
     Route::get('propietarios', [PropietarioController::class, 'index'])->name('propietarios.index');
     Route::get('propietarios/create', [PropietarioController::class, 'create'])->name('propietarios.create');
     Route::post('propietarios', [PropietarioController::class, 'store'])->name('propietarios.store');
+    Route::get('/propietarios/{id}/edit', [PropietarioController::class, 'edit'])->name('propietarios.edit');
+    Route::put('/propietarios/{id}', [PropietarioController::class, 'update'])->name('propietarios.update');
 
     // 🏢 CRUD Departamento
     Route::get('/departamentos', [DepartamentoController::class, 'index'])->name('departamentos.index');
     Route::get('/departamentos/create', [DepartamentoController::class, 'create'])->name('departamentos.create');
     Route::post('/departamentos', [DepartamentoController::class, 'store'])->name('departamentos.store');
+    Route::get('/departamentos/{id}/edit',[DepartamentoController::class,'edit'])->name('departamentos.edit');
+    Route::put('/departamentos/{id}',[DepartamentoController::class,'update'])->name('departamentos.update');
+    Route::get('/departamentos/pdf/reporte',[DepartamentoController::class,'pdf'])->name('departamentos.pdf');
 
 
     //Rutas Provisionales para Apertura de Meses
@@ -62,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/expensas', 'expensas.index')->name('expensas.index');
     Route::view('/expensas/create', 'expensas.create')->name('expensas.create');
 
-    });
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -70,4 +78,4 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
