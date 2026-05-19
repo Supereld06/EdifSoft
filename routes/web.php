@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EdificioController;
 use App\Http\Controllers\PropietarioController;
 use App\Http\Controllers\DepartamentoController;
+use App\Http\Controllers\AperturaExpensaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,16 +60,21 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/departamentos', [DepartamentoController::class, 'index'])->name('departamentos.index');
     Route::get('/departamentos/create', [DepartamentoController::class, 'create'])->name('departamentos.create');
     Route::post('/departamentos', [DepartamentoController::class, 'store'])->name('departamentos.store');
-    Route::get('/departamentos/{id}/edit',[DepartamentoController::class,'edit'])->name('departamentos.edit');
-    Route::put('/departamentos/{id}',[DepartamentoController::class,'update'])->name('departamentos.update');
-    Route::get('/departamentos/pdf/reporte',[DepartamentoController::class,'pdf'])->name('departamentos.pdf');
+    Route::get('/departamentos/{id}/edit', [DepartamentoController::class, 'edit'])->name('departamentos.edit');
+    Route::put('/departamentos/{id}', [DepartamentoController::class, 'update'])->name('departamentos.update');
+    Route::get('/departamentos/pdf/reporte', [DepartamentoController::class, 'pdf'])->name('departamentos.pdf');
 
 
-    //Rutas Provisionales para Apertura de Meses
-    Route::view('/apertura', 'apertura.index')->name('apertura.index');
-    Route::view('/apertura/create', 'apertura.create')->name('apertura.create');
-    Route::view('/expensas', 'expensas.index')->name('expensas.index');
-    Route::view('/expensas/create', 'expensas.create')->name('expensas.create');
+    //Rutas CRUD Apertura Expensa
+    Route::get('/apertura-expensas', [AperturaExpensaController::class, 'index'])->name('apertura-expensas.index');
+    Route::get('/apertura-expensas/create', [AperturaExpensaController::class, 'create'])->name('apertura-expensas.create');
+    Route::post('/apertura-expensas/store', [AperturaExpensaController::class, 'store'])->name('apertura-expensas.store');
+    Route::get('/apertura-expensas/{apertura_expensa}/edit', [AperturaExpensaController::class, 'edit'])->name('apertura-expensas.edit');
+    Route::put('/apertura-expensas/{apertura_expensa}', [AperturaExpensaController::class, 'update'])->name('apertura-expensas.update');
+    Route::delete('/apertura-expensas/{apertura_expensa}', [AperturaExpensaController::class, 'destroy'])->name('apertura-expensas.destroy');
+
+
+
 
 });
 

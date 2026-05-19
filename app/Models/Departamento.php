@@ -21,12 +21,12 @@ class Departamento extends Model
 
     public function propietario()
     {
-        return $this->belongsTo(Propietario::class, 'id'); // o la FK que uses
+        return $this->belongsTo(Propietario::class, 'propietario_id');
     }
 
     public function edificio()
     {
-        return $this->belongsTo(Edificio::class, 'edificio_id'); // o la FK que uses
+        return $this->belongsTo(Edificio::class, 'edificio_id');
     }
 
 }

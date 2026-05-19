@@ -44,10 +44,10 @@
                     <a href="{{ route('departamentos.index') }}" class="nav-link text-white">🏢 Departamentos</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('apertura.index') }}" class="nav-link text-white"> 📅 Apertura Mes</a>
+                    <a href="{{ route('apertura-expensas.index') }}" class="nav-link text-white"> 📅 Apertura Mes</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('expensas.index') }}" class="nav-link text-white">💰 Expensas</a>
+                    <a href="" class="nav-link text-white">💰 Expensas</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link text-white">🚗 Estacionamiento</a>
