@@ -46,7 +46,7 @@
 
                 <tbody>
 
-                    @foreach($propietarios as $prop)
+                    @forelse($propietarios as $prop)
                         @if($prop->edificio_id == session('edificio_id'))
                             <tr>
                                 <td>{{ $prop->nombres }}</td>
@@ -63,7 +63,18 @@
                                 <td>0 Bs</td>
                             </tr>
                         @endif
-                    @endforeach
+                                                @empty
+
+                            <tr>
+
+                                <td colspan="8" class="text-center">
+                                    No existen propietarios registrados
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+                    
 
                 </tbody>
 
