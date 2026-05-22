@@ -1,50 +1,105 @@
 <x-app-layout>
+
     <x-slot name="header">
-        <h3>Registro de Pagos</h3>
+        <h3>Registrar Expensa</h3>
     </x-slot>
 
     <div class="container">
-        <div class="card shadow p-4">
-            <h4 class="mb-4">Generar Recibo</h4>
 
-            <form method="POST" action="">
+        <div class="card shadow p-4">
+
+            <form method="POST" action="{{ route('expensas.store') }}">
+
                 @csrf
 
                 <div class="mb-3">
-                    <label class="form-label">Numero de Recibo</label>
-                    <input type="text" name="mes" class="form-control" required>
+
+                    <label>Total</label>
+
+                    <input type="number" step="0.01" name="total" class="form-control" required>
+
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Recibimos de</label>
-                    <input type="text" name="mes" class="form-control" required>
+
+                    <label>Pagado</label>
+
+                    <input type="number" step="0.01" name="pagado" value="0" class="form-control">
+
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Monto Total</label>
-                    <input type="text" name="mes" class="form-control" required>
+
+                    <label>Departamento</label>
+
+                    <select name="departamento_id" class="form-control" required>
+
+                        @foreach($departamentos as $departamento)
+
+                            <option value="{{ $departamento->id }}">
+
+                                {{ $departamento->numero_departamento }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Tipo Moneda</label>
-                    <select name="" id=""><option value="">Bolivianos</option>
-                <option value="">Dolares</option></select>
+
+                    <label>Propietario</label>
+
+                    <select name="propietario_id" class="form-control" required>
+
+                        @foreach($propietarios as $propietario)
+
+                            <option value="{{ $propietario->id }}">
+
+                                {{ $propietario->nombres }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Concepto</label>
-                    <input type="text" name="mes" class="form-control" required>
+
+                    <label>Apertura</label>
+
+                    <select name="apertura_expensa_id" class="form-control" required>
+
+                        @foreach($aperturas as $apertura)
+
+                            <option value="{{ $apertura->id }}">
+
+                                {{ $apertura->mes }}
+                                -
+                                {{ $apertura->gestion }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" name="mes" class="form-control" required>
-                </div>
+                <button type="submit" class="btn btn-success">
 
+                    Guardar
 
-                <button type="submit" class="btn btn-success">Registrar Recibo</button>
-                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancelar</button>
+                </button>
+
             </form>
+
         </div>
+
     </div>
+
 </x-app-layout>

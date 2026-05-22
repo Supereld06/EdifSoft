@@ -1,81 +1,141 @@
 <x-app-layout>
 
-<x-slot name="header">
-    <h3>Expensas por Cobrar</h3>
-</x-slot>
+    <x-slot name="header">
+        <h3>Listado de Expensas</h3>
+    </x-slot>
 
-<div class="container">
-<div class="card shadow p-3">
-<div class="mb-3">
+    <div class="container">
 
-    <label>Selecciona el mes Aperturado</label>
-    <select name="mes" class="form-control">
-        
-    </select>
-    <a href="" class="btn btn-success">
-            Generar Listado
+        <div class="mb-3">
+
+            <a href="{{ route('expensas.create') }}" class="btn btn-success">
+
+                + Nueva Expensa
+
             </a>
-    </div>
-</div>
-<br>
-    <div class="mb-3">
-        <a href="{{ route('expensas.create') }}" class="btn btn-success">
-            + Registrar Pago
-        </a>
-    </div>
-  
 
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
         </div>
-    @endif
 
-    <div class="card shadow p-3">
+        @if(session('success'))
 
-        <table class="table table-striped">
+            <div class="alert alert-success">
 
-            <thead>
-                <tr>
-                    <th>Departamento</th>
-                    <th>Monto</th>
-                    <th>Multa</th>
-                    <th>Tiempo de Mora</th>
-                    <th>Estado</th>
-                    <th>Saldo</th>
-                    <th>Pagado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
+                {{ session('success') }}
 
-            <tbody>
+            </div>
 
-                
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    
-                </tr>
-             
+        @endif
 
-            </tbody>
+        <div class="card shadow p-3">
 
-        </table>
+            <table class="table table-striped">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Departamento</th>
+
+                        <th>Propietario</th>
+
+                        <th>Total</th>
+
+                        <th>Pagado</th>
+
+                        <th>Saldo</th>
+
+                        <th>Estado</th>
+
+                        <th>Mes</th>
+
+                        <th>Acciones</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach($expensas as $expensa)
+
+                        <tr>
+
+                            <td>
+                                {{ $expensa->departamento->numero_departamento }}
+                            </td>
+
+                            <td>
+                                {{ $expensa->propietario->nombres }}
+                            </td>
+
+                            <td>
+                                {{ $expensa->total }}
+                            </td>
+
+                            <td>
+                                {{ $expensa->pagado }}
+                            </td>
+
+                            <td>
+                                {{ $expensa->saldo }}
+                            </td>
+
+                            <td>
+
+                                @if($expensa->estado == 'PAGADO')
+
+                                    <span class="badge bg-success">
+                                        PAGADO
+                                    </span>
+
+                                @else
+
+                                    <span class="badge bg-danger">
+                                        PENDIENTE
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                            <td>
+                                {{ $expensa->apertura->mes }}
+                            </td>
+
+                            <td>
+
+                                <a href="{{ route('expensas.edit', $expensa) }}" class="btn btn-warning btn-sm">
+
+                                    Editar
+
+                                </a>
+
+                                <form action="{{ route('expensas.destroy', $expensa) }}" method="POST"
+                                    style="display:inline-block">
+
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button class="btn btn-danger btn-sm">
+
+                                        Eliminar
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    @endforeach
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
-
-</div>
 
 </x-app-layout>
-
-
-
-
-
-
-

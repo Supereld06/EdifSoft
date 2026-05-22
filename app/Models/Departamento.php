@@ -29,4 +29,9 @@ class Departamento extends Model
         return $this->belongsTo(Edificio::class, 'edificio_id');
     }
 
+    public function expensas()
+    {
+        return $this->hasMany(Expensa::class);
+    }
+
 }

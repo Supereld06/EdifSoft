@@ -28,11 +28,15 @@ class AperturaExpensaController extends Controller
      */
     public function create()
     {
-        $edificios = Edificio::all();
+        if (!session('edificio_id')) {
+            return redirect()->route('edificios.seleccionar');
+        }
+
+        $edificio_id = session('edificio_id');
 
         return view(
             'expensas.aperturas.create',
-            compact('edificios')
+            compact('edificio_id')
         );
     }
 
@@ -44,11 +48,9 @@ class AperturaExpensaController extends Controller
         $request->validate([
 
             'mes' => 'required',
-
             'gestion' => 'required|integer',
-
             'saldo_inicial' => 'required|numeric',
-
+            'efectivo_inicial' => 'required|numeric',
             'edificio_id' => 'required|exists:edificios,id',
 
         ]);
@@ -56,11 +58,9 @@ class AperturaExpensaController extends Controller
         AperturaExpensa::create([
 
             'mes' => $request->mes,
-
             'gestion' => $request->gestion,
-
             'saldo_inicial' => $request->saldo_inicial,
-
+            'efectivo_inicial' => $request->efectivo_inicial,
             'edificio_id' => $request->edificio_id,
 
         ]);
@@ -75,15 +75,18 @@ class AperturaExpensaController extends Controller
      */
     public function edit(AperturaExpensa $apertura_expensa)
     {
-        $edificios = Edificio::all();
+
+           if (!session('edificio_id')) {
+            return redirect()->route('edificios.seleccionar');
+        }
+
+        $edificio_id = session('edificio_id');
 
         return view(
             'expensas.aperturas.edit',
-            compact(
-                'apertura_expensa',
-                'edificios'
-            )
+            compact('apertura_expensa', 'edificio_id')
         );
+
     }
 
     /**
@@ -96,11 +99,9 @@ class AperturaExpensaController extends Controller
         $request->validate([
 
             'mes' => 'required',
-
             'gestion' => 'required|integer',
-
             'saldo_inicial' => 'required|numeric',
-
+            'efectivo_inicial' => 'required|numeric',
             'edificio_id' => 'required|exists:edificios,id',
 
         ]);
@@ -108,11 +109,9 @@ class AperturaExpensaController extends Controller
         $apertura_expensa->update([
 
             'mes' => $request->mes,
-
             'gestion' => $request->gestion,
-
             'saldo_inicial' => $request->saldo_inicial,
-
+            'efectivo_inicial' => $request->efectivo_inicial,
             'edificio_id' => $request->edificio_id,
 
         ]);

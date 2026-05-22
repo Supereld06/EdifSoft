@@ -7,44 +7,36 @@
     </x-slot>
 
     <div class="container py-4">
-
         <div class="card shadow">
-
             <div class="card-body">
-
                 <form method="POST" action="{{ route('apertura-expensas.store') }}">
-
                     @csrf
-
                     <div class="mb-3">
-
                         <label class="form-label">
-                            Mes
+                            Mes *
                         </label>
-
                         <input type="text" name="mes" class="form-control" required>
-
                     </div>
-
                     <div class="mb-3">
-
                         <label class="form-label">
-                            Gestión
+                            Gestión *
                         </label>
-
                         <input type="number" name="gestion" class="form-control" required>
-
                     </div>
-
                     <div class="mb-3">
-
                         <label class="form-label">
-                            Saldo Inicial
+                            Saldo Inicial *
                         </label>
-
-                        <input type="number" step="0.01" name="saldo_inicial" class="form-control" required>
-
+                        <input type="number" step="0.01" name="saldo_inicial" value="0,00" class="form-control" required>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Efectivo Inicial *
+                        </label>
+                        <input type="number" step="0.01" name="efectivo_inicial" value="0,00" class="form-control" required>
+                    </div>
+
+                    <input type="hidden" name="edificio_id" value="{{ $edificio_id }}">
 
                     <button type="submit" class="btn btn-success">
                         Guardar

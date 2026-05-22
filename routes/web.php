@@ -6,6 +6,7 @@ use App\Http\Controllers\EdificioController;
 use App\Http\Controllers\PropietarioController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\AperturaExpensaController;
+use App\Http\Controllers\ExpensaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,13 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/apertura-expensas/{apertura_expensa}', [AperturaExpensaController::class, 'update'])->name('apertura-expensas.update');
     Route::delete('/apertura-expensas/{apertura_expensa}', [AperturaExpensaController::class, 'destroy'])->name('apertura-expensas.destroy');
 
+        // Rutas de CRUD Expensa
+    Route::get('/expensas',[ExpensaController::class, 'index'])->name('expensas.index');
+    Route::get('/expensas/create',[ExpensaController::class, 'create'])->name('expensas.create');
+    Route::post('/expensas/store',[ExpensaController::class, 'store'])->name('expensas.store');
+    Route::get('/expensas/{expensa}/edit',[ExpensaController::class, 'edit'])->name('expensas.edit');
+    Route::put('/expensas/{expensa}',[ExpensaController::class, 'update'])->name('expensas.update');
+    Route::delete('/expensas/{expensa}',[ExpensaController::class, 'destroy'])->name('expensas.destroy');
 
 
 

@@ -25,4 +25,8 @@ class AperturaExpensa extends Model
     {
         return $this->hasMany(Expensa::class);
     }
+   // public function expensas()
+   // {
+   //     return $this->hasMany(Expensa::class);
+   // }
 }

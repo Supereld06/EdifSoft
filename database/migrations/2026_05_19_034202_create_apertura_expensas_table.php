@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('mes');
             $table->year('gestion');
             $table->decimal('saldo_inicial', 10, 2)->default(0);
+            $table->decimal('efectivo_inicial', 10, 2)->default(0);
             $table->foreignId('edificio_id')->constrained('edificios')->onDelete('cascade');
             $table->timestamps();
         });

@@ -30,11 +30,12 @@
 
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>N</th>
                             <th>Edificio</th>
                             <th>Mes</th>
                             <th>Gestión</th>
                             <th>Saldo Inicial</th>
+                            <th>Efectivo Inicial</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -45,11 +46,12 @@
 
                             <tr>
 
-                                <td>{{ $apertura->id }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                  <td>{{ $apertura->edificio->nombre }}</td>
                                 <td>{{ $apertura->mes }}</td>
                                 <td>{{ $apertura->gestion }}</td>
                                 <td>{{ $apertura->saldo_inicial }}</td>
+                                <td>{{ $apertura->efectivo_inicial }}</td>
                                 <td>
                                     <a href="{{ route('apertura-expensas.edit', $apertura) }}"
                                         class="btn btn-warning btn-sm" title="Editar Apertura">
@@ -68,8 +70,10 @@
                                         <i class="bi bi-pencil">Gastos Extraordinarios</i>
                                     </a>
 
-
-                                    <!--       <form action="{{ route('apertura-expensas.destroy', $apertura) }}" method="POST"
+                                    
+                                    <!--       
+                                    SE DESABILITO ELIMINAR PORQUE HAUY RELACIONES
+                                    <form action="{{ route('apertura-expensas.destroy', $apertura) }}" method="POST"
                                                 style="display:inline-block">
 
                                                 @csrf
