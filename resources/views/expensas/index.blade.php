@@ -1,7 +1,13 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h3>Listado de Expensas</h3>
+        <h3>
+
+    Expensas -
+    {{ $expensas->first()?->apertura?->mes }}
+    {{ $expensas->first()?->apertura?->gestion }}
+
+</h3>
     </x-slot>
 
     <div class="container">
@@ -9,9 +15,7 @@
         <div class="mb-3">
 
             <a href="{{ route('expensas.create') }}" class="btn btn-success">
-
                 + Nueva Expensa
-
             </a>
 
         </div>
@@ -103,6 +107,12 @@
                             </td>
 
                             <td>
+
+                                <a href="#" class="btn btn-success btn-sm">
+
+                                    Pago Expensa
+
+                                </a>
 
                                 <a href="{{ route('expensas.edit', $expensa) }}" class="btn btn-warning btn-sm">
 

@@ -13,6 +13,12 @@ class AperturaExpensa extends Model
         'mes',
         'gestion',
         'saldo_inicial',
+        'efectivo_inicial',
+        'expensa_departamentos',
+        'expensa_tiendas',
+        'expensa_parqueo',
+        'factura_agua',
+        'prorrateo_agua',
         'edificio_id',
     ];
 

@@ -22,8 +22,8 @@ class ExpensaController extends Controller
             'edificio',
             'apertura'
         ])
-        ->latest()
-        ->get();
+            ->latest()
+            ->get();
 
         return view(
             'expensas.index',
@@ -97,7 +97,10 @@ class ExpensaController extends Controller
         ]);
 
         return redirect()
-            ->route('expensas.index')
+            ->route(
+                'pago-expensas.expensas',
+                $request->apertura_expensa_id
+            )
             ->with(
                 'success',
                 'Expensa registrada correctamente'
@@ -132,8 +135,7 @@ class ExpensaController extends Controller
     public function update(
         Request $request,
         Expensa $expensa
-    )
-    {
+    ) {
         $saldo = $request->total - $request->pagado;
 
         $estado = $saldo <= 0
@@ -150,16 +152,13 @@ class ExpensaController extends Controller
 
             'estado' => $estado,
 
-            'departamento_id' => $request->departamento_id,
-
-            'propietario_id' => $request->propietario_id,
-
-            'apertura_expensa_id' => $request->apertura_expensa_id,
-
         ]);
 
         return redirect()
-            ->route('expensas.index')
+            ->route(
+                'pago-expensas.expensas',
+                $expensa->apertura_expensa_id
+            )
             ->with(
                 'success',
                 'Expensa actualizada correctamente'
@@ -171,13 +170,58 @@ class ExpensaController extends Controller
      */
     public function destroy(Expensa $expensa)
     {
+        $apertura_id = $expensa->apertura_expensa_id;
+
         $expensa->delete();
 
         return redirect()
-            ->route('expensas.index')
+            ->route(
+                'pago-expensas.expensas',
+                $apertura_id
+            )
             ->with(
                 'success',
                 'Expensa eliminada correctamente'
             );
+    }
+
+    /**
+     * LISTADO DE APERTURAS PARA PAGOS
+     */
+    public function pagoExpensas()
+    {
+        $aperturas = AperturaExpensa::with('edificio')
+            ->latest()
+            ->paginate(10);
+
+        return view(
+            'expensas.pago.index',
+            compact('aperturas')
+        );
+    }
+
+    /**
+     * EXPENSAS POR APERTURA
+     */
+    public function expensasPorApertura(
+        AperturaExpensa $apertura
+    ) {
+        $expensas = Expensa::with([
+            'departamento',
+            'propietario',
+            'edificio',
+            'apertura'
+        ])
+            ->where(
+                'apertura_expensa_id',
+                $apertura->id
+            )
+            ->latest()
+            ->paginate(10);
+
+        return view(
+            'expensas.index',
+            compact('expensas')
+        );
     }
 }

@@ -26,6 +26,7 @@
 
             <div class="card-body">
 
+
                 <table class="table table-striped">
 
                     <thead>
@@ -36,6 +37,11 @@
                             <th>Gestión</th>
                             <th>Saldo Inicial</th>
                             <th>Efectivo Inicial</th>
+                            <th>Expensas Departamentos Monto</th>
+                            <th>Expensas Tiendas Monto</th>
+                            <th>Expensas Parqueo Monto</th>
+                            <th>Factura Agua Monto</th>
+                            <th>Prorrateo Agua</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -43,57 +49,62 @@
                     <tbody>
 
                         @forelse($aperturas as $apertura)
+                            @if($apertura->edificio_id == session('edificio_id'))
+                                <tr>
 
-                            <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $apertura->edificio->nombre }}</td>
+                                    <td>{{ $apertura->mes }}</td>
+                                    <td>{{ $apertura->gestion }}</td>
+                                    <td>{{ $apertura->saldo_inicial }}</td>
+                                    <td>{{ $apertura->efectivo_inicial }}</td>
+                                    <td>{{ $apertura->expensa_departamentos }}</td>
+                                    <td>{{ $apertura->expensa_tiendas }}</td>
+                                    <td>{{ $apertura->expensa_parqueo }}</td>
+                                    <td>{{ $apertura->factura_agua }}</td>
+                                    <td>{{ $apertura->prorrateo_agua }}</td>
+                                    <td>
+                                        <a href="{{ route('apertura-expensas.edit', $apertura) }}"
+                                            class="btn btn-warning btn-sm" title="Editar Apertura">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <!--
+                                                    <a href="" class="btn btn-info btn-sm" title="Gastos Fijos">
+                                                        <i class="bi bi-pencil">Gastos Fijos</i>
+                                                    </a>
 
-                                <td>{{ $loop->iteration }}</td>
-                                 <td>{{ $apertura->edificio->nombre }}</td>
-                                <td>{{ $apertura->mes }}</td>
-                                <td>{{ $apertura->gestion }}</td>
-                                <td>{{ $apertura->saldo_inicial }}</td>
-                                <td>{{ $apertura->efectivo_inicial }}</td>
-                                <td>
-                                    <a href="{{ route('apertura-expensas.edit', $apertura) }}"
-                                        class="btn btn-warning btn-sm" title="Editar Apertura">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
+                                                    <a href="" class="btn btn-secondary btn-sm" title="Gastos Variables">
+                                                        <i class="bi bi-pencil">Gastos Variables</i>
+                                                    </a>
 
-                                    <a href="" class="btn btn-info btn-sm" title="Gastos Fijos">
-                                        <i class="bi bi-pencil">Gastos Fijos</i>
-                                    </a>
+                                                    <a href="" class="btn btn-success btn-sm" title="Gastos Extraordinarios">
+                                                        <i class="bi bi-pencil">Gastos Extraordinarios</i>
+                                                    </a>
 
-                                    <a href="" class="btn btn-secondary btn-sm" title="Gastos Variables">
-                                        <i class="bi bi-pencil">Gastos Variables</i>
-                                    </a>
 
-                                    <a href="" class="btn btn-success btn-sm" title="Gastos Extraordinarios">
-                                        <i class="bi bi-pencil">Gastos Extraordinarios</i>
-                                    </a>
 
-                                    
-                                    <!--       
-                                    SE DESABILITO ELIMINAR PORQUE HAUY RELACIONES
-                                    <form action="{{ route('apertura-expensas.destroy', $apertura) }}" method="POST"
-                                                style="display:inline-block">
+                                                    SE DESABILITO ELIMINAR PORQUE HAUY RELACIONES
+                                                    <form action="{{ route('apertura-expensas.destroy', $apertura) }}" method="POST"
+                                                                style="display:inline-block">
 
-                                                @csrf
-                                                @method('DELETE')
+                                                                @csrf
+                                                                @method('DELETE')
 
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    Eliminar
-                                                </button>
+                                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                                    Eliminar
+                                                                </button>
 
-                                            </form>-->
+                                                            </form>-->
 
-                                </td>
+                                    </td>
 
-                            </tr>
-
+                                </tr>
+                            @endif
                         @empty
 
                             <tr>
 
-                                <td colspan="7" class="text-center">
+                                <td colspan="12" class="text-center">
                                     No existen aperturas registradas
                                 </td>
 

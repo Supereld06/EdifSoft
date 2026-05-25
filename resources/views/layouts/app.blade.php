@@ -47,7 +47,7 @@
                     <a href="{{ route('apertura-expensas.index') }}" class="nav-link text-white"> 📅 Apertura Mes</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('expensas.index') }}" class="nav-link text-white">💰 Expensas</a>
+                    <a href="{{ route('pago-expensas.index') }}" class="nav-link text-white">💰 Pago Expensas</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link text-white">🚗 Estacionamiento</a>

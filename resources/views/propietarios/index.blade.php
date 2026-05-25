@@ -11,7 +11,7 @@
                 + Registrar Propietario
             </a>
 
-          <!--  <a href="" class="btn btn-success">
+            <!--  <a href="" class="btn btn-success">
                 📊 Exportar Excel
             </a>-->
 
@@ -63,18 +63,18 @@
                                 <td>0 Bs</td>
                             </tr>
                         @endif
-                                                @empty
+                    @empty
 
-                            <tr>
+                        <tr>
 
-                                <td colspan="8" class="text-center">
-                                    No existen propietarios registrados
-                                </td>
+                            <td colspan="8" class="text-center">
+                                No existen propietarios registrados
+                            </td>
 
-                            </tr>
+                        </tr>
 
-                        @endforelse
-                    
+                    @endforelse
+
 
                 </tbody>
 

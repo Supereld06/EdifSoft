@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Edificio;
 use App\Models\AperturaExpensa;
+use App\Models\Departamento;
+use App\Models\Expensa;
 
 class AperturaExpensaController extends Controller
 {
@@ -51,23 +53,80 @@ class AperturaExpensaController extends Controller
             'gestion' => 'required|integer',
             'saldo_inicial' => 'required|numeric',
             'efectivo_inicial' => 'required|numeric',
+            'expensa_departamentos' => 'required|numeric',
+            'expensa_tiendas' => 'required|numeric',
+            'expensa_parqueo' => 'required|numeric',
+            'factura_agua' => 'required|numeric',
+            'prorrateo_agua' => 'required|numeric',
             'edificio_id' => 'required|exists:edificios,id',
 
         ]);
 
-        AperturaExpensa::create([
+        // VALIDAR SI YA EXISTE APERTURA
+        $existe = AperturaExpensa::where('mes', $request->mes)
+            ->where('gestion', $request->gestion)
+            ->where('edificio_id', $request->edificio_id)
+            ->exists();
+
+        if ($existe) {
+
+            return back()->withErrors([
+                'mes' => 'Ya existe una apertura para ese mes y gestión.'
+            ])->withInput();
+        }
+
+        // CREAR APERTURA
+        $apertura = AperturaExpensa::create([
 
             'mes' => $request->mes,
             'gestion' => $request->gestion,
             'saldo_inicial' => $request->saldo_inicial,
             'efectivo_inicial' => $request->efectivo_inicial,
+            'expensa_departamentos' => $request->expensa_departamentos,
+            'expensa_tiendas' => $request->expensa_tiendas,
+            'expensa_parqueo' => $request->expensa_parqueo,
+            'factura_agua' => $request->factura_agua,
+            'prorrateo_agua' => $request->prorrateo_agua,
             'edificio_id' => $request->edificio_id,
 
         ]);
 
+        // OBTENER TODOS LOS DEPARTAMENTOS
+        $departamentos = Departamento::where(
+            'edificio_id',
+            $request->edificio_id
+        )->get();
+
+        // CREAR EXPENSAS AUTOMATICAMENTE
+        foreach ($departamentos as $departamento) {
+
+            Expensa::create([
+
+                'total' => $request->expensa_departamentos,
+
+                'pagado' => 0,
+
+                'saldo' => $request->expensa_departamentos,
+
+                'estado' => 'PENDIENTE',
+
+                'departamento_id' => $departamento->id,
+
+                'propietario_id' => $departamento->propietario_id,
+
+                'edificio_id' => $request->edificio_id,
+
+                'apertura_expensa_id' => $apertura->id,
+
+            ]);
+        }
+
         return redirect()
             ->route('apertura-expensas.index')
-            ->with('success', 'Apertura registrada correctamente');
+            ->with(
+                'success',
+                'Apertura registrada y expensas generadas correctamente'
+            );
     }
 
     /**
@@ -76,7 +135,7 @@ class AperturaExpensaController extends Controller
     public function edit(AperturaExpensa $apertura_expensa)
     {
 
-           if (!session('edificio_id')) {
+        if (!session('edificio_id')) {
             return redirect()->route('edificios.seleccionar');
         }
 
@@ -102,6 +161,11 @@ class AperturaExpensaController extends Controller
             'gestion' => 'required|integer',
             'saldo_inicial' => 'required|numeric',
             'efectivo_inicial' => 'required|numeric',
+            'expensa_departamentos' => 'required|numeric',
+            'expensa_tiendas' => 'required|numeric',
+            'expensa_parqueo' => 'required|numeric',
+            'factura_agua' => 'required|numeric',
+            'prorrateo_agua' => 'required|numeric',
             'edificio_id' => 'required|exists:edificios,id',
 
         ]);
@@ -112,6 +176,11 @@ class AperturaExpensaController extends Controller
             'gestion' => $request->gestion,
             'saldo_inicial' => $request->saldo_inicial,
             'efectivo_inicial' => $request->efectivo_inicial,
+            'expensa_departamentos' => $request->expensa_departamentos,
+            'expensa_tiendas' => $request->expensa_tiendas,
+            'expensa_parqueo' => $request->expensa_parqueo,
+            'factura_agua' => $request->factura_agua,
+            'prorrateo_agua' => $request->prorrateo_agua,
             'edificio_id' => $request->edificio_id,
 
         ]);

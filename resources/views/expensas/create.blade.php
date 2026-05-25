@@ -92,7 +92,13 @@
 
                 <button type="submit" class="btn btn-success">
 
-                    Guardar
+                    Registrar
+
+                </button>
+
+                <button class="btn btn-secondary" type="button" onclick="window.history.back()">
+
+                    Cancelar
 
                 </button>
 

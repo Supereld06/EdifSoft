@@ -74,13 +74,17 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/apertura-expensas/{apertura_expensa}', [AperturaExpensaController::class, 'update'])->name('apertura-expensas.update');
     Route::delete('/apertura-expensas/{apertura_expensa}', [AperturaExpensaController::class, 'destroy'])->name('apertura-expensas.destroy');
 
-        // Rutas de CRUD Expensa
-    Route::get('/expensas',[ExpensaController::class, 'index'])->name('expensas.index');
-    Route::get('/expensas/create',[ExpensaController::class, 'create'])->name('expensas.create');
-    Route::post('/expensas/store',[ExpensaController::class, 'store'])->name('expensas.store');
-    Route::get('/expensas/{expensa}/edit',[ExpensaController::class, 'edit'])->name('expensas.edit');
-    Route::put('/expensas/{expensa}',[ExpensaController::class, 'update'])->name('expensas.update');
-    Route::delete('/expensas/{expensa}',[ExpensaController::class, 'destroy'])->name('expensas.destroy');
+    // Rutas de CRUD Expensa
+    Route::get('/expensas', [ExpensaController::class, 'index'])->name('expensas.index');
+    Route::get('/expensas/create', [ExpensaController::class, 'create'])->name('expensas.create');
+    Route::post('/expensas/store', [ExpensaController::class, 'store'])->name('expensas.store');
+    Route::get('/expensas/{expensa}/edit', [ExpensaController::class, 'edit'])->name('expensas.edit');
+    Route::put('/expensas/{expensa}', [ExpensaController::class, 'update'])->name('expensas.update');
+    Route::delete('/expensas/{expensa}', [ExpensaController::class, 'destroy'])->name('expensas.destroy');
+
+    // PAGO EXPENSAS
+    Route::get('/pago-expensas', [ExpensaController::class, 'pagoExpensas'])->name('pago-expensas.index');
+    Route::get('/pago-expensas/{apertura}', [ExpensaController::class, 'expensasPorApertura'])->name('pago-expensas.expensas');
 
 
 
