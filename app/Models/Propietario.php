@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Propietario extends Model
 {
-       use HasFactory;
+    use HasFactory;
 
     // Relación: un propietario pertenece a un edificio
-    
-        protected $fillable = [
+
+    protected $fillable = [
         'nombres',
         'apellido_paterno',
         'apellido_materno',
@@ -32,5 +32,14 @@ class Propietario extends Model
     public function expensas()
     {
         return $this->hasMany(Expensa::class);
+    }
+
+        public function departamentos()
+    {
+        return $this->hasMany(Departamento::class);
+    }
+    public function tiendas()
+    {
+        return $this->hasMany(Tienda::class);
     }
 }

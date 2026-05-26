@@ -23,7 +23,11 @@ class Expensa extends Model
 
     ];
 
-    // RELACIONES
+    /*
+    |--------------------------------------------------------------------------
+    | RELACIONES
+    |--------------------------------------------------------------------------
+    */
 
     public function departamento()
     {
@@ -46,5 +50,10 @@ class Expensa extends Model
             AperturaExpensa::class,
             'apertura_expensa_id'
         );
+    }
+
+    public function recibos()
+    {
+        return $this->hasMany(ReciboExpensa::class);
     }
 }

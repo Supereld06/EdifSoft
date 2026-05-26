@@ -18,4 +18,17 @@ class Edificio extends Model
         'logo_edificio'
 
     ];
+
+    public function propietarios()
+    {
+        return $this->hasMany(Propietario::class);
+    }
+    public function departamentos()
+    {
+        return $this->hasMany(Departamento::class);
+    }
+    public function tiendas()
+    {
+        return $this->hasMany(Tienda::class);
+    }
 }

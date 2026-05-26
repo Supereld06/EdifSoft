@@ -7,12 +7,19 @@ use App\Http\Controllers\PropietarioController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\AperturaExpensaController;
 use App\Http\Controllers\ExpensaController;
+use App\Http\Controllers\TiendaController;
+use App\Http\Controllers\ReciboExpensaController;
 
 /*
 |--------------------------------------------------------------------------
 | Rutas protegidas (requieren login)
 |--------------------------------------------------------------------------
 */
+Route::get('/', function () {
+
+    return redirect('/login');
+
+});
 
 Route::middleware(['auth'])->group(function () {
 
@@ -87,6 +94,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pago-expensas/{apertura}', [ExpensaController::class, 'expensasPorApertura'])->name('pago-expensas.expensas');
 
 
+    //TIENDAS
+    Route::get('/tiendas', [TiendaController::class, 'index'])->name('tiendas.index');
+    Route::get('/tiendas/create', [TiendaController::class, 'create'])->name('tiendas.create');
+    Route::post('/tiendas/store', [TiendaController::class, 'store'])->name('tiendas.store');
+    Route::get('/tiendas/{tienda}/edit', [TiendaController::class, 'edit'])->name('tiendas.edit');
+    Route::put('/tiendas/{tienda}', [TiendaController::class, 'update'])->name('tiendas.update');
+    Route::delete('/tiendas/{tienda}', [TiendaController::class, 'destroy'])->name('tiendas.destroy');
+
+
+    // Rutas de CRUD ReciboExpensa
+    Route::get('/recibos-expensas', [ReciboExpensaController::class, 'index'])->name('recibos_expensas.index');
+    Route::get('/recibos-expensas/create', [ReciboExpensaController::class, 'create'])->name('recibos_expensas.create');
+    Route::post('/recibos-expensas/store', [ReciboExpensaController::class, 'store'])->name('recibos_expensas.store');
+    Route::get('/obtener-expensas/{propietario_id}',[ReciboExpensaController::class, 'obtenerExpensas']);
 
 });
 

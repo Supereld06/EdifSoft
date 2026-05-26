@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,80 +17,88 @@
 
 <body>
 
-<div class="layout">
+    <div class="layout">
 
-    <!-- SIDEBAR -->
-    <div class="sidebar bg-dark text-white p-3 d-flex flex-column justify-content-between sidebar-custom">
+        <!-- SIDEBAR -->
+        <div class="sidebar bg-dark text-white p-3 d-flex flex-column justify-content-between sidebar-custom">
 
-        <div>
-            <!-- USUARIO -->
-            <div class="user-box text-center">
-                <h1 class="fw-bold display-5"><span style="color: orange;">Edif</span><span>Soft</span></h1>
-                <h6 class="mb-1"> Usuario : {{ auth()->user()->name }}</h6>
-                <small>🏢 Edificio : {{ session('edificio_nombre') ?? 'Sin edificio' }}</small>
+            <div>
+                <!-- USUARIO -->
+                <div class="user-box text-center">
+                    <h1 class="fw-bold display-5"><span style="color: orange;">Edif</span><span>Soft</span></h1>
+                    <h6 class="mb-1"> Usuario : {{ auth()->user()->name }}</h6>
+                    <small>🏢 Edificio : {{ session('edificio_nombre') ?? 'Sin edificio' }}</small>
+                </div>
+
+                <!-- MENÚ -->
+                <ul class="nav flex-column mt-4">
+                    <li class="nav-item">
+                        <a href="{{ route('dashboard') }}" class="nav-link text-white">🏠 Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('edificios.index') }}" class="nav-link text-white">🏢 Edificios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('propietarios.index') }}" class="nav-link text-white">👤 Propietarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('departamentos.index') }}" class="nav-link text-white">🏢 Departamentos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('tiendas.index') }}" class="nav-link text-white">🏪 Tiendas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('apertura-expensas.index') }}" class="nav-link text-white"> 📅 Apertura
+                            Mes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('pago-expensas.index') }}" class="nav-link text-white">💰 Pago Expensas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('recibos_expensas.index') }}" class="nav-link text-white">📋 Recibos Expensas</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-white">🚗 Estacionamiento</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-white">⚙️ Configuración</a>
+                    </li>
+                </ul>
             </div>
 
-            <!-- MENÚ -->
-            <ul class="nav flex-column mt-4">
-                <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link text-white">🏠 Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('edificios.index') }}" class="nav-link text-white">🏢 Edificios</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('propietarios.index') }}" class="nav-link text-white">👤 Propietarios</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('departamentos.index') }}" class="nav-link text-white">🏢 Departamentos</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('apertura-expensas.index') }}" class="nav-link text-white"> 📅 Apertura Mes</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('pago-expensas.index') }}" class="nav-link text-white">💰 Pago Expensas</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link text-white">🚗 Estacionamiento</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link text-white">⚙️ Configuración</a>
-                </li>
-            </ul>
+            <!-- LOGOUT -->
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button class="btn btn-danger w-100">Cerrar sesión</button>
+            </form>
+
         </div>
 
-        <!-- LOGOUT -->
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="btn btn-danger w-100">Cerrar sesión</button>
-        </form>
+        <!-- CONTENIDO -->
+        <div class="content flex-grow-1">
+
+            <!-- HEADER -->
+            @isset($header)
+                <div class="p-3 border-bottom bg-light">
+                    {{ $header }}
+                </div>
+            @endisset
+
+            <!-- MAIN -->
+            <div class="container-fluid p-4">
+                {{ $slot }}
+            </div>
+
+        </div>
+
 
     </div>
 
-    <!-- CONTENIDO -->
-    <div class="content flex-grow-1">
-
-        <!-- HEADER -->
-        @isset($header)
-            <div class="p-3 border-bottom bg-light">
-                {{ $header }}
-            </div>
-        @endisset
-
-        <!-- MAIN -->
-        <div class="container-fluid p-4">
-            {{ $slot }}
-        </div>
-
-    </div>
-    
-
-</div>
 
 
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
