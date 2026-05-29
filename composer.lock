@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e20aa50964dc12ac37c351603e1a1d6",
+    "content-hash": "eca0627e1a93587135b13f9b2a876b1b",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -2250,6 +2250,63 @@
                 }
             ],
             "time": "2026-01-15T06:54:53+00:00"
+        },
+        {
+            "name": "luecano/numero-a-letras",
+            "version": "v4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lecano/php-numero-a-letras.git",
+                "reference": "676e3f02ebd40d650579e9e1930eeec651f80bfd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lecano/php-numero-a-letras/zipball/676e3f02ebd40d650579e9e1930eeec651f80bfd",
+                "reference": "676e3f02ebd40d650579e9e1930eeec651f80bfd",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Luecano\\NumeroALetras\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luis Cano",
+                    "homepage": "https://github.com/luecano/numero-a-letras"
+                }
+            ],
+            "description": "Convierte un número a letras.",
+            "homepage": "https://github.com/luecano/numero-a-letras",
+            "keywords": [
+                "convertir",
+                "facturacion",
+                "letras",
+                "numero",
+                "sunat"
+            ],
+            "support": {
+                "issues": "https://github.com/lecano/php-numero-a-letras/issues",
+                "source": "https://github.com/lecano/php-numero-a-letras/tree/v4.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/lecano",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-05-24T02:18:56+00:00"
         },
         {
             "name": "masterminds/html5",

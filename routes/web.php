@@ -108,6 +108,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/recibos-expensas/create', [ReciboExpensaController::class, 'create'])->name('recibos_expensas.create');
     Route::post('/recibos-expensas/store', [ReciboExpensaController::class, 'store'])->name('recibos_expensas.store');
     Route::get('/obtener-expensas/{propietario_id}',[ReciboExpensaController::class, 'obtenerExpensas']);
+    Route::get('/recibos-expensas/{id}/edit',[ReciboExpensaController::class, 'edit'])->name('recibos_expensas.edit');
+    Route::put('/recibos-expensas/{id}',[ReciboExpensaController::class, 'update'])->name('recibos_expensas.update');
+    Route::delete('/recibos-expensas/{id}',[ReciboExpensaController::class, 'destroy'])->name('recibos_expensas.destroy');
+    Route::get('/recibos-expensas/{id}/pdf',[ReciboExpensaController::class, 'pdf'])->name('recibos_expensas.pdf');
+
 
 });
 

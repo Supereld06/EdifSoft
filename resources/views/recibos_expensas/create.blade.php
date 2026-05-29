@@ -142,9 +142,15 @@
 
                 </div>
 
-                <button class="btn btn-primary">
+                <button class="btn btn-success" type="submit">
 
                     Guardar
+
+                </button>
+
+                <button class="btn btn-secondary" type="button" onclick="window.history.back();">
+
+                    Cancelar
 
                 </button>
 

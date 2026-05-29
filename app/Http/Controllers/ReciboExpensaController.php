@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\ReciboExpensa;
 use App\Models\Propietario;
 use App\Models\Expensa;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Edificio;
+use Luecano\NumeroALetras\NumeroALetras;
+
 
 class ReciboExpensaController extends Controller
 {
@@ -211,5 +215,236 @@ class ReciboExpensaController extends Controller
             ->get();
 
         return response()->json($expensas);
+    }
+
+
+    /// RUTAS DE pdf
+    public function pdf($id)
+    {
+        // ============================
+        // OBTENER RECIBO
+        // ============================
+
+        $recibo = ReciboExpensa::with([
+            'propietario',
+            'departamento',
+        ])->findOrFail($id);
+
+        // ============================
+        // OBTENER EDIFICIO
+        // ============================
+
+        $edificio = Edificio::findOrFail(
+            session('edificio_id')
+        );
+
+        // ============================
+        // MONTO EN LITERAL
+        // ============================
+
+        $formatter = new NumeroALetras();
+
+        $montoLiteral = $formatter->toWords(
+            $recibo->monto
+        );
+
+        // ============================
+        // GENERAR PDF
+        // ============================
+
+        $pdf = Pdf::loadView(
+            'recibos_expensas.pdf',
+            compact(
+                'recibo',
+                'edificio',
+                'montoLiteral'
+            )
+        );
+
+        // ============================
+        // TAMAÑO PERSONALIZADO
+        // 15cm x 10cm horizontal
+        // ============================
+
+        $pdf->setPaper([0, 0, 612, 396]);
+
+        // ============================
+        // RETORNAR PDF
+        // ============================
+
+        return $pdf->stream(
+            'recibo-expensa-' .
+            $recibo->numero .
+            '.pdf'
+        );
+    }
+
+    /// delete
+
+    public function destroy($id)
+    {
+        $recibo = ReciboExpensa::findOrFail($id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | DEVOLVER SALDO A EXPENSA
+        |--------------------------------------------------------------------------
+        */
+
+        $expensa = Expensa::findOrFail(
+            $recibo->expensa_id
+        );
+
+        $nuevoPagado =
+            $expensa->pagado - $recibo->monto;
+
+        $nuevoSaldo =
+            $expensa->saldo + $recibo->monto;
+
+        $estado = 'PENDIENTE';
+
+        if ($nuevoSaldo <= 0) {
+
+            $estado = 'PAGADO';
+        }
+
+        $expensa->update([
+
+            'pagado' => $nuevoPagado,
+
+            'saldo' => $nuevoSaldo,
+
+            'estado' => $estado,
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | ELIMINAR RECIBO
+        |--------------------------------------------------------------------------
+        */
+
+        $recibo->delete();
+
+        return redirect()
+            ->route('recibos_expensas.index')
+            ->with(
+                'success',
+                'Recibo eliminado correctamente'
+            );
+    }
+
+    /// edit
+
+    public function edit($id)
+    {
+        $recibo = ReciboExpensa::findOrFail($id);
+
+        return view(
+            'recibos_expensas.edit',
+            compact('recibo')
+        );
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+
+            'monto' => 'required|numeric|min:0.01',
+
+        ]);
+
+        $recibo = ReciboExpensa::findOrFail($id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | OBTENER EXPENSA
+        |--------------------------------------------------------------------------
+        */
+
+        $expensa = Expensa::findOrFail(
+            $recibo->expensa_id
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESTAR MONTO ANTERIOR
+        |--------------------------------------------------------------------------
+        */
+
+        $expensa->pagado =
+            $expensa->pagado - $recibo->monto;
+
+        $expensa->saldo =
+            $expensa->saldo + $recibo->monto;
+
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDAR NUEVO MONTO
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->monto > $expensa->saldo) {
+
+            return back()
+                ->with(
+                    'error',
+                    'El monto excede el saldo'
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | APLICAR NUEVO PAGO
+        |--------------------------------------------------------------------------
+        */
+
+        $expensa->pagado =
+            $expensa->pagado + $request->monto;
+
+        $expensa->saldo =
+            $expensa->saldo - $request->monto;
+
+        /*
+        |--------------------------------------------------------------------------
+        | ESTADO
+        |--------------------------------------------------------------------------
+        */
+
+        $estado = 'PENDIENTE';
+
+        if ($expensa->saldo <= 0) {
+
+            $estado = 'PAGADO';
+
+            $expensa->saldo = 0;
+        }
+
+        $expensa->estado = $estado;
+
+        $expensa->save();
+
+        /*
+        |--------------------------------------------------------------------------
+        | ACTUALIZAR RECIBO
+        |--------------------------------------------------------------------------
+        */
+
+        $recibo->update([
+
+            'monto' => $request->monto,
+
+            'tipo_pago' => $request->tipo_pago,
+
+            'numero_deposito' => $request->numero_deposito,
+
+        ]);
+
+        return redirect()
+            ->route('recibos_expensas.index')
+            ->with(
+                'success',
+                'Recibo actualizado'
+            );
     }
 }
