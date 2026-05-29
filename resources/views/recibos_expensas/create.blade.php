@@ -1,10 +1,26 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h3>Generar Recibo</h3>
+        <h3>Recibos Expensas</h3>
     </x-slot>
 
     <div class="container">
+
+        @if(session('success'))
+
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+
+        @endif
+
+        @if(session('error'))
+
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+
+        @endif
 
         <div class="card shadow p-4">
 
@@ -16,7 +32,7 @@
 
                     <label>Número</label>
 
-                    <input type="text" name="numero" class="form-control">
+                    <input type="text" name="numero" class="form-control" required>
 
                 </div>
 
@@ -24,7 +40,7 @@
 
                     <label>Fecha</label>
 
-                    <input type="date" name="fecha" class="form-control">
+                    <input type="date" name="fecha" class="form-control" required>
 
                 </div>
 
@@ -32,7 +48,7 @@
 
                     <label>Propietario</label>
 
-                    <select name="propietario_id" id="propietario" class="form-control">
+                    <select name="propietario_id" id="propietario" class="form-control" required>
 
                         <option value="">
                             Seleccione
@@ -57,7 +73,7 @@
 
                     <label>Expensa</label>
 
-                    <select name="expensa_id" id="expensa" class="form-control">
+                    <select name="expensa_id" id="expensa" class="form-control" required>
 
                     </select>
 
@@ -65,9 +81,10 @@
 
                 <div class="mb-3">
 
-                    <label>Monto</label>
+                    <label>Monto a pagar</label>
 
-                    <input type="text" name="monto" id="monto" class="form-control" readonly>
+                    <input type="number" step="0.01" min="0" name="monto" id="monto" class="form-control" required>
+
 
                 </div>
 
@@ -139,6 +156,12 @@
 
     <script>
 
+        /*
+        |--------------------------------------------------------------------------
+        | CARGAR EXPENSAS
+        |--------------------------------------------------------------------------
+        */
+
         document.getElementById('propietario')
             .addEventListener('change', function () {
 
@@ -150,7 +173,8 @@
 
                     .then(data => {
 
-                        let expensa = document.getElementById('expensa');
+                        let expensa =
+                            document.getElementById('expensa');
 
                         expensa.innerHTML = '';
 
@@ -163,17 +187,17 @@
                         if (data.length == 0) {
 
                             expensa.innerHTML = `
-                <option value="">
-                    No hay expensas pendientes
-                </option>
-            `;
+                                <option value="">
+                                    No hay expensas pendientes
+                                </option>
+                            `;
 
                             return;
                         }
 
                         /*
                         |--------------------------------------------------------------------------
-                        | CARGAR EXPENSAS
+                        | AGREGAR EXPENSAS
                         |--------------------------------------------------------------------------
                         */
 
@@ -181,32 +205,32 @@
 
                             expensa.innerHTML += `
 
-                <option
-                    value="${item.id}"
+                                <option
+                                    value="${item.id}"
 
-                    data-monto="${item.saldo}"
+                                    data-saldo="${item.saldo}"
 
-                    data-mes="${item.apertura.mes}"
+                                    data-mes="${item.apertura.mes}"
 
-                    data-gestion="${item.apertura.gestion}">
+                                    data-gestion="${item.apertura.gestion}">
 
-                    Departamento:
-                    ${item.departamento.numero_departamento}
+                                    Departamento:
+                                    ${item.departamento.numero_departamento}
 
-                    |
+                                    |
 
-                    ${item.apertura.mes}
-                    -
-                    ${item.apertura.gestion}
+                                    ${item.apertura.mes}
+                                    -
+                                    ${item.apertura.gestion}
 
-                    |
+                                    |
 
-                    Saldo:
-                    ${item.saldo}
+                                    Saldo:
+                                    ${item.saldo}
 
-                </option>
+                                </option>
 
-            `;
+                            `;
                         });
 
                         cargarDatos();
@@ -232,24 +256,53 @@
             let select =
                 document.getElementById('expensa');
 
-            /*
-            |--------------------------------------------------------------------------
-            | VALIDAR OPCIONES
-            |--------------------------------------------------------------------------
-            */
-
             if (select.selectedIndex == -1) {
+
                 return;
+
             }
 
             let option =
                 select.options[select.selectedIndex];
 
+            let saldo =
+                option.getAttribute('data-saldo');
+
+            /*
+            |--------------------------------------------------------------------------
+            | MONTO
+            |--------------------------------------------------------------------------
+            */
+
             document.getElementById('monto').value =
-                option.getAttribute('data-monto');
+                saldo;
+
+            document.getElementById('monto').max =
+                saldo;
+
+            /*
+            |--------------------------------------------------------------------------
+            | SALDO
+            |--------------------------------------------------------------------------
+            */
+
+            document.getElementById('saldo_texto')
+                .innerText = saldo;
+
+            /*
+            |--------------------------------------------------------------------------
+            | MES
+            |--------------------------------------------------------------------------
+            */
 
             document.getElementById('mes').value =
                 option.getAttribute('data-mes');
+
+            /*
+            |--------------------------------------------------------------------------
+            | GESTION
+            |--------------------------------------------------------------------------
+            */
 
             document.getElementById('gestion').value =
                 option.getAttribute('data-gestion');
@@ -265,4 +318,5 @@
             .addEventListener('change', cargarDatos);
 
     </script>
+
 </x-app-layout>

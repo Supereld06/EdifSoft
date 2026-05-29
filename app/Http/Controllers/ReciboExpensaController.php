@@ -24,7 +24,10 @@ class ReciboExpensaController extends Controller
             'departamento'
         ])->get();
 
-        return view('recibos_expensas.index', compact('recibos'));
+        return view(
+            'recibos_expensas.index',
+            compact('recibos')
+        );
     }
 
     /*
@@ -35,11 +38,14 @@ class ReciboExpensaController extends Controller
 
     public function create()
     {
-        $propietarios = Propietario::whereHas('expensas', function ($q) {
+        $propietarios = Propietario::whereHas(
+            'expensas',
+            function ($q) {
 
-            $q->where('estado', 'PENDIENTE');
+                $q->where('estado', 'PENDIENTE');
 
-        })->get();
+            }
+        )->get();
 
         return view(
             'recibos_expensas.create',
@@ -58,12 +64,14 @@ class ReciboExpensaController extends Controller
         $request->validate([
 
             'numero' => 'required',
+
             'fecha' => 'required',
 
             'propietario_id' => 'required',
+
             'expensa_id' => 'required',
 
-            'monto' => 'required',
+            'monto' => 'required|numeric|min:0.01',
 
             'moneda' => 'required',
 
@@ -71,8 +79,30 @@ class ReciboExpensaController extends Controller
 
         ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | OBTENER EXPENSA
+        |--------------------------------------------------------------------------
+        */
+
         $expensa = Expensa::with('apertura')
             ->findOrFail($request->expensa_id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDAR MONTO
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->monto > $expensa->saldo) {
+
+            return back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'El monto no puede ser mayor al saldo pendiente'
+                );
+        }
 
         /*
         |--------------------------------------------------------------------------
@@ -118,7 +148,13 @@ class ReciboExpensaController extends Controller
             $expensa->pagado + $request->monto;
 
         $nuevoSaldo =
-            $expensa->total - $nuevoPagado;
+            $expensa->saldo - $request->monto;
+
+        /*
+        |--------------------------------------------------------------------------
+        | ESTADO
+        |--------------------------------------------------------------------------
+        */
 
         $estado = 'PENDIENTE';
 
@@ -128,6 +164,12 @@ class ReciboExpensaController extends Controller
 
             $nuevoSaldo = 0;
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | ACTUALIZAR
+        |--------------------------------------------------------------------------
+        */
 
         $expensa->update([
 
