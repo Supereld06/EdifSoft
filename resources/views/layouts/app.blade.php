@@ -48,6 +48,9 @@
                         <a href="{{ route('tiendas.index') }}" class="nav-link text-white">🏪 Tiendas</a>
                     </li>
                     <li class="nav-item">
+                        <a href="#" class="nav-link text-white">🚗 Parqueo</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('apertura-expensas.index') }}" class="nav-link text-white"> 📅 Apertura
                             Mes</a>
                     </li>
@@ -55,12 +58,118 @@
                         <a href="{{ route('pago-expensas.index') }}" class="nav-link text-white">💰 Pago Expensas</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('recibos_expensas.index') }}" class="nav-link text-white">📋 Recibos Expensas</a>
+                        <a href="" class="nav-link text-white"> 🚿 Lectura Agua</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link text-white"> ⚠️ Deudas</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link text-white">🚗 Estacionamiento</a>
+                        <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                            data-bs-toggle="collapse" href="#menuRecibos" role="button" aria-expanded="false">
+
+                            <span>📋 Recibos</span>
+                            <span>▫️</span>
+                        </a>
+                        <div class="collapse" id="menuRecibos">
+
+                            <ul class="nav flex-column ms-3">
+
+                                <li class="nav-item">
+                                    <a href="{{ route('recibos_expensas.index') }}" class="nav-link text-white">
+                                        📝 Recibos Expensas
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-white">
+                                        📝 Recibos Tiendas
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-white">
+                                        📝 Recibos Parqueos
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-white">
+                                        📝 Recibos Agua
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+
                     </li>
+
+
+
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                            data-bs-toggle="collapse" href="#menuIngresos" role="button" aria-expanded="false">
+
+                            <span> 📈 Ingresos</span>
+                            <span>▫️</span>
+                        </a>
+                        <div class="collapse" id="menuIngresos">
+
+                            <ul class="nav flex-column ms-3">
+
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white">
+                                        ➕ Ingresos Fijos
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-white">
+                                        ➕ Ingresos Variables
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                            data-bs-toggle="collapse" href="#menuEgresos" role="button" aria-expanded="false">
+
+                            <span> 📉 Egresos</span>
+                            <span>▫️</span>
+                        </a>
+                        <div class="collapse" id="menuEgresos">
+
+                            <ul class="nav flex-column ms-3">
+
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white">
+                                        ➖ Egresos Fijos
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-white">
+                                        ➖ Egresos Variables
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="" class="nav-link text-white"> 📊 Informes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="" class="nav-link text-white"> 💲 Deudas por Propietario</a>
+                    </li>
+
                     <li class="nav-item">
                         <a href="#" class="nav-link text-white">⚙️ Configuración</a>
                     </li>
