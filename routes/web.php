@@ -9,16 +9,17 @@ use App\Http\Controllers\AperturaExpensaController;
 use App\Http\Controllers\ExpensaController;
 use App\Http\Controllers\TiendaController;
 use App\Http\Controllers\ReciboExpensaController;
+use App\Http\Controllers\EstacionamientoController;
 
 /*
 |--------------------------------------------------------------------------
 | Rutas protegidas (requieren login)
 |--------------------------------------------------------------------------
 */
+
 Route::get('/', function () {
 
     return redirect('/login');
-
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -38,7 +39,6 @@ Route::middleware(['auth'])->group(function () {
         }
 
         return view('dashboard');
-
     })->name('dashboard');
 
     // 👤 Perfil
@@ -107,13 +107,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/recibos-expensas', [ReciboExpensaController::class, 'index'])->name('recibos_expensas.index');
     Route::get('/recibos-expensas/create', [ReciboExpensaController::class, 'create'])->name('recibos_expensas.create');
     Route::post('/recibos-expensas/store', [ReciboExpensaController::class, 'store'])->name('recibos_expensas.store');
-    Route::get('/obtener-expensas/{propietario_id}',[ReciboExpensaController::class, 'obtenerExpensas']);
-    Route::get('/recibos-expensas/{id}/edit',[ReciboExpensaController::class, 'edit'])->name('recibos_expensas.edit');
-    Route::put('/recibos-expensas/{id}',[ReciboExpensaController::class, 'update'])->name('recibos_expensas.update');
-    Route::delete('/recibos-expensas/{id}',[ReciboExpensaController::class, 'destroy'])->name('recibos_expensas.destroy');
-    Route::get('/recibos-expensas/{id}/pdf',[ReciboExpensaController::class, 'pdf'])->name('recibos_expensas.pdf');
+    Route::get('/obtener-expensas/{propietario_id}', [ReciboExpensaController::class, 'obtenerExpensas']);
+    Route::get('/recibos-expensas/{id}/edit', [ReciboExpensaController::class, 'edit'])->name('recibos_expensas.edit');
+    Route::put('/recibos-expensas/{id}', [ReciboExpensaController::class, 'update'])->name('recibos_expensas.update');
+    Route::delete('/recibos-expensas/{id}', [ReciboExpensaController::class, 'destroy'])->name('recibos_expensas.destroy');
+    Route::get('/recibos-expensas/{id}/pdf', [ReciboExpensaController::class, 'pdf'])->name('recibos_expensas.pdf');
 
 
+    // Rutas de CRUD Estacionamiento
+    // ESTACIONAMIENTOS
+
+    Route::get('/estacionamientos',[EstacionamientoController::class, 'index'])->name('estacionamientos.index');
+    Route::get('/estacionamientos/create',[EstacionamientoController::class, 'create'])->name('estacionamientos.create');
+    Route::post('/estacionamientos',[EstacionamientoController::class, 'store'])->name('estacionamientos.store');
+    Route::get('/estacionamientos/{id}/edit',[EstacionamientoController::class, 'edit'])->name('estacionamientos.edit');
+    Route::put('/estacionamientos/{id}',[EstacionamientoController::class, 'update'])->name('estacionamientos.update');
+    Route::delete('/estacionamientos/{id}',[EstacionamientoController::class, 'destroy'])->name('estacionamientos.destroy');
 });
 
 /*

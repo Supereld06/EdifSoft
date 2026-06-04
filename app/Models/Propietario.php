@@ -34,12 +34,17 @@ class Propietario extends Model
         return $this->hasMany(Expensa::class);
     }
 
-        public function departamentos()
+    public function departamentos()
     {
         return $this->hasMany(Departamento::class);
     }
     public function tiendas()
     {
         return $this->hasMany(Tienda::class);
+    }
+
+    public function estacionamientos()
+    {
+        return $this->hasMany(Estacionamiento::class);
     }
 }

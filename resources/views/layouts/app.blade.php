@@ -27,7 +27,7 @@
                 <div class="user-box text-center">
                     <h1 class="fw-bold display-5"><span style="color: orange;">Edif</span><span>Soft</span></h1>
                     <h6 class="mb-1"> Usuario : {{ auth()->user()->name }}</h6>
-                    <small>🏢 Edificio : {{ session('edificio_nombre') ?? 'Sin edificio' }}</small>
+                    <small>🏙️ Edificio : {{ session('edificio_nombre') ?? 'Sin edificio' }}</small>
                 </div>
 
                 <!-- MENÚ -->
@@ -36,7 +36,7 @@
                         <a href="{{ route('dashboard') }}" class="nav-link text-white">🏠 Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('edificios.index') }}" class="nav-link text-white">🏢 Edificios</a>
+                        <a href="{{ route('edificios.index') }}" class="nav-link text-white">🏙️ Edificios</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('propietarios.index') }}" class="nav-link text-white">👤 Propietarios</a>
@@ -48,7 +48,7 @@
                         <a href="{{ route('tiendas.index') }}" class="nav-link text-white">🏪 Tiendas</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link text-white">🚗 Parqueo</a>
+                        <a href="{{ route('estacionamientos.index') }}" class="nav-link text-white">🚗 Parqueo</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('apertura-expensas.index') }}" class="nav-link text-white"> 📅 Apertura

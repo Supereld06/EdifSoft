@@ -92,7 +92,7 @@
 
                     <label>Mes</label>
 
-                    <input type="text" id="mes" class="form-control" readonly>
+                    <input type="text" id="mes" name="mes" class="form-control" readonly>
 
                 </div>
 
@@ -100,7 +100,7 @@
 
                     <label>Gestión</label>
 
-                    <input type="text" id="gestion" class="form-control" readonly>
+                    <input type="text" id="gestion" name="gestion" class="form-control" readonly>
 
                 </div>
 
@@ -301,8 +301,7 @@
             |--------------------------------------------------------------------------
             */
 
-            document.getElementById('mes').value =
-                option.getAttribute('data-mes');
+            document.getElementById('mes').value = option.getAttribute('data-mes');
 
             /*
             |--------------------------------------------------------------------------
