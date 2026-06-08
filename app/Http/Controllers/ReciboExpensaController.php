@@ -185,6 +185,19 @@ class ReciboExpensaController extends Controller
 
         ]);
 
+        if ($request->origen == 'expensas') {
+
+            return redirect()
+                ->route(
+                    'pago-expensas.expensas',
+                    $expensa->apertura_expensa_id
+                )
+                ->with(
+                    'success',
+                    'Pago registrado correctamente'
+                );
+        }
+
         return redirect()
             ->route('recibos_expensas.index')
             ->with(
@@ -221,36 +234,20 @@ class ReciboExpensaController extends Controller
     /// RUTAS DE pdf
     public function pdf($id)
     {
-        // ============================
-        // OBTENER RECIBO
-        // ============================
-
         $recibo = ReciboExpensa::with([
             'propietario',
             'departamento',
         ])->findOrFail($id);
 
-        // ============================
-        // OBTENER EDIFICIO
-        // ============================
-
         $edificio = Edificio::findOrFail(
             session('edificio_id')
         );
-
-        // ============================
-        // MONTO EN LITERAL
-        // ============================
 
         $formatter = new NumeroALetras();
 
         $montoLiteral = $formatter->toWords(
             $recibo->monto
         );
-
-        // ============================
-        // GENERAR PDF
-        // ============================
 
         $pdf = Pdf::loadView(
             'recibos_expensas.pdf',
@@ -261,16 +258,8 @@ class ReciboExpensaController extends Controller
             )
         );
 
-        // ============================
-        // TAMAÑO PERSONALIZADO
-        // 15cm x 10cm horizontal
-        // ============================
-
-        $pdf->setPaper([0, 0, 612, 396]);
-
-        // ============================
-        // RETORNAR PDF
-        // ============================
+        // CARTA VERTICAL
+        $pdf->setPaper('letter', 'portrait');
 
         return $pdf->stream(
             'recibo-expensa-' .
@@ -278,7 +267,6 @@ class ReciboExpensaController extends Controller
             '.pdf'
         );
     }
-
     /// delete
 
     public function destroy($id)

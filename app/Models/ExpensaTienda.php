@@ -3,29 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Expensa extends Model
+class ExpensaTienda extends Model
 {
-    use HasFactory;
+    protected $table = 'expensas_tiendas';
 
     protected $fillable = [
-
         'total',
         'pagado',
         'saldo',
         'estado',
-
-        'departamento_id',
+        'tienda_id',
         'propietario_id',
         'edificio_id',
         'apertura_expensa_id',
-
     ];
 
-    public function departamento()
+    public function tienda()
     {
-        return $this->belongsTo(Departamento::class);
+        return $this->belongsTo(Tienda::class);
     }
 
     public function propietario()
@@ -44,10 +40,5 @@ class Expensa extends Model
             AperturaExpensa::class,
             'apertura_expensa_id'
         );
-    }
-
-    public function recibos()
-    {
-        return $this->hasMany(ReciboExpensa::class);
     }
 }

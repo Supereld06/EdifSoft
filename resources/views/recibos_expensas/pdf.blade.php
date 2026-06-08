@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 
@@ -8,312 +7,177 @@
 
     <style>
         @page {
-            margin: 10px;
+            margin: 15px;
         }
 
         body {
             font-family: DejaVu Sans, sans-serif;
             font-size: 10px;
             color: #2d2d2d;
-            margin: 0;
-            padding: 0;
         }
 
-        /* =================================
-   CONTENEDOR
-================================= */
-
-        .contenedor {
-
-            border: 1px solid #d6d6d6;
-
+        .recibo {
+            border: 1px solid #d8d8d8;
             border-radius: 10px;
-
             padding: 14px;
-
+            margin-bottom: 15px;
             position: relative;
-
             overflow: hidden;
-
-            background: #ffffff;
         }
 
-        /* =================================
-   PATRONES MODERNOS
-================================= */
-
-        .pattern-top {
-
+        .franja {
             position: absolute;
-
             top: 0;
-
             left: 0;
-
+            height: 6px;
             width: 100%;
-
-            height: 7px;
-
-            background:
-                linear-gradient(90deg,
-                    #d97706,
+            background: linear-gradient(90deg,
+                    #b45309,
                     #f59e0b,
                     #92400e);
         }
 
-        .pattern-circle {
-
+        .tipo-copia {
             position: absolute;
-
-            right: -50px;
-
-            top: -50px;
-
-            width: 120px;
-
-            height: 120px;
-
-            border-radius: 50%;
-
-            background: rgba(217, 119, 6, 0.06);
+            top: 12px;
+            right: 15px;
+            font-size: 9px;
+            font-weight: bold;
+            color: #b45309;
+            border: 1px solid #f59e0b;
+            padding: 2px 8px;
+            border-radius: 15px;
         }
 
-        .pattern-circle2 {
-
-            position: absolute;
-
-            left: -40px;
-
-            bottom: -40px;
-
-            width: 90px;
-
-            height: 90px;
-
-            border-radius: 50%;
-
-            background: rgba(146, 64, 14, 0.05);
-        }
-
-        /* =================================
-   HEADER
-================================= */
-
-        .header {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .logo-box {
-            width: 80px;
+        .logo {
+            width: 70px;
             float: left;
         }
 
-        .logo-box img {
-
-            width: 80px;
-            height: 80px;
-
+        .logo img {
+            width: 65px;
+            height: 65px;
             object-fit: cover;
-
-
-        }
-
-        .titulo-box {
-            margin-left: 75px;
         }
 
         .titulo {
-
-            font-size: 20px;
-
-            font-weight: bold;
-
-            color: #b45309;
-
-            margin-bottom: 2px;
-
-            letter-spacing: 0.5px;
+            margin-left: 80px;
         }
 
-        .subtitulo {
+        .titulo h2 {
+            margin: 0;
+            color: #b45309;
+            font-size: 18px;
+        }
 
-            font-size: 10px;
-
+        .titulo p {
+            margin: 2px 0;
             color: #666;
-
-            margin-bottom: 1px;
+            font-size: 9px;
         }
 
         .clear {
             clear: both;
         }
 
-        /* =================================
-   DATOS
-================================= */
-
-        .info-box {
-
+        .info {
+            margin-top: 10px;
             background: #fafafa;
-
-            border-radius: 8px;
-
-            padding: 10px;
-
-            margin-bottom: 10px;
-
             border: 1px solid #ececec;
+            border-radius: 8px;
+            padding: 8px;
         }
 
         .fila {
             width: 100%;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .col {
             width: 49%;
             display: inline-block;
-            vertical-align: top;
         }
 
         .label {
-
             font-weight: bold;
-
             color: #92400e;
         }
 
-        /* =================================
-   TABLA
-================================= */
-
         table {
-
             width: 100%;
-
             border-collapse: collapse;
-
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         table th {
-
             background: #fff7ed;
-
             color: #9a3412;
-
-            padding: 7px;
-
+            padding: 6px;
             border-bottom: 2px solid #fdba74;
-
-            font-size: 10px;
         }
 
         table td {
-
-            padding: 7px;
-
+            padding: 6px;
             border-bottom: 1px solid #eeeeee;
-
             text-align: center;
-
-            font-size: 10px;
         }
 
-        .total {
-
+        .total-box {
+            margin-top: 8px;
+            background: #fff7ed;
+            border: 1px solid #fdba74;
+            border-radius: 8px;
+            padding: 8px;
             text-align: right;
-
-            margin-top: 10px;
-
-            font-size: 15px;
-
+            font-size: 14px;
             font-weight: bold;
-
             color: #b45309;
         }
 
-        /* =================================
-   MONTO LITERAL
-================================= */
-
         .literal {
-
-            margin-top: 10px;
-
+            margin-top: 8px;
             background: #fffaf5;
-
             border-left: 4px solid #f59e0b;
-
-            padding: 9px;
-
+            padding: 8px;
             border-radius: 6px;
-
             font-size: 9px;
-
-            line-height: 1.4;
         }
 
-        /* =================================
-   FIRMAS
-================================= */
-
         .firmas {
-
-            width: 100%;
-
-            margin-top: 25px;
+            margin-top: 22px;
         }
 
         .firma {
-
             width: 45%;
-
             display: inline-block;
-
             text-align: center;
         }
 
         .linea {
-
             border-top: 1px solid #444;
-
-            width: 75%;
-
+            width: 80%;
             margin: auto;
-
             padding-top: 5px;
-
-            font-weight: bold;
-
-            color: #444;
-
             font-size: 9px;
+            font-weight: bold;
         }
 
-        .detalle-firma {
-
-            margin-top: 4px;
-
+        .detalle {
             font-size: 8px;
-
             color: #666;
+            margin-top: 3px;
         }
-
-        /* =================================
-   FOOTER
-================================= */
 
         .footer {
-
-            margin-top: 10px;
-
+            margin-top: 8px;
             text-align: center;
-
             font-size: 8px;
-
             color: #999;
+        }
+
+        .corte {
+            border-top: 2px dashed #999;
+            margin: 10px 0;
         }
     </style>
 
@@ -321,216 +185,173 @@
 
 <body>
 
-    <div class="contenedor">
+    @for($i = 1; $i <= 2; $i++)
 
-        <div class="pattern-top"></div>
+        <div class="recibo">
 
-        <div class="pattern-circle"></div>
+            <div class="franja"></div>
 
-        <div class="pattern-circle2"></div>
+            <div class="tipo-copia">
+                {{ $i == 1 ? 'ORIGINAL' : 'COPIA' }}
+            </div>
 
-        <!-- HEADER -->
-
-        <div class="header">
-
-            <div class="logo-box">
+            <div class="logo">
 
                 @if($edificio->logo_edificio)
-
                     <img src="{{ public_path('storage/' . $edificio->logo_edificio) }}">
-
                 @endif
 
             </div>
 
-            <div class="titulo-box">
+            <div class="titulo">
 
-                <div class="titulo">
-                    RECIBO DE EXPENSAS
-                </div>
+                <h2>RECIBO DE EXPENSAS</h2>
 
-                <div class="subtitulo">
-                    {{ $edificio->nombre }}
-                </div>
+                <p>{{ $edificio->nombre }}</p>
 
-                <div class="subtitulo">
-                    {{ $edificio->direccion }}
-                </div>
+                <p>{{ $edificio->direccion }}</p>
 
             </div>
 
             <div class="clear"></div>
 
-        </div>
+            <div class="info">
 
-        <!-- INFO -->
+                <div class="fila">
 
-        <div class="info-box">
+                    <div class="col">
+                        <span class="label">N° Recibo:</span>
+                        {{ $recibo->numero }}
+                    </div>
 
-            <div class="fila">
-
-                <div class="col">
-                    <span class="label">N° Recibo:</span>
-                    {{ $recibo->numero }}
-                </div>
-
-                <div class="col">
-                    <span class="label">Fecha:</span>
-                    {{ $recibo->fecha }}
-                </div>
-
-            </div>
-
-            <div class="fila">
-
-                <div class="col">
-
-                    <span class="label">Propietario:</span>
-
-                    {{ $recibo->propietario->nombres }}
-                    {{ $recibo->propietario->apellido_paterno }}
+                    <div class="col">
+                        <span class="label">Fecha:</span>
+                        {{ $recibo->fecha }}
+                    </div>
 
                 </div>
 
-                <div class="col">
+                <div class="fila">
 
-                    <span class="label">CI:</span>
+                    <div class="col">
+                        <span class="label">Propietario:</span>
 
-                    {{ $recibo->propietario->ci }}
+                        {{ $recibo->propietario->nombres }}
+                        {{ $recibo->propietario->apellido_paterno }}
+                    </div>
 
-                </div>
-
-            </div>
-
-            <div class="fila">
-
-                <div class="col">
-
-                    <span class="label">Departamento:</span>
-
-                    {{ $recibo->departamento->numero_departamento }}
+                    <div class="col">
+                        <span class="label">CI:</span>
+                        {{ $recibo->propietario->carnet }}
+                    </div>
 
                 </div>
 
-                <div class="col">
+                <div class="fila">
 
-                    <span class="label">Tipo Pago:</span>
+                    <div class="col">
+                        <span class="label">Departamento:</span>
+                        {{ $recibo->departamento->numero_departamento }}
+                    </div>
 
-                    {{ $recibo->tipo_pago }}
+                    <div class="col">
+                        <span class="label">Tipo Pago:</span>
+                        {{ $recibo->tipo_pago }}
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
+            <table>
 
-        <!-- TABLA -->
+                <thead>
 
-        <table>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Mes</th>
+                        <th>Gestión</th>
+                        <th>Monto</th>
+                    </tr>
 
-            <thead>
+                </thead>
 
-                <tr>
+                <tbody>
 
-                    <th>Concepto</th>
+                    <tr>
+                        <td>Pago de Expensas</td>
+                        <td>{{ $recibo->mes }}</td>
+                        <td>{{ $recibo->gestion }}</td>
+                        <td>Bs. {{ number_format($recibo->monto, 2) }}</td>
+                    </tr>
 
-                    <th>Mes</th>
+                </tbody>
 
-                    <th>Gestión</th>
+            </table>
 
-                    <th>Monto</th>
+            <div class="total-box">
 
-                </tr>
+                TOTAL:
+                Bs. {{ number_format($recibo->monto, 2) }}
 
-            </thead>
+            </div>
 
-            <tbody>
+            <div class="literal">
 
-                <tr>
+                <strong>SON:</strong>
 
-                    <td>Pago de Expensas</td>
+                {{ strtoupper($montoLiteral) }}
+                BOLIVIANOS.
 
-                    <td>{{ $recibo->mes }}</td>
+            </div>
 
-                    <td>{{ $recibo->gestion }}</td>
+            <div class="firmas">
 
-                    <td>
-                        Bs. {{ number_format($recibo->monto, 2) }}
-                    </td>
+                <div class="firma">
 
-                </tr>
+                    <div class="linea">
+                        ENTREGUÉ CONFORME
+                    </div>
 
-            </tbody>
+                    <div class="detalle">
 
-        </table>
+                        {{ $recibo->propietario->nombres }}
+                        {{ $recibo->propietario->apellido_paterno }}
 
-        <!-- TOTAL -->
+                        <br>
 
-        <div class="total">
+                        CI:
+                        {{ $recibo->propietario->carnet }}
 
-            TOTAL:
-            Bs. {{ number_format($recibo->monto, 2) }}
+                    </div>
 
-        </div>
-
-        <!-- MONTO LITERAL -->
-
-        <div class="literal">
-
-            <strong>SON:</strong>
-
-            {{ strtoupper($montoLiteral) }}
-            BOLIVIANOS.
-
-        </div>
-
-        <!-- FIRMAS -->
-<br><br><br>
-        <div class="firmas">
-
-            <div class="firma">
-
-                <div class="linea">
-                    ENTREGUÉ CONFORME
                 </div>
 
-                <div class="detalle-firma">
+                <div class="firma">
 
-                    {{ $recibo->propietario->nombres }}
-                    {{ $recibo->propietario->apellido_paterno }}
+                    <div class="linea">
+                        RECIBÍ CONFORME
+                    </div>
 
-                    <br>
-
-                    CI:
-                    {{ $recibo->propietario->ci }}
+                    <div class="detalle">
+                        ADMINISTRACIÓN
+                    </div>
 
                 </div>
 
             </div>
 
-            <div class="firma">
-
-                <div class="linea">
-                    RECIBÍ CONFORME
-                </div>
-
-                <div class="detalle-firma">
-                    ADMINISTRACIÓN
-                </div>
-
+            <div class="footer">
+                Documento generado automáticamente por EdifSoft
             </div>
 
         </div>
 
-        <!-- FOOTER -->
+        @if($i == 1)
+            <div class="corte"></div>
+        @endif
 
-        <div class="footer">
-
-            Documento generado automáticamente por el sistema EdifSoft.
-
-        </div>
-
-    </div>
+    @endfor
 
 </body>
 

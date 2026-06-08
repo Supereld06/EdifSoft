@@ -10,6 +10,8 @@ use App\Http\Controllers\ExpensaController;
 use App\Http\Controllers\TiendaController;
 use App\Http\Controllers\ReciboExpensaController;
 use App\Http\Controllers\EstacionamientoController;
+use App\Http\Controllers\ExpensaTiendaController;
+use App\Http\Controllers\ExpensaEstacionamientoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,14 +26,14 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    // 🏢 Selección de edificio
+    //  Selección de edificio
     Route::get('/seleccionar-edificio', [EdificioController::class, 'seleccionar'])
         ->name('edificios.seleccionar');
 
     Route::post('/seleccionar-edificio/{id}', [EdificioController::class, 'elegir'])
         ->name('edificios.elegir');
 
-    // 📊 Dashboard (PROTEGIDO por selección de edificio)
+    //  Dashboard (PROTEGIDO por selección de edificio)
     Route::get('/dashboard', function () {
 
         if (!session('edificio_id')) {
@@ -41,12 +43,12 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // 👤 Perfil
+    //  Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // 🏢 CRUD Edificio
+    //  CRUD Edificio
     Route::get('/edificios', [EdificioController::class, 'index'])->name('edificios.index');
     Route::get('/edificios/crear', [EdificioController::class, 'create'])->name('edificios.create');
     Route::post('/edificios', [EdificioController::class, 'store'])->name('edificios.store');
@@ -56,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
     // Rutas para pdf de edificio
     Route::get('/propietarios/pdf/reporte', [PropietarioController::class, 'pdf'])->name('propietarios.pdf');
 
-    // 🏢 CRUD Propietario
+    // CRUD Propietario
 
     Route::get('propietarios', [PropietarioController::class, 'index'])->name('propietarios.index');
     Route::get('propietarios/create', [PropietarioController::class, 'create'])->name('propietarios.create');
@@ -64,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/propietarios/{id}/edit', [PropietarioController::class, 'edit'])->name('propietarios.edit');
     Route::put('/propietarios/{id}', [PropietarioController::class, 'update'])->name('propietarios.update');
 
-    // 🏢 CRUD Departamento
+    //  CRUD Departamento
     Route::get('/departamentos', [DepartamentoController::class, 'index'])->name('departamentos.index');
     Route::get('/departamentos/create', [DepartamentoController::class, 'create'])->name('departamentos.create');
     Route::post('/departamentos', [DepartamentoController::class, 'store'])->name('departamentos.store');
@@ -117,12 +119,30 @@ Route::middleware(['auth'])->group(function () {
     // Rutas de CRUD Estacionamiento
     // ESTACIONAMIENTOS
 
-    Route::get('/estacionamientos',[EstacionamientoController::class, 'index'])->name('estacionamientos.index');
-    Route::get('/estacionamientos/create',[EstacionamientoController::class, 'create'])->name('estacionamientos.create');
-    Route::post('/estacionamientos',[EstacionamientoController::class, 'store'])->name('estacionamientos.store');
-    Route::get('/estacionamientos/{id}/edit',[EstacionamientoController::class, 'edit'])->name('estacionamientos.edit');
-    Route::put('/estacionamientos/{id}',[EstacionamientoController::class, 'update'])->name('estacionamientos.update');
-    Route::delete('/estacionamientos/{id}',[EstacionamientoController::class, 'destroy'])->name('estacionamientos.destroy');
+    Route::get('/estacionamientos', [EstacionamientoController::class, 'index'])->name('estacionamientos.index');
+    Route::get('/estacionamientos/create', [EstacionamientoController::class, 'create'])->name('estacionamientos.create');
+    Route::post('/estacionamientos', [EstacionamientoController::class, 'store'])->name('estacionamientos.store');
+    Route::get('/estacionamientos/{id}/edit', [EstacionamientoController::class, 'edit'])->name('estacionamientos.edit');
+    Route::put('/estacionamientos/{id}', [EstacionamientoController::class, 'update'])->name('estacionamientos.update');
+    Route::delete('/estacionamientos/{id}', [EstacionamientoController::class, 'destroy'])->name('estacionamientos.destroy');
+
+
+    // Rutas de CRUD ExpensaTienda
+    Route::get('/expensas-tiendas', [ExpensaTiendaController::class, 'index'])->name('expensas_tiendas.index');
+    Route::get('/expensas-tiendas/create', [ExpensaTiendaController::class, 'create'])->name('expensas_tiendas.create');
+    Route::post('/expensas-tiendas/store', [ExpensaTiendaController::class, 'store'])->name('expensas_tiendas.store');
+    Route::get('/expensas-tiendas/{id}/edit', [ExpensaTiendaController::class, 'edit'])->name('expensas_tiendas.edit');
+    Route::put('/expensas-tiendas/{id}', [ExpensaTiendaController::class, 'update'])->name('expensas_tiendas.update');
+    Route::delete('/expensas-tiendas/{id}', [ExpensaTiendaController::class, 'destroy'])->name('expensas_tiendas.destroy');
+
+    // Rutas de CRUD ExpensaEstacionamiento
+    Route::get('/expensas-estacionamientos',[ExpensaEstacionamientoController::class, 'index'])->name('expensas_estacionamientos.index');
+    Route::get('/expensas-estacionamientos/create',[ExpensaEstacionamientoController::class, 'create'])->name('expensas_estacionamientos.create');
+    Route::post('/expensas-estacionamientos/store',[ExpensaEstacionamientoController::class, 'store'])->name('expensas_estacionamientos.store');
+    Route::get('/expensas-estacionamientos/{id}/edit',[ExpensaEstacionamientoController::class, 'edit'])->name('expensas_estacionamientos.edit');
+    Route::put('/expensas-estacionamientos/{id}',[ExpensaEstacionamientoController::class, 'update'])->name('expensas_estacionamientos.update');
+    Route::delete('/expensas-estacionamientos/{id}',[ExpensaEstacionamientoController::class, 'destroy'])->name('expensas_estacionamientos.destroy');
+
 });
 
 /*

@@ -65,6 +65,18 @@
                     </li>
 
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('expensas_tiendas.index') }}">
+                            🏪 Expensas Tiendas
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('expensas_estacionamientos.index') }}">
+                            🚗 Expensas Estacionamientos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a class="nav-link text-white d-flex justify-content-between align-items-center"
                             data-bs-toggle="collapse" href="#menuRecibos" role="button" aria-expanded="false">
 
