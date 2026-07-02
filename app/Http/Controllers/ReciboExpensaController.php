@@ -14,11 +14,24 @@ use Luecano\NumeroALetras\NumeroALetras;
 
 class ReciboExpensaController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | INDEX
-    |--------------------------------------------------------------------------
-    */
+
+    private function generarNumero()
+    {
+        $ultimo = ReciboExpensa::where(
+            'edificio_id',
+            session('edificio_id')
+        )
+            ->orderByDesc('id')
+            ->first();
+
+        if (!$ultimo) {
+            return 'RESD-000001';
+        }
+
+        $numero = intval(substr($ultimo->numero, 5)) + 1;
+
+        return 'RESD-' . str_pad($numero, 6, '0', STR_PAD_LEFT);
+    }
 
     public function index()
     {
@@ -34,51 +47,30 @@ class ReciboExpensaController extends Controller
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | CREATE
-    |--------------------------------------------------------------------------
-    */
-
     public function create()
     {
-        $propietarios = Propietario::whereHas(
-            'expensas',
-            function ($q) {
+        $numero = $this->generarNumero();
 
-                $q->where('estado', 'PENDIENTE');
-
-            }
-        )->get();
+        $propietarios = Propietario::whereHas('expensas', function ($q) {
+            $q->where('estado', 'PENDIENTE');
+        })->get();
 
         return view(
             'recibos_expensas.create',
-            compact('propietarios')
+            compact('numero', 'propietarios')
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | STORE
-    |--------------------------------------------------------------------------
-    */
+
 
     public function store(Request $request)
     {
         $request->validate([
-
-            'numero' => 'required',
-
             'fecha' => 'required',
-
             'propietario_id' => 'required',
-
             'expensa_id' => 'required',
-
             'monto' => 'required|numeric|min:0.01',
-
             'moneda' => 'required',
-
             'tipo_pago' => 'required',
 
         ]);
@@ -116,28 +108,17 @@ class ReciboExpensaController extends Controller
 
         ReciboExpensa::create([
 
-            'numero' => $request->numero,
-
+            'numero' => $this->generarNumero(),
             'fecha' => $request->fecha,
-
             'propietario_id' => $request->propietario_id,
-
             'expensa_id' => $request->expensa_id,
-
             'departamento_id' => $expensa->departamento_id,
-
             'monto' => $request->monto,
-
             'moneda' => $request->moneda,
-
             'mes' => $expensa->apertura->mes,
-
             'gestion' => $expensa->apertura->gestion,
-
             'tipo_pago' => $request->tipo_pago,
-
             'numero_deposito' => $request->numero_deposito,
-
             'edificio_id' => session('edificio_id'),
 
         ]);
@@ -163,9 +144,7 @@ class ReciboExpensaController extends Controller
         $estado = 'PENDIENTE';
 
         if ($nuevoSaldo <= 0) {
-
             $estado = 'PAGADO';
-
             $nuevoSaldo = 0;
         }
 
@@ -176,11 +155,8 @@ class ReciboExpensaController extends Controller
         */
 
         $expensa->update([
-
             'pagado' => $nuevoPagado,
-
             'saldo' => $nuevoSaldo,
-
             'estado' => $estado,
 
         ]);
@@ -263,8 +239,8 @@ class ReciboExpensaController extends Controller
 
         return $pdf->stream(
             'recibo-expensa-' .
-            $recibo->numero .
-            '.pdf'
+                $recibo->numero .
+                '.pdf'
         );
     }
     /// delete

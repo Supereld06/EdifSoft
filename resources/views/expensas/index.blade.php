@@ -43,25 +43,15 @@
                     <tr>
 
                         <th>Departamento</th>
-
                         <th>Propietario</th>
-
                         <th>Total</th>
-
                         <th>Pagado</th>
-
                         <th>Saldo</th>
-
                         <th>Estado</th>
-
                         <th>Mes</th>
-
                         <th>Pago</th>
-
                         <th>Recibos</th>
-
                         <th>Acciones</th>
-
                     </tr>
 
                 </thead>
@@ -75,23 +65,18 @@
                             <td>
                                 {{ $expensa->departamento->numero_departamento }}
                             </td>
-
                             <td>
                                 {{ $expensa->propietario->nombres }}
                             </td>
-
                             <td>
                                 {{ $expensa->total }}
                             </td>
-
                             <td>
                                 {{ $expensa->pagado }}
                             </td>
-
                             <td>
                                 {{ $expensa->saldo }}
                             </td>
-
                             <td>
 
                                 @if($expensa->estado == 'PAGADO')
@@ -210,14 +195,6 @@
 
                                             <input type="hidden" name="expensa_id" value="{{ $expensa->id }}">
 
-                                            <div class="mb-3">
-
-                                                <label>Número Recibo</label>
-
-                                                <input type="text" name="numero" class="form-control"
-                                                    value="REC-{{ date('YmdHis') }}" required>
-
-                                            </div>
 
                                             <div class="mb-3">
 

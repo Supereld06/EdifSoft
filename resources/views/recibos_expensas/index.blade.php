@@ -75,9 +75,9 @@
 
                                 <td>
 
-                                    <a href="{{ route('recibos_expensas.edit', $recibo->id) }}" class="btn btn-warning btn-sm">
+                                    <a href="{{ route('recibos_expensas.edit', $recibo->id) }}" class="btn btn-warning btn-sm" title="Editar recibo">
 
-                                        Editar
+                                        <i class="bi bi-pencil-square"></i>
 
                                     </a>
 
@@ -88,19 +88,19 @@
 
                                         @method('DELETE')
 
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('¿Eliminar recibo?')">
+                                        <button type="submit" class="btn btn-dark btn-sm"
+                                            onclick="return confirm('¿Eliminar recibo?')" title="Eliminar recibo">
 
-                                            Eliminar
+                                            <i class="bi bi-trash"></i>
 
                                         </button>
 
                                     </form>
 
                                     <a href="{{ route('recibos_expensas.pdf', $recibo->id) }}" target="_blank"
-                                        class="btn btn-primary btn-sm">
+                                        class="btn btn-danger btn-sm" title="Generar PDF">
 
-                                        PDF
+                                        <i class="bi bi-file-pdf"></i>
 
                                     </a>
 

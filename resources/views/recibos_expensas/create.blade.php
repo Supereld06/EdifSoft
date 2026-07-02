@@ -7,19 +7,15 @@
     <div class="container">
 
         @if(session('success'))
-
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
         @endif
 
         @if(session('error'))
-
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
         @endif
 
         <div class="card shadow p-4">
@@ -29,39 +25,39 @@
                 @csrf
 
                 <div class="mb-3">
-
                     <label>Número</label>
-
-                    <input type="text" name="numero" class="form-control" required>
-
+                    <input type="text"
+                        name="numero"
+                        class="form-control"
+                        value="{{ $numero }}"
+                        readonly>
                 </div>
 
                 <div class="mb-3">
-
                     <label>Fecha</label>
-
-                    <input type="date" name="fecha" class="form-control" required>
-
+                    <input type="date"
+                        name="fecha"
+                        class="form-control"
+                        value="{{ date('Y-m-d') }}"
+                        required>
                 </div>
 
                 <div class="mb-3">
-
                     <label>Propietario</label>
 
-                    <select name="propietario_id" id="propietario" class="form-control" required>
+                    <select name="propietario_id"
+                        id="propietario"
+                        class="form-control"
+                        required>
 
-                        <option value="">
-                            Seleccione
-                        </option>
+                        <option value="">Seleccione un propietario</option>
 
                         @foreach($propietarios as $p)
 
-                            <option value="{{ $p->id }}">
-
-                                {{ $p->nombres }}
-                                {{ $p->apellido_paterno }}
-
-                            </option>
+                        <option value="{{ $p->id }}">
+                            {{ $p->nombres }}
+                            {{ $p->apellido_paterno }}
+                        </option>
 
                         @endforeach
 
@@ -73,45 +69,59 @@
 
                     <label>Expensa</label>
 
-                    <select name="expensa_id" id="expensa" class="form-control" required>
+                    <select name="expensa_id"
+                        id="expensa"
+                        class="form-control"
+                        required>
+
+                        <option value="">
+                            Seleccione una expensa
+                        </option>
 
                     </select>
 
                 </div>
 
                 <div class="mb-3">
-
                     <label>Monto a pagar</label>
 
-                    <input type="number" step="0.01" min="0" name="monto" id="monto" class="form-control" required>
-
-
+                    <input type="number"
+                        step="0.01"
+                        min="0"
+                        name="monto"
+                        id="monto"
+                        class="form-control"
+                        required>
                 </div>
 
                 <div class="mb-3">
-
                     <label>Mes</label>
 
-                    <input type="text" id="mes" name="mes" class="form-control" readonly>
-
+                    <input type="text"
+                        id="mes"
+                        name="mes"
+                        class="form-control"
+                        readonly>
                 </div>
 
                 <div class="mb-3">
-
                     <label>Gestión</label>
 
-                    <input type="text" id="gestion" name="gestion" class="form-control" readonly>
-
+                    <input type="text"
+                        id="gestion"
+                        name="gestion"
+                        class="form-control"
+                        readonly>
                 </div>
 
                 <div class="mb-3">
 
                     <label>Moneda</label>
 
-                    <select name="moneda" class="form-control">
+                    <select name="moneda"
+                        class="form-control">
 
                         <option>Bolivianos</option>
-
                         <option>Dolares</option>
 
                     </select>
@@ -122,12 +132,11 @@
 
                     <label>Tipo Pago</label>
 
-                    <select name="tipo_pago" class="form-control">
+                    <select name="tipo_pago"
+                        class="form-control">
 
                         <option>Efectivo</option>
-
                         <option>Deposito</option>
-
                         <option>QR</option>
 
                     </select>
@@ -138,17 +147,19 @@
 
                     <label>Número Depósito</label>
 
-                    <input type="text" name="numero_deposito" class="form-control">
+                    <input type="text"
+                        name="numero_deposito"
+                        class="form-control">
 
                 </div>
 
-                <button class="btn btn-success" type="submit">
-
+                <button class="btn btn-success">
                     Guardar
-
                 </button>
 
-                <button class="btn btn-secondary" type="button" onclick="window.history.back();">
+                <button class="btn btn-secondary"
+                    type="button"
+                    onclick="history.back()">
 
                     Cancelar
 
@@ -161,167 +172,91 @@
     </div>
 
     <script>
+        document.getElementById('propietario').addEventListener('change', function() {
 
-        /*
-        |--------------------------------------------------------------------------
-        | CARGAR EXPENSAS
-        |--------------------------------------------------------------------------
-        */
+            let propietarioId = this.value;
 
-        document.getElementById('propietario')
-            .addEventListener('change', function () {
+            let expensa = document.getElementById('expensa');
 
-                let propietarioId = this.value;
+            expensa.innerHTML = '<option>Cargando...</option>';
 
-                fetch('/obtener-expensas/' + propietarioId)
+            fetch('/obtener-expensas/' + propietarioId)
 
-                    .then(response => response.json())
+                .then(response => response.json())
 
-                    .then(data => {
+                .then(data => {
 
-                        let expensa =
-                            document.getElementById('expensa');
+                    expensa.innerHTML = '';
 
-                        expensa.innerHTML = '';
+                    if (data.length === 0) {
 
-                        /*
-                        |--------------------------------------------------------------------------
-                        | SI NO HAY EXPENSAS
-                        |--------------------------------------------------------------------------
-                        */
+                        expensa.innerHTML =
+                            '<option value="">No hay expensas pendientes</option>';
 
-                        if (data.length == 0) {
+                        document.getElementById('monto').value = '';
+                        document.getElementById('mes').value = '';
+                        document.getElementById('gestion').value = '';
 
-                            expensa.innerHTML = `
-                                <option value="">
-                                    No hay expensas pendientes
-                                </option>
-                            `;
+                        return;
+                    }
 
-                            return;
-                        }
+                    data.forEach(item => {
 
-                        /*
-                        |--------------------------------------------------------------------------
-                        | AGREGAR EXPENSAS
-                        |--------------------------------------------------------------------------
-                        */
+                        expensa.innerHTML += `
+                    <option
+                        value="${item.id}"
+                        data-saldo="${item.saldo}"
+                        data-mes="${item.apertura.mes}"
+                        data-gestion="${item.apertura.gestion}">
 
-                        data.forEach(item => {
+                        Departamento ${item.departamento.numero_departamento}
+                        | ${item.apertura.mes}
+                        ${item.apertura.gestion}
+                        | Saldo Bs. ${item.saldo}
 
-                            expensa.innerHTML += `
-
-                                <option
-                                    value="${item.id}"
-
-                                    data-saldo="${item.saldo}"
-
-                                    data-mes="${item.apertura.mes}"
-
-                                    data-gestion="${item.apertura.gestion}">
-
-                                    Departamento:
-                                    ${item.departamento.numero_departamento}
-
-                                    |
-
-                                    ${item.apertura.mes}
-                                    -
-                                    ${item.apertura.gestion}
-
-                                    |
-
-                                    Saldo:
-                                    ${item.saldo}
-
-                                </option>
-
-                            `;
-                        });
-
-                        cargarDatos();
-
-                    })
-
-                    .catch(error => {
-
-                        console.log(error);
+                    </option>
+                `;
 
                     });
 
-            });
+                    cargarDatos();
 
-        /*
-        |--------------------------------------------------------------------------
-        | AUTOCOMPLETAR DATOS
-        |--------------------------------------------------------------------------
-        */
+                })
+
+                .catch(error => {
+
+                    console.log(error);
+
+                });
+
+        });
 
         function cargarDatos() {
 
-            let select =
-                document.getElementById('expensa');
+            let select = document.getElementById('expensa');
 
-            if (select.selectedIndex == -1) {
-
+            if (select.selectedIndex < 0) {
                 return;
-
             }
 
-            let option =
-                select.options[select.selectedIndex];
-
-            let saldo =
-                option.getAttribute('data-saldo');
-
-            /*
-            |--------------------------------------------------------------------------
-            | MONTO
-            |--------------------------------------------------------------------------
-            */
+            let option = select.options[select.selectedIndex];
 
             document.getElementById('monto').value =
-                saldo;
+                option.dataset.saldo;
 
             document.getElementById('monto').max =
-                saldo;
+                option.dataset.saldo;
 
-            /*
-            |--------------------------------------------------------------------------
-            | SALDO
-            |--------------------------------------------------------------------------
-            */
-
-            document.getElementById('saldo_texto')
-                .innerText = saldo;
-
-            /*
-            |--------------------------------------------------------------------------
-            | MES
-            |--------------------------------------------------------------------------
-            */
-
-            document.getElementById('mes').value = option.getAttribute('data-mes');
-
-            /*
-            |--------------------------------------------------------------------------
-            | GESTION
-            |--------------------------------------------------------------------------
-            */
+            document.getElementById('mes').value =
+                option.dataset.mes;
 
             document.getElementById('gestion').value =
-                option.getAttribute('data-gestion');
-        }
+                option.dataset.gestion;
 
-        /*
-        |--------------------------------------------------------------------------
-        | CAMBIO DE EXPENSA
-        |--------------------------------------------------------------------------
-        */
+        }
 
         document.getElementById('expensa')
             .addEventListener('change', cargarDatos);
-
     </script>
 
 </x-app-layout>
