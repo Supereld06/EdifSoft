@@ -7,6 +7,10 @@ use App\Models\Edificio;
 use App\Models\AperturaExpensa;
 use App\Models\Departamento;
 use App\Models\Expensa;
+use App\Models\Tienda;
+use App\Models\Estacionamiento;
+use App\Models\ExpensaTienda;
+use App\Models\ExpensaEstacionamiento;
 
 class AperturaExpensaController extends Controller
 {
@@ -103,22 +107,55 @@ class AperturaExpensaController extends Controller
             Expensa::create([
 
                 'total' => $request->expensa_departamentos,
-
                 'pagado' => 0,
-
                 'saldo' => $request->expensa_departamentos,
-
                 'estado' => 'PENDIENTE',
-
                 'departamento_id' => $departamento->id,
-
                 'propietario_id' => $departamento->propietario_id,
-
                 'edificio_id' => $request->edificio_id,
-
                 'apertura_expensa_id' => $apertura->id,
-
             ]);
+        }
+
+        // OBTENER TODAS LAS TIENDAS
+
+        $tiendas = Tienda::where(
+            'edificio_id',
+            $request->edificio_id
+        )->get();
+        foreach ($tiendas as $tienda) {
+            ExpensaTienda::create([
+                'total' => $request->expensa_tiendas,
+                'pagado' => 0,
+                'saldo' => $request->expensa_tiendas,
+                'estado' => 'PENDIENTE',
+                'tienda_id' => $tienda->id,
+                'propietario_id' => $tienda->propietario_id,
+                'edificio_id' => $request->edificio_id,
+                'apertura_expensa_id' => $apertura->id,
+            ]);
+
+        }
+
+
+        // OBTENER TODOS LOS ESTACIONAMIENTOS
+
+        $estacionamientos = Estacionamiento::where(
+            'edificio_id',
+            $request->edificio_id
+        )->get();
+        foreach ($estacionamientos as $estacionamiento) {
+            ExpensaEstacionamiento::create([
+                'total' => $request->expensa_parqueo,
+                'pagado' => 0,
+                'saldo' => $request->expensa_parqueo,
+                'estado' => 'PENDIENTE',
+                'estacionamiento_id' => $estacionamiento->id,
+                'propietario_id' => $estacionamiento->propietario_id,
+                'edificio_id' => $request->edificio_id,
+                'apertura_expensa_id' => $apertura->id,
+            ]);
+
         }
 
         return redirect()

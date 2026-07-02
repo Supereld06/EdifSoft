@@ -65,18 +65,6 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('expensas_tiendas.index') }}">
-                            🏪 Expensas Tiendas
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('expensas_estacionamientos.index') }}">
-                            🚗 Expensas Estacionamientos
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
                         <a class="nav-link text-white d-flex justify-content-between align-items-center"
                             data-bs-toggle="collapse" href="#menuRecibos" role="button" aria-expanded="false">
 
@@ -94,13 +82,13 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link text-white">
+                                    <a href="{{ route('recibos_tiendas.index') }}" class="nav-link text-white">
                                         📝 Recibos Tiendas
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link text-white">
+                                    <a href="{{ route('recibos_estacionamientos.index') }}" class="nav-link text-white">
                                         📝 Recibos Parqueos
                                     </a>
                                 </li>

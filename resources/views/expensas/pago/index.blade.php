@@ -35,20 +35,17 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-warning" title="Expensas Tiendas">
+                                    <a href="{{ route('pago-expensas.tiendas', $apertura) }}" class="btn btn-warning"
+                                        title="Expensas Tiendas">
                                         <i class="bi bi-cash-coin"></i>
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-dark" title="Expensas Estacionamiento">
-
+                                    <a href="{{ route('pago-expensas.estacionamientos', $apertura) }}" class="btn btn-dark"
+                                        title="Expensas Estacionamientos">
                                         <i class="bi bi-cash-coin"></i>
                                     </a>
-
                                 </td>
-
-
-                                <td></td>
 
                             </tr>
 

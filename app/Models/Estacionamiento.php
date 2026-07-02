@@ -27,4 +27,11 @@ class Estacionamiento extends Model
     {
         return $this->belongsTo(Edificio::class);
     }
+
+    public function recibos()
+    {
+        return $this->hasMany(
+            ReciboExpensaEstacionamiento::class
+        );
+    }
 }

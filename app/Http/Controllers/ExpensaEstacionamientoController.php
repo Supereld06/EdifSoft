@@ -17,12 +17,12 @@ class ExpensaEstacionamientoController extends Controller
             'propietario',
             'apertura'
         ])
-        ->where(
-            'edificio_id',
-            session('edificio_id')
-        )
-        ->orderByDesc('id')
-        ->get();
+            ->where(
+                'edificio_id',
+                session('edificio_id')
+            )
+            ->orderByDesc('id')
+            ->get();
 
         return view(
             'expensas_estacionamientos.index',
@@ -103,7 +103,7 @@ class ExpensaEstacionamientoController extends Controller
             'edificio_id',
             session('edificio_id')
         )
-        ->findOrFail($id);
+            ->findOrFail($id);
 
         $propietarios = Propietario::where(
             'edificio_id',
@@ -134,8 +134,7 @@ class ExpensaEstacionamientoController extends Controller
     public function update(
         Request $request,
         $id
-    )
-    {
+    ) {
         $request->validate([
 
             'total' => 'required|numeric|min:0',
@@ -151,7 +150,7 @@ class ExpensaEstacionamientoController extends Controller
             'edificio_id',
             session('edificio_id')
         )
-        ->findOrFail($id);
+            ->findOrFail($id);
 
         $saldo =
             $request->total -
@@ -194,7 +193,7 @@ class ExpensaEstacionamientoController extends Controller
             'edificio_id',
             session('edificio_id')
         )
-        ->findOrFail($id);
+            ->findOrFail($id);
 
         if ($expensa->pagado > 0) {
 
@@ -214,5 +213,21 @@ class ExpensaEstacionamientoController extends Controller
                 'success',
                 'Registro eliminado correctamente'
             );
+    }
+    public function expensasPorApertura(AperturaExpensa $apertura)
+    {
+        $expensas = ExpensaEstacionamiento::with([
+            'estacionamiento',
+            'propietario',
+            'apertura'
+        ])
+            ->where('apertura_expensa_id', $apertura->id)
+            ->where('edificio_id', session('edificio_id'))
+            ->get();
+
+        return view(
+            'expensas_estacionamientos.index',
+            compact('expensas')
+        );
     }
 }

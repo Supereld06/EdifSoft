@@ -214,4 +214,20 @@ class ExpensaTiendaController extends Controller
                 'Registro eliminado correctamente'
             );
     }
+    public function expensasPorApertura(AperturaExpensa $apertura)
+    {
+        $expensas = ExpensaTienda::with([
+            'tienda',
+            'propietario',
+            'apertura'
+        ])
+            ->where('apertura_expensa_id', $apertura->id)
+            ->where('edificio_id', session('edificio_id'))
+            ->get();
+
+        return view(
+            'expensas_tiendas.index',
+            compact('expensas')
+        );
+    }
 }

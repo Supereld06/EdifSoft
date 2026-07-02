@@ -20,11 +20,18 @@ class Tienda extends Model
 
     public function propietario()
     {
-        return $this->belongsTo(Propietario::class,'propietario_id');
+        return $this->belongsTo(Propietario::class, 'propietario_id');
     }
 
     public function edificio()
     {
         return $this->belongsTo(Edificio::class);
+    }
+
+    public function recibos()
+    {
+        return $this->hasMany(
+            ReciboExpensaTienda::class
+        );
     }
 }

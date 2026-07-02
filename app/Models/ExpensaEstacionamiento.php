@@ -41,4 +41,11 @@ class ExpensaEstacionamiento extends Model
             'apertura_expensa_id'
         );
     }
+    public function recibos()
+    {
+        return $this->hasMany(
+            ReciboExpensaEstacionamiento::class,
+            'expensa_estacionamiento_id'
+        );
+    }
 }

@@ -41,4 +41,12 @@ class ExpensaTienda extends Model
             'apertura_expensa_id'
         );
     }
+
+    public function recibos()
+    {
+        return $this->hasMany(
+            ReciboExpensaTienda::class,
+            'expensa_tienda_id'
+        );
+    }
 }
