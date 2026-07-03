@@ -27,7 +27,27 @@
                                 <td>
                                     {{ $apertura->gestion }}
                                 </td>
-                                <td> </td>
+                                <td>
+
+                                    @if($apertura->saldo_cobrar > 0)
+
+                                        <span class="badge bg-danger fs-6">
+
+                                            Bs. {{ number_format($apertura->saldo_cobrar, 2) }}
+
+                                        </span>
+
+                                    @else
+
+                                        <span class="badge bg-success fs-6">
+
+                                            Bs. 0.00
+
+                                        </span>
+
+                                    @endif
+
+                                </td>
                                 <td>
                                     <a href="{{ route('pago-expensas.expensas', $apertura) }}" class="btn btn-info  "
                                         title="Expensas Departamentos">

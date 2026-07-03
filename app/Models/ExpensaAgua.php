@@ -4,24 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ExpensaTienda extends Model
+class ExpensaAgua extends Model
 {
-    protected $table = 'expensas_tiendas';
+    protected $table = 'expensas_aguas';
 
     protected $fillable = [
-        'total',
-        'pagado',
-        'saldo',
-        'estado',
-        'tienda_id',
+
+        'departamento_id',
         'propietario_id',
         'edificio_id',
         'apertura_expensa_id',
+        'lectura_anterior',
+        'lectura_actual',
+        'lectura_pagar',
+        'prorrateo',
+        'pago'
+
     ];
 
-    public function tienda()
+    public function departamento()
     {
-        return $this->belongsTo(Tienda::class);
+        return $this->belongsTo(Departamento::class);
     }
 
     public function propietario()
@@ -41,14 +44,4 @@ class ExpensaTienda extends Model
             'apertura_expensa_id'
         );
     }
-
-    public function recibos()
-    {
-        return $this->hasMany(
-            ReciboExpensaTienda::class,
-            'expensa_tienda_id'
-        );
-    }
-
-    
 }

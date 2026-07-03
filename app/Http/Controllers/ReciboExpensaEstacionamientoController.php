@@ -132,9 +132,25 @@ class ReciboExpensaEstacionamientoController extends Controller
 
         $expensa->save();
 
+        if ($request->origen == 'estacionamientos') {
+
+            return redirect()
+                ->route(
+                    'expensas_estacionamientos.index',
+                    $expensa->apertura_expensa_estacionamiento_id
+                )
+                ->with(
+                    'success',
+                    'Pago registrado correctamente'
+                );
+        }
+
         return redirect()
             ->route('recibos_estacionamientos.index')
-            ->with('success', 'Pago registrado correctamente');
+            ->with(
+                'success',
+                'Recibo generado correctamente'
+            );
     }
 
     /*

@@ -75,20 +75,9 @@ class ReciboExpensaController extends Controller
 
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | OBTENER EXPENSA
-        |--------------------------------------------------------------------------
-        */
-
         $expensa = Expensa::with('apertura')
             ->findOrFail($request->expensa_id);
 
-        /*
-        |--------------------------------------------------------------------------
-        | VALIDAR MONTO
-        |--------------------------------------------------------------------------
-        */
 
         if ($request->monto > $expensa->saldo) {
 
@@ -100,11 +89,6 @@ class ReciboExpensaController extends Controller
                 );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | CREAR RECIBO
-        |--------------------------------------------------------------------------
-        */
 
         ReciboExpensa::create([
 
@@ -123,23 +107,12 @@ class ReciboExpensaController extends Controller
 
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | ACTUALIZAR EXPENSA
-        |--------------------------------------------------------------------------
-        */
-
         $nuevoPagado =
             $expensa->pagado + $request->monto;
 
         $nuevoSaldo =
             $expensa->saldo - $request->monto;
 
-        /*
-        |--------------------------------------------------------------------------
-        | ESTADO
-        |--------------------------------------------------------------------------
-        */
 
         $estado = 'PENDIENTE';
 
@@ -147,12 +120,6 @@ class ReciboExpensaController extends Controller
             $estado = 'PAGADO';
             $nuevoSaldo = 0;
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | ACTUALIZAR
-        |--------------------------------------------------------------------------
-        */
 
         $expensa->update([
             'pagado' => $nuevoPagado,
@@ -182,11 +149,6 @@ class ReciboExpensaController extends Controller
             );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | AJAX
-    |--------------------------------------------------------------------------
-    */
 
     public function obtenerExpensas($propietario_id)
     {
@@ -249,12 +211,6 @@ class ReciboExpensaController extends Controller
     {
         $recibo = ReciboExpensa::findOrFail($id);
 
-        /*
-        |--------------------------------------------------------------------------
-        | DEVOLVER SALDO A EXPENSA
-        |--------------------------------------------------------------------------
-        */
-
         $expensa = Expensa::findOrFail(
             $recibo->expensa_id
         );
@@ -281,12 +237,6 @@ class ReciboExpensaController extends Controller
             'estado' => $estado,
 
         ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | ELIMINAR RECIBO
-        |--------------------------------------------------------------------------
-        */
 
         $recibo->delete();
 

@@ -8,6 +8,8 @@ use App\Models\Expensa;
 use App\Models\Departamento;
 use App\Models\Propietario;
 use App\Models\AperturaExpensa;
+use App\Models\ExpensaTienda;
+use App\Models\ExpensaEstacionamiento;
 
 class ExpensaController extends Controller
 {
@@ -191,8 +193,41 @@ class ExpensaController extends Controller
     public function pagoExpensas()
     {
         $aperturas = AperturaExpensa::with('edificio')
+            ->where('edificio_id', session('edificio_id'))
             ->latest()
             ->paginate(10);
+
+        foreach ($aperturas as $apertura) {
+
+            $saldoDepartamentos = Expensa::where(
+                'apertura_expensa_id',
+                $apertura->id
+            )->where(
+                    'edificio_id',
+                    session('edificio_id')
+                )->sum('saldo');
+
+            $saldoTiendas = ExpensaTienda::where(
+                'apertura_expensa_id',
+                $apertura->id
+            )->where(
+                    'edificio_id',
+                    session('edificio_id')
+                )->sum('saldo');
+
+            $saldoEstacionamientos = ExpensaEstacionamiento::where(
+                'apertura_expensa_id',
+                $apertura->id
+            )->where(
+                    'edificio_id',
+                    session('edificio_id')
+                )->sum('saldo');
+
+            $apertura->saldo_cobrar =
+                $saldoDepartamentos +
+                $saldoTiendas +
+                $saldoEstacionamientos;
+        }
 
         return view(
             'expensas.pago.index',
@@ -224,4 +259,6 @@ class ExpensaController extends Controller
             compact('expensas')
         );
     }
+
+
 }

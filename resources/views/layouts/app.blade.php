@@ -58,7 +58,7 @@
                         <a href="{{ route('pago-expensas.index') }}" class="nav-link text-white">💰 Pago Expensas</a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link text-white"> 🚿 Lectura Agua</a>
+                        <a href="{{ route('expensas_aguas.index') }}" class="nav-link text-white"> 🚿 Lectura Agua</a>
                     </li>
                     <li class="nav-item">
                         <a href="" class="nav-link text-white"> ⚠️ Deudas</a>

@@ -1,6 +1,5 @@
 <x-app-layout>
 
-    ```
     <x-slot name="header">
         <h3>Nueva Expensa Estacionamiento</h3>
     </x-slot>
@@ -109,6 +108,5 @@
         </div>
 
     </div>
-    ```
 
 </x-app-layout>

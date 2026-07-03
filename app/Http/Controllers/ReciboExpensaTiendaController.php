@@ -27,7 +27,7 @@ class ReciboExpensaTiendaController extends Controller
 
     public function index()
     {
-        
+
         $recibos = ReciboExpensaTienda::with([
             'propietario',
             'tienda',
@@ -60,7 +60,7 @@ class ReciboExpensaTiendaController extends Controller
     {
         $propietarios = Propietario::all();
         $numero = $this->generarNumero();
-        return view('recibos_tiendas.create', compact('propietarios','numero'));
+        return view('recibos_tiendas.create', compact('propietarios', 'numero'));
     }
 
 
@@ -163,13 +163,24 @@ class ReciboExpensaTiendaController extends Controller
                 $estado,
         ]);
 
+        if ($request->origen == 'tiendas') {
+
+            return redirect()
+                ->route(
+                    'expensas_tiendas.index',
+                    $expensa->apertura_expensa_tienda_id
+                )
+                ->with(
+                    'success',
+                    'Pago registrado correctamente'
+                );
+        }
+
         return redirect()
-            ->route(
-                'recibos_tiendas.index'
-            )
+            ->route('recibos_tiendas.index')
             ->with(
                 'success',
-                'Pago registrado correctamente'
+                'Recibo generado correctamente'
             );
     }
 
