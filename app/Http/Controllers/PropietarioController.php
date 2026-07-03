@@ -25,10 +25,7 @@ class PropietarioController extends Controller
                 $propietario->id
             )->sum('saldo');
 
-            $deudaAgua = ExpensaAgua::where(
-                'propietario_id',
-                $propietario->id
-            )->sum('pago');
+
 
             $deudaTiendas = ExpensaTienda::where(
                 'propietario_id',
@@ -42,7 +39,6 @@ class PropietarioController extends Controller
 
             $propietario->deuda_total =
                 $deudaDepartamentos +
-                $deudaAgua +
                 $deudaTiendas +
                 $deudaEstacionamientos;
         }

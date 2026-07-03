@@ -118,21 +118,7 @@ class AperturaExpensaController extends Controller
             ]);
 
 
-            ExpensaAgua::create([
-                'departamento_id' => $departamento->id,
-                'propietario_id' => $departamento->propietario_id,
-                'edificio_id' => $request->edificio_id,
-                'apertura_expensa_id' => $apertura->id,
-                'total' => 0,
-                'pagado' => 0,
-                'saldo' => 0,
-                'estado' => 'PENDIENTE',
-                'lectura_anterior' => 0,
-                'lectura_actual' => 0,
-                'lectura_pagar' => 0,
-                'prorrateo' => 0,
-                'pago' => 0,
-            ]);
+  
         }
 
         // OBTENER TODAS LAS TIENDAS
