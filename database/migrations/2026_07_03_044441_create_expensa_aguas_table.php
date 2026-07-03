@@ -17,11 +17,14 @@ return new class extends Migration {
             $table->foreignId('propietario_id')->constrained('propietarios')->cascadeOnDelete();
             $table->foreignId('edificio_id')->constrained('edificios')->cascadeOnDelete();
             $table->foreignId('apertura_expensa_id')->constrained('apertura_expensas')->cascadeOnDelete();
+            $table->decimal('total', 10, 2);
+            $table->decimal('pagado', 10, 2)->default(0);
+            $table->decimal('saldo', 10, 2)->default(0);
+            $table->string('estado');
             $table->decimal('lectura_anterior', 10, 2)->nullable();
             $table->decimal('lectura_actual', 10, 2)->nullable();
             $table->decimal('lectura_pagar', 10, 2)->nullable();
             $table->decimal('prorrateo', 10, 2)->nullable();
-            $table->decimal('pago', 10, 2)->nullable();
             $table->timestamps();
         });
     }

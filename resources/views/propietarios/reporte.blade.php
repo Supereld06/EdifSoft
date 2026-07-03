@@ -181,7 +181,7 @@
                 <td>{{ $prop->nombres }}</td>
                 <td>{{ $prop->apellido_paterno }} {{ $prop->apellido_materno }}</td>
                 <td>{{ $prop->edificio->nombre ?? '-' }}</td>
-                <td>0 Bs</td>
+                <td>{{ number_format($prop->deuda_total, 2) }} Bs</td>
             </tr>
 
             @endforeach

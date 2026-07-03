@@ -6,6 +6,10 @@ use App\Models\Propietario;
 use App\Models\Edificio;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Expensa;
+use App\Models\ExpensaAgua;
+use App\Models\ExpensaTienda;
+use App\Models\ExpensaEstacionamiento;
 
 class PropietarioController extends Controller
 {
@@ -13,6 +17,35 @@ class PropietarioController extends Controller
     public function index()
     {
         $propietarios = Propietario::with('edificio')->get();
+
+        foreach ($propietarios as $propietario) {
+
+            $deudaDepartamentos = Expensa::where(
+                'propietario_id',
+                $propietario->id
+            )->sum('saldo');
+
+            $deudaAgua = ExpensaAgua::where(
+                'propietario_id',
+                $propietario->id
+            )->sum('pago');
+
+            $deudaTiendas = ExpensaTienda::where(
+                'propietario_id',
+                $propietario->id
+            )->sum('saldo');
+
+            $deudaEstacionamientos = ExpensaEstacionamiento::where(
+                'propietario_id',
+                $propietario->id
+            )->sum('saldo');
+
+            $propietario->deuda_total =
+                $deudaDepartamentos +
+                $deudaAgua +
+                $deudaTiendas +
+                $deudaEstacionamientos;
+        }
         return view('propietarios.index', compact('propietarios'));
     }
 
@@ -90,6 +123,10 @@ class PropietarioController extends Controller
         $propietarios = Propietario::with('edificio')
             ->where('edificio_id', session('edificio_id'))
             ->get();
+
+            
+
+        
 
         $pdf = Pdf::loadView('propietarios.reporte', compact('propietarios'));
 

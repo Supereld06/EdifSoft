@@ -89,22 +89,17 @@ class ExpensaAguaController extends Controller
         ExpensaAgua::create([
 
             'departamento_id' => $departamento->id,
-
             'propietario_id' => $departamento->propietario_id,
-
             'edificio_id' => session('edificio_id'),
-
             'apertura_expensa_id' => $request->apertura_expensa_id,
-
+            'total' => $request->total,
+            'pagado' => 0,
+            'saldo' => $request->total,
+            'estado' => 'PENDIENTE',
             'lectura_anterior' => optional($ultimaLectura)->lectura_actual,
-
             'lectura_actual' => $request->lectura_actual ?? null,
-
             'lectura_pagar' => $request->lectura_pagar ?? null,
-
             'prorrateo' => $request->prorrateo ?? null,
-
-            'pago' => $request->pago ?? null,
 
         ]);
 

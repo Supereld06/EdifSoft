@@ -16,20 +16,11 @@ class EdificioSeeder extends Seeder
         Edificio::create([
         'nombre' => 'Edificio "AVE PARAISO"',
         'direccion' => 'Av. J. Ballivian N-688',
-        'numero_departamentos' => '20',
+        'numero_departamentos' => '0',
         'pais' => 'Bolivia',
         'ciudad' => 'Cocahamba',
-        'zona' => 'Zona Central Noreste',
+        'zona' => 'Zona Central',
         ]);
-    
-        Edificio::create([
-        'nombre' => 'Torre Congo',
-        'direccion' => 'Calle Auxiliar 456',
-        'numero_departamentos' => '20'
-        ]);
-
-
-
     }
 
 }
