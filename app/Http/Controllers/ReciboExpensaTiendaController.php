@@ -38,7 +38,8 @@ class ReciboExpensaTiendaController extends Controller
                 session('edificio_id')
             )
             ->latest()
-            ->get();
+            ->orderBy('id', 'desc')
+            ->paginate(12);
 
         return view(
             'recibos_tiendas.index',
@@ -60,7 +61,8 @@ class ReciboExpensaTiendaController extends Controller
     {
         $propietarios = Propietario::all();
         $numero = $this->generarNumero();
-        return view('recibos_tiendas.create', compact('propietarios', 'numero'));
+        $edificio_id = session('edificio_id');
+        return view('recibos_tiendas.create', compact('propietarios', 'numero', 'edificio_id'));
     }
 
 
@@ -69,13 +71,9 @@ class ReciboExpensaTiendaController extends Controller
         $request->validate([
 
             'expensa_tienda_id' => 'required',
-
             'monto' => 'required|numeric|min:0.01',
-
             'fecha' => 'required',
-
             'moneda' => 'required',
-
             'tipo_pago' => 'required',
         ]);
 

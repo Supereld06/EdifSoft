@@ -20,9 +20,14 @@ class AperturaExpensaController extends Controller
      */
     public function index()
     {
+        if (!session('edificio_id')) {
+            return redirect()->route('edificios.seleccionar');
+        }
+
         $aperturas = AperturaExpensa::with('edificio')
-            ->latest()
-            ->get();
+            ->where('edificio_id', session('edificio_id'))
+            ->orderBy('id', 'desc')
+            ->paginate(10);
 
         return view(
             'expensas.aperturas.index',
@@ -118,7 +123,32 @@ class AperturaExpensaController extends Controller
             ]);
 
 
-  
+
+            $ultimaLectura = ExpensaAgua::where('departamento_id', $departamento->id)
+                ->where('edificio_id', $request->edificio_id)
+                ->orderByDesc('id')
+                ->first();
+
+            $lecturaAnterior = $ultimaLectura
+                ? $ultimaLectura->lectura_actual
+                : 0;
+
+            ExpensaAgua::create([
+
+                'lectura_anterior' => $lecturaAnterior,
+                'lectura_actual' => 0,
+                'lectura_pagar' => 0,
+                'prorrateo' => $request->prorrateo_agua,
+                'total' => 0,
+                'pagado' => 0,
+                'saldo' => 0,
+                'estado' => 'PENDIENTE',
+                'departamento_id' => $departamento->id,
+                'propietario_id' => $departamento->propietario_id,
+                'edificio_id' => $request->edificio_id,
+                'apertura_expensa_id' => $apertura->id,
+            ]);
+
         }
 
         // OBTENER TODAS LAS TIENDAS

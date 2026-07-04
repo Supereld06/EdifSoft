@@ -44,29 +44,32 @@
 
                     @foreach($departamentos as $dep)
                         @if($dep->edificio_id == session('edificio_id'))
-                                    <tr>
-                                        <td>{{ $dep->tipo_departamento }}</td>
-                                        <td>{{ $dep->numero_departamento }}</td>
-                                        <td>{{ $dep->piso }}</td>
-                                        <td>
-                                            {{ $dep->propietario ? $dep->propietario->nombres . ' ' . $dep->propietario->apellido_paterno : '-'}} /
-                                            {{ $dep->co_propietario}}
-                                        </td>
-                                        <td>{{ $dep->edificio->nombre ?? '-' }}</td>
-                                        <td>
-                                            <a href="{{ route('departamentos.edit', $dep->id) }}" class="btn btn-warning btn-sm"
-                                                title="Editar edificio">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                            <tr>
+                                <td>{{ $dep->tipo_departamento }}</td>
+                                <td>{{ $dep->numero_departamento }}</td>
+                                <td>{{ $dep->piso }}</td>
+                                <td>
+                                    {{ $dep->propietario ? $dep->propietario->nombres . ' ' . $dep->propietario->apellido_paterno : '-'}}
+                                    /
+                                    {{ $dep->co_propietario}}
+                                </td>
+                                <td>{{ $dep->edificio->nombre ?? '-' }}</td>
+                                <td>
+                                    <a href="{{ route('departamentos.edit', $dep->id) }}" class="btn btn-warning btn-sm"
+                                        title="Editar edificio">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         @endif
                     @endforeach
 
                 </tbody>
 
             </table>
-
+            <div class="d-flex justify-content-center mt-3">
+                {{ $departamentos->links() }}
+            </div>
         </div>
 
     </div>

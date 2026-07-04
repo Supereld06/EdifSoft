@@ -17,42 +17,33 @@
             <form action="{{ route('recibos_tiendas.store') }}" method="POST">
                 @csrf
 
-                {{-- ============================= --}}
-                {{-- NÚMERO --}}
-                {{-- ============================= --}}
                 <div class="mb-3">
                     <label>Número</label>
                     <input type="text" class="form-control bg-light fw-bold" value="{{ $numero }}" readonly>
                 </div>
 
-                {{-- ============================= --}}
-                {{-- FECHA --}}
-                {{-- ============================= --}}
                 <div class="mb-3">
                     <label>Fecha</label>
-                    <input type="date" name="fecha" class="form-control" required>
+                    <input type="date" name="fecha" class="form-control"
+                        value="{{ old('fecha', now()->format('Y-m-d')) }}" required>
                 </div>
 
-                {{-- ============================= --}}
-                {{-- PROPIETARIO --}}
-                {{-- ============================= --}}
                 <div class="mb-3">
                     <label>Propietario</label>
                     <select name="propietario_id" id="propietario" class="form-control" required>
                         <option value="">Seleccione propietario</option>
 
                         @foreach($propietarios as $p)
-                            <option value="{{ $p->id }}">
-                                {{ $p->nombres }} {{ $p->apellido_paterno }}
-                            </option>
+                            @if($p->edificio_id == $edificio_id)
+                                <option value="{{ $p->id }}">
+                                    {{ $p->nombres }} {{ $p->apellido_paterno }} {{ $p->apellido_materno }}
+                                </option>
+                            @endif
                         @endforeach
 
                     </select>
                 </div>
 
-                {{-- ============================= --}}
-                {{-- EXPENSA TIENDA --}}
-                {{-- ============================= --}}
                 <div class="mb-3">
                     <label>Expensa Tienda</label>
 
@@ -61,9 +52,6 @@
                     </select>
                 </div>
 
-                {{-- ============================= --}}
-                {{-- MONTO --}}
-                {{-- ============================= --}}
                 <div class="mb-3">
                     <label>Monto</label>
                     <input type="number" step="0.01" min="0" name="monto" id="monto" class="form-control" required>

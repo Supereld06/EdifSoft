@@ -66,7 +66,7 @@
                                 {{ $expensa->departamento->numero_departamento }}
                             </td>
                             <td>
-                                {{ $expensa->propietario->nombres }}
+                                {{ $expensa->propietario->nombres }} {{ $expensa->propietario->apellido_paterno }} {{ $expensa->propietario->apellido_materno }}
                             </td>
                             <td>
                                 {{ $expensa->total }}
@@ -123,14 +123,15 @@
 
                             <td>
 
-                                <a href="{{ route('expensas.edit', $expensa) }}" class="btn btn-warning btn-sm"
-                                    title="Editar expensa">
-
-                                    <i class="bi bi-pencil-square"></i>
-
-                                </a>
 
                                 @if($expensa->recibos->count() == 0)
+
+                                    <a href="{{ route('expensas.edit', $expensa) }}" class="btn btn-warning btn-sm"
+                                        title="Editar expensa">
+
+                                        <i class="bi bi-pencil-square"></i>
+
+                                    </a>
 
                                     <form action="{{ route('expensas.destroy', $expensa) }}" method="POST"
                                         style="display:inline-block" onsubmit="return confirm('¿Eliminar expensa?')">

@@ -13,9 +13,9 @@
         </div>
 
         @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
         @endif
 
         <div class="card shadow p-3">
@@ -38,63 +38,55 @@
 
                     @foreach($estacionamientos as $estacionamiento)
 
-                    <tr>
+                                    <tr>
 
-                        <td>{{ $estacionamiento->tipo_estacionamiento }}</td>
+                                        <td>{{ $estacionamiento->tipo_estacionamiento }}</td>
+                                        <td>{{ $estacionamiento->numero_estacionamiento }}</td>
+                                        <td>{{ $estacionamiento->ubicacion }}</td>
+                                        <td>{{ $estacionamiento->detalle }}</td>
+                                        <td>
+                                            {{ $estacionamiento->propietario
+                        ? $estacionamiento->propietario->nombres . ' ' .
+                        $estacionamiento->propietario->apellido_paterno
+                        : '-' }}
+                                        </td>
+                                        <td>
+                                            {{ $estacionamiento->edificio->nombre ?? '-' }}
+                                        </td>
 
-                        <td>{{ $estacionamiento->numero_estacionamiento }}</td>
+                                        <td>
+                                            <a href="{{ route('estacionamientos.edit', $estacionamiento->id) }}"
+                                                class="btn btn-warning btn-sm">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
 
-                        <td>{{ $estacionamiento->ubicacion }}</td>
+                                            <form action="{{ route('estacionamientos.destroy', $estacionamiento->id) }}" method="POST"
+                                                class="d-inline">
 
-                        <td>{{ $estacionamiento->detalle }}</td>
+                                                @csrf
+                                                @method('DELETE')
 
-                        <td>
-                            {{ $estacionamiento->propietario
-                                    ? $estacionamiento->propietario->nombres . ' ' .
-                                      $estacionamiento->propietario->apellido_paterno
-                                    : '-' }}
-                        </td>
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('¿Eliminar estacionamiento?')">
 
-                        <td>
-                            {{ $estacionamiento->edificio->nombre ?? '-' }}
-                        </td>
+                                                    <i class="bi bi-trash"></i>
 
-                        <td>
+                                                </button>
 
-                            <a href="{{ route('estacionamientos.edit', $estacionamiento->id) }}"
-                                class="btn btn-warning btn-sm">
+                                            </form>
 
-                                <i class="bi bi-pencil-square"></i>
+                                        </td>
 
-                            </a>
-
-                            <form action="{{ route('estacionamientos.destroy', $estacionamiento->id) }}"
-                                method="POST"
-                                class="d-inline">
-
-                                @csrf
-                                @method('DELETE')
-
-                                <button type="submit"
-                                    class="btn btn-danger btn-sm"
-                                    onclick="return confirm('¿Eliminar estacionamiento?')">
-
-                                    <i class="bi bi-trash"></i>
-
-                                </button>
-
-                            </form>
-
-                        </td>
-
-                    </tr>
+                                    </tr>
 
                     @endforeach
 
                 </tbody>
 
             </table>
-
+            <div class="d-flex justify-content-center mt-3">
+                {{ $estacionamientos->links() }}
+            </div>
         </div>
 
     </div>

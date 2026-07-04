@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             EdificioSeeder::class,
             PropietarioSeeder::class, 
             DepartamentoSeeder::class,
+            AperturaExpensaSeeder::class,
         ]);
     }
 }

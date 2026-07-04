@@ -14,7 +14,8 @@ class EstacionamientoController extends Controller
 
         $estacionamientos = Estacionamiento::with('propietario')
             ->where('edificio_id', $edificioId)
-            ->get();
+            ->orderBy('numero_estacionamiento', 'asc')
+            ->paginate(12);
 
         return view(
             'estacionamientos.index',

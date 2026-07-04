@@ -38,12 +38,12 @@
                     <select name="propietario_id" class="form-control">
 
                         @foreach($propietarios as $propietario)
-
-                            <option value="{{ $propietario->id }}">
-                                {{ $propietario->nombres }}
-                                {{ $propietario->apellido_paterno }}
-                            </option>
-
+                            @if($propietario->edificio_id == $edificio_id)
+                                <option value="{{ $propietario->id }}">
+                                    {{ $propietario->nombres }}
+                                    {{ $propietario->apellido_paterno }}
+                                </option>
+                            @endif
                         @endforeach
 
                     </select>

@@ -21,8 +21,8 @@ class ExpensaTiendaController extends Controller
                 'edificio_id',
                 session('edificio_id')
             )
-            ->orderByDesc('id')
-            ->get();
+            ->orderBy('numero_tienda', 'asc')
+            ->paginate(12);
 
         return view(
             'expensas_tiendas.index',

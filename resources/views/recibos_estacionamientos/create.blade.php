@@ -27,7 +27,8 @@
                 {{-- FECHA --}}
                 <div class="mb-3">
                     <label>Fecha</label>
-                    <input type="date" name="fecha" class="form-control" required>
+                    <input type="date" name="fecha" class="form-control"
+                        value="{{ old('fecha', now()->format('Y-m-d')) }}" required>
                 </div>
 
                 {{-- PROPIETARIO --}}
@@ -38,9 +39,11 @@
                         <option value="">Seleccione</option>
 
                         @foreach($propietarios as $p)
-                            <option value="{{ $p->id }}">
-                                {{ $p->nombres }} {{ $p->apellido_paterno }}
-                            </option>
+                            @if($p->edificio_id == $edificio_id)
+                                <option value="{{ $p->id }}">
+                                    {{ $p->nombres }} {{ $p->apellido_paterno }}
+                                </option>
+                            @endif
                         @endforeach
 
                     </select>

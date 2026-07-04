@@ -16,7 +16,8 @@ class PropietarioController extends Controller
     // Listado
     public function index()
     {
-        $propietarios = Propietario::with('edificio')->get();
+        $propietarios = Propietario::with('edificio')->orderBy('id', 'desc')
+            ->paginate(12);
 
         foreach ($propietarios as $propietario) {
 
@@ -133,9 +134,34 @@ class PropietarioController extends Controller
             ->where('edificio_id', session('edificio_id'))
             ->get();
 
+        foreach ($propietarios as $propietario) {
 
+            $deudaDepartamentos = Expensa::where(
+                'propietario_id',
+                $propietario->id
+            )->sum('saldo');
 
+            $deudaTiendas = ExpensaTienda::where(
+                'propietario_id',
+                $propietario->id
+            )->sum('saldo');
 
+            $deudaEstacionamientos = ExpensaEstacionamiento::where(
+                'propietario_id',
+                $propietario->id
+            )->sum('saldo');
+
+            $deudaAgua = ExpensaAgua::where(
+                'propietario_id',
+                $propietario->id
+            )->sum('saldo');
+
+            $propietario->deuda_total =
+                $deudaDepartamentos +
+                $deudaTiendas +
+                $deudaEstacionamientos +
+                $deudaAgua;
+        }
 
         $pdf = Pdf::loadView('propietarios.reporte', compact('propietarios'));
 

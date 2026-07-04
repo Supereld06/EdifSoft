@@ -73,6 +73,8 @@
 
                             <td>
                                 {{ $expensa->propietario->nombres }}
+                                {{ $expensa->propietario->apellido_paterno }}
+                                {{ $expensa->propietario->apellido_materno }}
                             </td>
 
                             <td>

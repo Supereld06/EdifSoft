@@ -39,17 +39,16 @@ class ExpensaController extends Controller
     public function create()
     {
         $departamentos = Departamento::all();
-
         $propietarios = Propietario::all();
-
         $aperturas = AperturaExpensa::all();
-
+        $edificio_id = session('edificio_id');
         return view(
             'expensas.create',
             compact(
                 'departamentos',
                 'propietarios',
-                'aperturas'
+                'aperturas',
+                'edificio_id'
             )
         );
     }
@@ -62,11 +61,8 @@ class ExpensaController extends Controller
         $request->validate([
 
             'total' => 'required|numeric',
-
             'departamento_id' => 'required',
-
             'propietario_id' => 'required',
-
             'apertura_expensa_id' => 'required',
 
         ]);
@@ -77,11 +73,8 @@ class ExpensaController extends Controller
         Expensa::create([
 
             'total' => $request->total,
-
             'pagado' => $request->pagado ?? 0,
-
             'saldo' => $request->total - ($request->pagado ?? 0),
-
             'estado' => (
                 ($request->total - ($request->pagado ?? 0)) <= 0
             )
@@ -89,11 +82,8 @@ class ExpensaController extends Controller
                 : 'PENDIENTE',
 
             'departamento_id' => $request->departamento_id,
-
             'propietario_id' => $request->propietario_id,
-
             'edificio_id' => $edificio_id,
-
             'apertura_expensa_id' => $request->apertura_expensa_id,
 
         ]);
@@ -115,9 +105,7 @@ class ExpensaController extends Controller
     public function edit(Expensa $expensa)
     {
         $departamentos = Departamento::all();
-
         $propietarios = Propietario::all();
-
         $aperturas = AperturaExpensa::all();
 
         return view(
@@ -193,9 +181,9 @@ class ExpensaController extends Controller
     public function pagoExpensas()
     {
         $aperturas = AperturaExpensa::with('edificio')
-            ->where('edificio_id', session('edificio_id'))
+            ->where('edificio_id', session('edificio_id'))->orderByDesc('id')
             ->latest()
-            ->paginate(10);
+            ->paginate(12);
 
         foreach ($aperturas as $apertura) {
 

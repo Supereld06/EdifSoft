@@ -59,10 +59,10 @@ class ReciboExpensaEstacionamientoController extends Controller
     {
         $propietarios = Propietario::all();
         $numero = $this->generarNumero();
-
+        $edificio_id = session('edificio_id');
         return view(
             'recibos_estacionamientos.create',
-            compact('propietarios', 'numero')
+            compact('propietarios', 'numero', 'edificio_id')
         );
     }
 

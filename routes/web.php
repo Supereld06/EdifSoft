@@ -176,8 +176,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/expensas-aguas/edit/{id}', [ExpensaAguaController::class, 'edit'])->name('expensas_aguas.edit');
     Route::put('/expensas-aguas/update/{id}', [ExpensaAguaController::class, 'update'])->name('expensas_aguas.update');
     Route::delete('/expensas-aguas/delete/{id}', [ExpensaAguaController::class, 'destroy'])->name('expensas_aguas.destroy');
-    Route::get('/expensas-aguas/apertura/{apertura}', [ExpensaAguaController::class, 'expensasPorApertura'])->name('expensas_aguas.apertura');
-    Route::get('/expensas-aguas/departamento/{id}',[ExpensaAguaController::class, 'getDepartamento'])->name('expensas_aguas.departamento');
+    Route::get('/expensas-aguas/departamento/{id}', [ExpensaAguaController::class, 'getDepartamento'])->name('expensas_aguas.departamento');
+    Route::get('/expensas-aguas/apertura/{id}', [ExpensaAguaController::class,'getApertura']);
+
+
 
 });
 

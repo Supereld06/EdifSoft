@@ -14,25 +14,21 @@
                 @method('PUT')
 
                 <div class="mb-3">
-
                     <label>Total</label>
-
                     <input type="number" step="0.01" name="total" value="{{ $expensa->total }}" class="form-control">
-
                 </div>
 
                 <div class="mb-3">
-
                     <label>Pagado</label>
-
                     <input type="number" step="0.01" name="pagado" value="{{ $expensa->pagado }}" class="form-control">
-
                 </div>
 
-                <button type="submit" class="btn btn-primary">
-
+                <button type="submit" class="btn btn-success">
                     Actualizar
+                </button>
 
+                <button class="btn btn-secondary" type="button" onclick="window.history.back()">
+                    Cancelar
                 </button>
 
             </form>

@@ -1,6 +1,4 @@
 <x-app-layout>
-
-    ```
     <x-slot name="header">
         <h3>Editar Expensa Estacionamiento</h3>
     </x-slot>
@@ -26,7 +24,7 @@
 
                                 {{ $p->nombres }}
                                 {{ $p->apellido_paterno }}
-
+                                {{ $p->apellido_materno }}
                             </option>
 
                         @endforeach
@@ -85,23 +83,16 @@
 
                 </div>
 
-                <button class="btn btn-warning">
+                <button class="btn btn-success" type="submit">
 
                     Actualizar
 
                 </button>
 
                 <a href="{{ route('expensas_estacionamientos.index') }}" class="btn btn-secondary">
-
                     Cancelar
-
                 </a>
-
             </form>
-
         </div>
-
     </div>
-    ```
-
 </x-app-layout>

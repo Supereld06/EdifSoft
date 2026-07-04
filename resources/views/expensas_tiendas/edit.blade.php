@@ -1,6 +1,4 @@
 <x-app-layout>
-
-    ```
     <x-slot name="header">
         <h3>Editar Expensa Tienda</h3>
     </x-slot>
@@ -26,6 +24,7 @@
 
                                 {{ $p->nombres }}
                                 {{ $p->apellido_paterno }}
+                                {{ $p->apellido_materno }}
 
                             </option>
 
@@ -85,7 +84,7 @@
 
                 </div>
 
-                <button class="btn btn-warning">
+                <button class="btn btn-success" type="submit">
 
                     Actualizar
 
@@ -102,6 +101,5 @@
         </div>
 
     </div>
-    ```
 
 </x-app-layout>

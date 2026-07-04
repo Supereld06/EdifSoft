@@ -49,6 +49,7 @@
                                 <td>
                                     {{ $recibo->propietario->nombres }}
                                     {{ $recibo->propietario->apellido_paterno }}
+                                    {{ $recibo->propietario->apellido_materno }}
                                 </td>
 
                                 <td>
@@ -64,12 +65,12 @@
 
                                     <a href="{{ route('recibos_estacionamientos.edit', $recibo->id) }}"
                                         class="btn btn-warning btn-sm">
-                                        ✏
+                                        <i class="bi bi-pencil-square"></i>
                                     </a>
 
                                     <a href="{{ route('recibos_estacionamientos.pdf', $recibo->id) }}"
                                         class="btn btn-danger btn-sm" target="_blank">
-                                        PDF
+                                        <i class="bi bi-file-earmark-pdf"></i>
                                     </a>
 
                                     <form action="{{ route('recibos_estacionamientos.destroy', $recibo->id) }}"
@@ -77,7 +78,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-secondary btn-sm" onclick="return confirm('¿Eliminar?')">
-                                            🗑
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
 

@@ -22,8 +22,8 @@ class ExpensaAguaController extends Controller
                 'edificio_id',
                 session('edificio_id')
             )
-            ->orderByDesc('id')
-            ->get();
+            ->orderBy('id', 'desc')
+            ->paginate(10);
 
         return view(
             'expensas_aguas.index',
@@ -44,7 +44,8 @@ class ExpensaAguaController extends Controller
         $aperturas = AperturaExpensa::where(
             'edificio_id',
             session('edificio_id')
-        )->get();
+        )->orderBy('id', 'desc')
+            ->get();
 
         return view(
             'expensas_aguas.create',
@@ -59,9 +60,10 @@ class ExpensaAguaController extends Controller
     {
         $request->validate([
 
-            'departamento_id' => 'required',
-
-            'apertura_expensa_id' => 'required',
+            'departamento_id' => 'required|exists:departamentos,id',
+            'apertura_expensa_id' => 'required|exists:apertura_expensas,id',
+            'lectura_actual' => 'required|numeric|min:0',
+            'prorrateo' => 'required|numeric|min:0',
 
         ]);
 
@@ -69,11 +71,26 @@ class ExpensaAguaController extends Controller
             $request->departamento_id
         );
 
-        /*
-        |------------------------------------------
-        | BUSCAR LA ÚLTIMA LECTURA
-        |------------------------------------------
-        */
+        $existe = ExpensaAgua::where(
+            'departamento_id',
+            $request->departamento_id
+        )
+            ->where(
+                'apertura_expensa_id',
+                $request->apertura_expensa_id
+            )
+            ->exists();
+
+        if ($existe) {
+
+            return back()
+                ->withErrors([
+                    'departamento_id' =>
+                        'Este departamento ya tiene registrada la expensa de agua para este mes.'
+                ])
+                ->withInput();
+
+        }
 
         $ultimaLectura = ExpensaAgua::where(
             'departamento_id',
@@ -86,20 +103,63 @@ class ExpensaAguaController extends Controller
             ->latest()
             ->first();
 
+        if ($ultimaLectura) {
+
+            $lecturaAnterior = $ultimaLectura->lectura_actual;
+
+        } else {
+
+            $lecturaAnterior = $request->lectura_anterior;
+
+        }
+
+        if ($request->lectura_actual < $lecturaAnterior) {
+
+            return back()
+                ->withErrors([
+                    'lectura_actual' =>
+                        'La lectura actual no puede ser menor que la lectura anterior.'
+                ])
+                ->withInput();
+
+        }
+
+        $lecturaPagar =
+
+            $request->lectura_actual
+            -
+            $lecturaAnterior;
+
+        $total =
+
+            $lecturaPagar
+            *
+            $request->prorrateo;
+
+        $saldo = $total;
+
+        $estado =
+
+            $saldo == 0
+
+            ? 'PAGADO'
+
+            : 'PENDIENTE';
+
         ExpensaAgua::create([
 
             'departamento_id' => $departamento->id,
             'propietario_id' => $departamento->propietario_id,
             'edificio_id' => session('edificio_id'),
             'apertura_expensa_id' => $request->apertura_expensa_id,
-            'total' => $request->total,
+            'total' => $total,
             'pagado' => 0,
-            'saldo' => $request->total,
-            'estado' => 'PENDIENTE',
-            'lectura_anterior' => optional($ultimaLectura)->lectura_actual,
-            'lectura_actual' => $request->lectura_actual ?? null,
-            'lectura_pagar' => $request->lectura_pagar ?? null,
-            'prorrateo' => $request->prorrateo ?? null,
+            'saldo' => $saldo,
+            'estado' => $estado,
+            'lectura_anterior' => $lecturaAnterior,
+            'lectura_actual' => $request->lectura_actual,
+            'lectura_pagar' => $lecturaPagar,
+            'prorrateo' => $request->prorrateo,
 
         ]);
 
@@ -146,7 +206,72 @@ class ExpensaAguaController extends Controller
 
     public function update(Request $request, $id)
     {
+        $expensa = ExpensaAgua::where(
+            'edificio_id',
+            session('edificio_id')
+        )->findOrFail($id);
 
+        $request->validate([
+
+            'lectura_anterior' => 'required|numeric|min:0',
+            'lectura_actual' => 'required|numeric|min:0',
+            'prorrateo' => 'required|numeric|min:0',
+            'apertura_expensa_id' => 'required|exists:apertura_expensas,id',
+
+        ]);
+
+        // 🔁 VALIDAR LECTURA
+        if ($request->lectura_actual < $request->lectura_anterior) {
+            return back()->withErrors([
+                'lectura_actual' => 'La lectura actual no puede ser menor que la anterior.'
+            ])->withInput();
+        }
+
+        // 📊 CÁLCULOS
+        $lecturaPagar = $request->lectura_actual - $request->lectura_anterior;
+
+        if ($lecturaPagar < 0) {
+            $lecturaPagar = 0;
+        }
+
+        $total = $lecturaPagar * $request->prorrateo;
+
+        // 💰 CONSERVAR PAGOS EXISTENTES
+        $pagado = $expensa->pagado ?? 0;
+
+        $saldo = $total - $pagado;
+
+        if ($saldo < 0) {
+            $saldo = 0;
+        }
+
+        // 📌 ESTADO
+        if ($saldo == 0) {
+            $estado = 'PAGADO';
+        } elseif ($pagado > 0) {
+            $estado = 'PARCIAL';
+        } else {
+            $estado = 'PENDIENTE';
+        }
+
+        $expensa->update([
+
+            'apertura_expensa_id' => $request->apertura_expensa_id,
+
+            'lectura_anterior' => $request->lectura_anterior,
+            'lectura_actual' => $request->lectura_actual,
+            'lectura_pagar' => $lecturaPagar,
+            'prorrateo' => $request->prorrateo,
+
+            'total' => $total,
+            'saldo' => $saldo,
+            'estado' => $estado,
+
+        ]);
+
+        return redirect()
+            ->route('expensas_aguas.index')
+            ->with('success', 'Expensa de agua actualizada correctamente');
     }
 
     public function destroy($id)
@@ -171,17 +296,36 @@ class ExpensaAguaController extends Controller
         $departamento = Departamento::with('propietario')
             ->findOrFail($id);
 
-        $ultima = ExpensaAgua::where('departamento_id', $id)
-            ->where('edificio_id', session('edificio_id'))
+        $ultimaLectura = ExpensaAgua::where(
+            'departamento_id',
+            $id
+        )
+            ->where(
+                'edificio_id',
+                session('edificio_id')
+            )
             ->latest()
             ->first();
 
         return response()->json([
+            'propietario' => $departamento->propietario->nombres,
+            'propietario_id' => $departamento->propietario_id,
+            'lectura_anterior' => $ultimaLectura
+                ? $ultimaLectura->lectura_actual
+                : null,
 
-            'propietario' => $departamento->propietario->nombres ?? '',
+            'existe_lectura' => $ultimaLectura ? true : false
 
-            'lectura_anterior' => $ultima->lectura_actual ?? 0
+        ]);
 
+    }
+
+    public function getApertura($id)
+    {
+        $apertura = AperturaExpensa::findOrFail($id);
+
+        return response()->json([
+            'prorrateo_agua' => $apertura->prorrateo_agua
         ]);
     }
 }

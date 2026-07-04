@@ -22,9 +22,9 @@
 
 
         @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
         @endif
 
         <div class="card shadow p-3">
@@ -47,40 +47,40 @@
                 <tbody>
 
                     @forelse($propietarios as $prop)
-                    @if($prop->edificio_id == session('edificio_id'))
-                    <tr>
-                        <td>{{ $prop->nombres }}</td>
-                        <td>{{ $prop->apellido_paterno }}</td>
-                        <td>{{ $prop->apellido_materno }}</td>
-                        <td>{{ $prop->celular }}</td>
-                        <td>{{ $prop->correo }}</td>
-                        <td>{{ $prop->edificio->nombre ?? '-' }}</td>
-                        <td>
-                            <a href="{{ route('propietarios.edit', $prop->id) }}" class="btn btn-warning btn-sm"
-                                title="Editar Propietario">
-                                <i class="bi bi-pencil-square"></i>
-                        </td>
-                        <td> @if($prop->deuda_total > 0)
-                            <span class="badge bg-danger">
-                                {{ number_format($prop->deuda_total, 2) }} Bs
-                            </span>
-                            @else
-                            <span class="badge bg-success">
-                                {{ number_format($prop->deuda_total, 2) }} Bs
-                            </span>
-                            @endif
-                        </td>
-                    </tr>
-                    @endif
+                        @if($prop->edificio_id == session('edificio_id'))
+                            <tr>
+                                <td>{{ $prop->nombres }}</td>
+                                <td>{{ $prop->apellido_paterno }}</td>
+                                <td>{{ $prop->apellido_materno }}</td>
+                                <td>{{ $prop->celular }}</td>
+                                <td>{{ $prop->correo }}</td>
+                                <td>{{ $prop->edificio->nombre ?? '-' }}</td>
+                                <td>
+                                    <a href="{{ route('propietarios.edit', $prop->id) }}" class="btn btn-warning btn-sm"
+                                        title="Editar Propietario">
+                                        <i class="bi bi-pencil-square"></i>
+                                </td>
+                                <td> @if($prop->deuda_total > 0)
+                                    <span class="badge bg-danger">
+                                        {{ number_format($prop->deuda_total, 2) }} Bs
+                                    </span>
+                                @else
+                                        <span class="badge bg-success">
+                                            {{ number_format($prop->deuda_total, 2) }} Bs
+                                        </span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
                     @empty
 
-                    <tr>
+                        <tr>
 
-                        <td colspan="8" class="text-center">
-                            No existen propietarios registrados
-                        </td>
+                            <td colspan="8" class="text-center">
+                                No existen propietarios registrados
+                            </td>
 
-                    </tr>
+                        </tr>
 
                     @endforelse
 
@@ -89,6 +89,9 @@
 
             </table>
 
+            <div class="d-flex justify-content-center mt-3">
+                {{ $propietarios->links() }}
+            </div>
         </div>
 
     </div>

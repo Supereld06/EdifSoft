@@ -22,8 +22,6 @@ class ExpensaAgua extends Model
         'lectura_actual',
         'lectura_pagar',
         'prorrateo',
-        'pago'
-
     ];
 
     public function departamento()

@@ -55,61 +55,39 @@
                             <tr>
 
                                 <td>{{ $recibo->numero }}</td>
-
                                 <td>{{ $recibo->fecha }}</td>
-
                                 <td>
-
                                     {{ $recibo->propietario->nombres }}
-
-                                    {{ $recibo->propietario->apellidos }}
-
+                                    {{ $recibo->propietario->apellido_paterno }}
+                                    {{ $recibo->propietario->apellido_materno }}
                                 </td>
-
                                 <td>
-
                                     {{ $recibo->tienda->numero_tienda }}
-
                                 </td>
-
                                 <td>
-
                                     Bs {{ number_format($recibo->monto, 2) }}
-
                                 </td>
-
                                 <td>
-
                                     {{ $recibo->mes }}
-
                                 </td>
-
                                 <td>
-
                                     {{ $recibo->gestion }}
-
                                 </td>
-
                                 <td>
-
                                     {{ $recibo->tipo_pago }}
-
                                 </td>
 
                                 <td width="180">
 
                                     <a href="{{ route('recibos_tiendas.edit', $recibo->id) }}"
                                         class="btn btn-warning btn-sm">
-
                                         <i class="bi bi-pencil-square"></i>
 
                                     </a>
 
                                     <a href="{{ route('recibos_tiendas.pdf', $recibo->id) }}" target="_blank"
                                         class="btn btn-danger btn-sm">
-
                                         <i class="bi bi-file-earmark-pdf"></i>
-
                                     </a>
 
                                     <form action="{{ route('recibos_tiendas.destroy', $recibo->id) }}" method="POST"
@@ -133,23 +111,18 @@
                             </tr>
 
                         @empty
-
                             <tr>
-
                                 <td colspan="9" class="text-center">
-
                                     No existen recibos registrados.
-
                                 </td>
-
                             </tr>
 
                         @endforelse
-
                     </tbody>
-
                 </table>
-
+                <div class="d-flex justify-content-center mt-3">
+                    {{ $recibos->links() }}
+                </div>
             </div>
 
         </div>

@@ -12,7 +12,7 @@ class DepartamentoController extends Controller
     // Listado
     public function index()
     {
-        $departamentos = Departamento::with(['propietario', 'edificio'])->get();
+        $departamentos = Departamento::with(['propietario', 'edificio'])->orderBy('numero_departamento', 'asc')->paginate(12);
         return view('departamentos.index', compact('departamentos'));
     }
 

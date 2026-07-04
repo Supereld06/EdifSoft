@@ -28,6 +28,7 @@
 
                                 {{ $p->nombres }}
                                 {{ $p->apellido_paterno }}
+                                {{ $p->apellido_materno }}
 
                             </option>
 

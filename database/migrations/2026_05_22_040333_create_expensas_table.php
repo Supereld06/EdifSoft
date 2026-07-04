@@ -16,9 +16,7 @@ return new class extends Migration {
             $table->decimal('total', 10, 2);
             $table->decimal('pagado', 10, 2)->default(0);
             $table->decimal('saldo', 10, 2)->default(0);
-
             $table->string('estado');
-
             $table->foreignId('departamento_id')->constrained();
             $table->foreignId('propietario_id')->constrained();
             $table->foreignId('edificio_id')->constrained();

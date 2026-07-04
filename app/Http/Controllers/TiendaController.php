@@ -15,7 +15,6 @@ class TiendaController extends Controller
     public function index()
     {
         $tiendas = Tienda::with(['propietario', 'edificio'])->get();
-
         return view('tiendas.index', compact('tiendas'));
     }
 
@@ -24,9 +23,10 @@ class TiendaController extends Controller
      */
     public function create()
     {
-        $propietarios = Propietario::all();
+
         $edificios = Edificio::all();
         $edificio_id = session('edificio_id');
+        $propietarios = Propietario::with('edificio')->get();
 
         return view('tiendas.create', compact('propietarios', 'edificios', 'edificio_id'));
     }
@@ -55,10 +55,10 @@ class TiendaController extends Controller
      */
     public function edit(Tienda $tienda)
     {
-        $propietarios = Propietario::all();
+        $propietarios = Propietario::with('edificio')->get();
         $edificios = Edificio::all();
-
-        return view('tiendas.edit', compact('tienda', 'propietarios', 'edificios'));
+        $edificio_id = session('edificio_id');
+        return view('tiendas.edit', compact('tienda', 'propietarios', 'edificios', 'edificio_id'));
     }
 
     /**
