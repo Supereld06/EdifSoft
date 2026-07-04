@@ -42,7 +42,14 @@
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Correo</label>
-                        <input type="text" name="correo" class="form-control" required> 
+                        <input type="email" name="correo" class="form-control @error('correo') is-invalid @enderror"
+                            value="{{ old('correo') }}" required>
+
+                        @error('correo')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="col-md-6 mb-3">

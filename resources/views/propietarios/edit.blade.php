@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <x-slot name="header">
-            <h3>Editar Propietario</h3>
+        <h3>Editar Propietario</h3>
     </x-slot>
 
     <div class="container">
@@ -22,7 +22,8 @@
                         <label class="form-label">
                             Nombres del Propietario
                         </label>
-                        <input type="text" name="nombres" value="{{ $propietario->nombres }}" class="form-control" required>
+                        <input type="text" name="nombres" value="{{ $propietario->nombres }}" class="form-control"
+                            required>
                     </div>
                     <div class="col-md-6 mb-3">
 
@@ -69,14 +70,15 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
+                        <label class="form-label">Correo</label>
+                        <input type="email" name="correo" class="form-control @error('correo') is-invalid @enderror"
+                            value="{{ old('correo') }}" required>
 
-                        <label class="form-label">
-                            Correo
-                        </label>
-
-                        <input type="email" name="correo" value="{{ $propietario->correo }}" class="form-control"
-                            required>
-
+                        @error('correo')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="col-md-6 mb-3">

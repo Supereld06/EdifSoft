@@ -25,8 +25,6 @@ class PropietarioController extends Controller
                 $propietario->id
             )->sum('saldo');
 
-
-
             $deudaTiendas = ExpensaTienda::where(
                 'propietario_id',
                 $propietario->id
@@ -37,10 +35,16 @@ class PropietarioController extends Controller
                 $propietario->id
             )->sum('saldo');
 
+            $deudaAgua = ExpensaAgua::where(
+                'propietario_id',
+                $propietario->id
+            )->sum('saldo');
+
             $propietario->deuda_total =
                 $deudaDepartamentos +
                 $deudaTiendas +
-                $deudaEstacionamientos;
+                $deudaEstacionamientos +
+                $deudaAgua;
         }
         return view('propietarios.index', compact('propietarios'));
     }
@@ -63,9 +67,18 @@ class PropietarioController extends Controller
             'carnet' => 'required|string|max:20|unique:propietarios,carnet',
             'direccion' => 'required|string|max:500',
             'celular' => 'required|string|max:20',
-            'correo' => 'required|email|unique:propietarios,correo',
             'edificio_id' => 'required|exists:edificios,id'
         ]);
+
+        $request->validate(
+            [
+                'correo' => 'required|email',
+            ],
+            [
+                'correo.required' => 'Debe ingresar un correo electrónico.',
+                'correo.email' => 'Debe ingresar un correo electrónico válido.',
+            ]
+        );
 
         Propietario::create($request->all());
 
@@ -120,9 +133,9 @@ class PropietarioController extends Controller
             ->where('edificio_id', session('edificio_id'))
             ->get();
 
-            
 
-        
+
+
 
         $pdf = Pdf::loadView('propietarios.reporte', compact('propietarios'));
 
