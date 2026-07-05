@@ -14,7 +14,7 @@ class TiendaController extends Controller
      */
     public function index()
     {
-        $tiendas = Tienda::with(['propietario', 'edificio'])->get();
+        $tiendas = Tienda::with(['propietario', 'edificio'])->paginate(10);
         return view('tiendas.index', compact('tiendas'));
     }
 
