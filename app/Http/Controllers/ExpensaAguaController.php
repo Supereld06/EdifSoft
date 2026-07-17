@@ -141,7 +141,6 @@ class ExpensaAguaController extends Controller
         $estado =
 
             $saldo == 0
-
             ? 'PAGADO'
 
             : 'PENDIENTE';
