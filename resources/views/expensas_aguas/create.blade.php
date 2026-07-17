@@ -85,7 +85,7 @@
 
                     <div class="col-md-6 mb-3">
                         <label>Prorrateo</label>
-                        <input type="number" step="0.01" class="form-control" id="prorrateo" >
+                        <input type="number" step="0.01" class="form-control" id="prorrateo" name="prorrateo" >
                     </div>
 
                 </div>
