@@ -68,11 +68,11 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-info" tittle="Lectura Agua">
+                                    <a href="{{ route('expensas_aguas.lecturas', $apertura->id) }}" class="btn btn-info"
+                                        title="Lectura Agua">
                                         <i class="bi bi-droplet"></i>
                                     </a>
-                                    <a href="" class="btn btn-success"
-                                        title="Pago Agua">
+                                    <a href="" class="btn btn-success" title="Pago Agua">
                                         <i class="bi bi-cash-coin"></i>
                                     </a>
                                 </td>

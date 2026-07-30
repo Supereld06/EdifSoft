@@ -22,6 +22,15 @@ class EdificioSeeder extends Seeder
         'zona' => 'Zona Central',
         ]);
 
+        Edificio::create([
+        'nombre' => 'Edificio "Prueba"',
+        'direccion' => 'Av. J. N-688',
+        'numero_departamentos' => '200',
+        'pais' => 'Bolivia',
+        'ciudad' => 'Cocahamba',
+        'zona' => 'Zona Central',
+        ]);
+
     }
 
 }

@@ -327,4 +327,66 @@ class ExpensaAguaController extends Controller
             'prorrateo_agua' => $apertura->prorrateo_agua
         ]);
     }
+
+    public function lecturas($apertura)
+    {
+        $expensas = ExpensaAgua::with([
+            'departamento',
+            'propietario'
+        ])
+            ->where('edificio_id', session('edificio_id'))
+            ->where('apertura_expensa_id', $apertura)
+            ->orderBy('departamento_id')
+            ->get();
+
+        $apertura = AperturaExpensa::findOrFail($apertura);
+
+        return view(
+            'expensas_aguas.lecturas',
+            compact(
+                'expensas',
+                'apertura'
+            )
+        );
+    }
+
+    public function actualizarLectura(Request $request, $id)
+    {
+        $request->validate([
+            'lectura_anterior' => 'required|numeric|min:0',
+            'lectura_actual' => 'required|numeric|min:0',
+        ]);
+
+        $expensa = ExpensaAgua::where(
+            'edificio_id',
+            session('edificio_id')
+        )->findOrFail($id);
+
+        if ($request->lectura_actual < $request->lectura_anterior) {
+
+            return back()->withErrors([
+                'lectura_actual' => 'La lectura actual no puede ser menor que la lectura anterior.'
+            ]);
+
+        }
+
+        $consumo = $request->lectura_actual - $request->lectura_anterior;
+
+        $expensa->update([
+
+            'lectura_anterior' => $request->lectura_anterior,
+
+            'lectura_actual' => $request->lectura_actual,
+
+            'lectura_pagar' => $consumo,
+
+        ]);
+
+        return redirect()
+            ->back()
+            ->with(
+                'success',
+                'Lectura actualizada correctamente.'
+            );
+    }
 }
