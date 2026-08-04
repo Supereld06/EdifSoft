@@ -1,75 +1,154 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h3>Registrar Propietario</h3>
+        <h3>👤 Registrar Propietario</h3>
     </x-slot>
 
     <div class="container">
 
-        <div class="card shadow p-4">
+        <div class="card shadow">
 
-            <h4 class="mb-4">Nuevo Propietario</h4>
+            <div class="card-header bg-primary text-white">
 
-            <form method="POST" action="{{ route('propietarios.store') }}">
-                @csrf
+                <h5 class="mb-0">
+                    <i class="bi bi-person-plus"></i>
+                    Nuevo Propietario
+                </h5>
 
-                <div class="row">
+            </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Nombres del Propietario</label>
-                        <input type="text" name="nombres" class="form-control" required>
+            <div class="card-body">
+
+                <form method="POST" action="{{ route('propietarios.store') }}">
+
+                    @csrf
+
+                    <!-- FILA 1 -->
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Nombres
+                            </label>
+
+                            <input type="text" name="nombres" class="form-control" required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Apellido Paterno
+                            </label>
+
+                            <input type="text" name="apellido_paterno" class="form-control" required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Apellido Materno
+                            </label>
+
+                            <input type="text" name="apellido_materno" class="form-control" required>
+
+                        </div>
+
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Apellido Paterno</label>
-                        <input type="text" name="apellido_paterno" class="form-control" required>
+                    <!-- FILA 2 -->
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Nº de Carnet
+                            </label>
+
+                            <input type="text" name="carnet" class="form-control" required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Celular
+                            </label>
+
+                            <input type="text" name="celular" class="form-control" required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Correo Electrónico
+                            </label>
+
+                            <input type="email" name="correo" value="{{ old('correo') }}"
+                                class="form-control @error('correo') is-invalid @enderror" required>
+
+                            @error('correo')
+
+                                <div class="invalid-feedback">
+
+                                    {{ $message }}
+
+                                </div>
+
+                            @enderror
+
+                        </div>
+
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Apellido Materno</label>
-                        <input type="text" name="apellido_materno" class="form-control" required>
+                    <!-- FILA 3 -->
+
+                    <div class="row">
+
+                        <div class="col-md-12 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Dirección
+                            </label>
+
+                            <input type="text" name="direccion" class="form-control" required>
+
+                        </div>
+
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Numero de Carnet</label>
-                        <input type="text" name="carnet" class="form-control" required>
+                    <input type="hidden" name="edificio_id" value="{{ $edificio_id }}">
+
+                    <hr>
+
+                    <div class="d-flex justify-content-end">
+
+                        <a href="{{ route('propietarios.index') }}" class="btn btn-secondary me-2">
+
+                            <i class="bi bi-arrow-left"></i>
+
+                            Cancelar
+
+                        </a>
+
+                        <button type="submit" class="btn btn-success">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            Guardar
+
+                        </button>
+
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Direccion</label>
-                        <input type="text" name="direccion" class="form-control" required>
-                    </div>
+                </form>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Correo</label>
-                        <input type="email" name="correo" class="form-control @error('correo') is-invalid @enderror"
-                            value="{{ old('correo') }}" required>
-
-                        @error('correo')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Celular</label>
-                        <input type="text" name="celular" class="form-control" required>
-                    </div>
-
-                </div>
-
-                <input type="hidden" name="edificio_id" value="{{ $edificio_id }}">
-
-                <button class="btn btn-success">
-                    💾 Guardar
-                </button>
-
-                <a href="{{ route('propietarios.index') }}" class="btn btn-secondary">
-                    Cancelar
-                </a>
-
-            </form>
+            </div>
 
         </div>
 

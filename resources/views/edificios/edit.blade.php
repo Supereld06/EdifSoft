@@ -1,151 +1,188 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h3>Editar Edificio</h3>
+        <h3>🏢 Editar Edificio</h3>
     </x-slot>
 
-    <div class="container mt-5">
+    <div class="container">
 
-        <div class="row justify-content-center">
+        <div class="card shadow">
 
-            <div class="col-md-7">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <i class="bi bi-pencil-square"></i>
+                    Editar Edificio
+                </h5>
+            </div>
 
-                <div class="card shadow">
+            <div class="card-body">
 
-                    <div class="card-header text-center">
-                        <h3>Editar Edificio</h3>
+                <form method="POST" action="{{ route('edificios.update', $edificio->id) }}"
+                    enctype="multipart/form-data">
+
+                    @csrf
+                    @method('PUT')
+
+                    <!-- FILA 1 -->
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label">
+                                Nombre del edificio
+                            </label>
+
+                            <input type="text" name="nombre" value="{{ $edificio->nombre }}" class="form-control"
+                                required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label">
+                                Dirección
+                            </label>
+
+                            <input type="text" name="direccion" value="{{ $edificio->direccion }}" class="form-control"
+                                required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label">
+                                Nº Departamentos
+                            </label>
+
+                            <input type="number" name="numero_departamentos"
+                                value="{{ $edificio->numero_departamentos }}" class="form-control" required>
+
+                        </div>
+
                     </div>
 
-                    <div class="card-body">
+                    <!-- FILA 2 -->
 
-                        <form action="{{ route('edificios.update', $edificio->id) }}" method="POST"
-                            enctype="multipart/form-data">
+                    <div class="row">
 
-                            @csrf
-                            @method('PUT')
+                        <div class="col-md-4 mb-3">
 
-                            <div class="mb-3">
+                            <label class="form-label">
+                                País
+                            </label>
 
-                                <label class="form-label">
-                                    Nombre del edificio
-                                </label>
+                            <input type="text" name="pais" value="{{ $edificio->pais }}" class="form-control">
 
-                                <input type="text" name="nombre" value="{{ $edificio->nombre }}" class="form-control"
-                                    required>
+                        </div>
 
-                            </div>
+                        <div class="col-md-4 mb-3">
 
-                            <div class="mb-3">
+                            <label class="form-label">
+                                Ciudad
+                            </label>
 
-                                <label class="form-label">
-                                    Dirección
-                                </label>
+                            <input type="text" name="ciudad" value="{{ $edificio->ciudad }}" class="form-control">
 
-                                <input type="text" name="direccion" value="{{ $edificio->direccion }}"
-                                    class="form-control" required>
+                        </div>
 
-                            </div>
+                        <div class="col-md-4 mb-3">
 
-                            <div class="mb-3">
+                            <label class="form-label">
+                                Zona
+                            </label>
 
-                                <label class="form-label">
-                                    Número de departamentos
-                                </label>
+                            <input type="text" name="zona" value="{{ $edificio->zona }}" class="form-control">
 
-                                <input type="number" name="numero_departamentos"
-                                    value="{{ $edificio->numero_departamentos }}" class="form-control" required>
+                        </div>
 
-                            </div>
+                    </div>
 
-                            <div class="mb-3">
+                    <!-- FILA 3 -->
 
-                                <label class="form-label">
-                                    País
-                                </label>
+                    <div class="row">
 
-                                <input type="text" name="pais" value="{{ $edificio->pais }}" class="form-control">
+                        <div class="col-md-6 mb-3">
 
-                            </div>
+                            <label class="form-label">
+                                Imagen del edificio
+                            </label>
 
-                            <div class="mb-3">
+                            <input type="file" name="imagen_edificio" class="form-control">
 
-                                <label class="form-label">
-                                    Ciudad
-                                </label>
+                        </div>
 
-                                <input type="text" name="ciudad" value="{{ $edificio->ciudad }}" class="form-control">
+                        <div class="col-md-6 mb-3">
 
-                            </div>
+                            <label class="form-label">
+                                Logo del edificio
+                            </label>
 
-                            <div class="mb-3">
+                            <input type="file" name="logo_edificio" class="form-control">
 
-                                <label class="form-label">
-                                    Zona
-                                </label>
+                        </div>
 
-                                <input type="text" name="zona" value="{{ $edificio->zona }}" class="form-control">
+                    </div>
 
-                            </div>
+                    <!-- FILA 4 -->
 
-                            <div class="mb-3">
+                    <div class="row">
 
-                                <label class="form-label">
-                                    Imagen del edificio
-                                </label>
-
-                                <input type="file" name="imagen_edificio" class="form-control">
-
-                            </div>
+                        <div class="col-md-6 text-center">
 
                             @if($edificio->imagen_edificio)
 
-                                <div class="mb-3 text-center">
+                                <label class="form-label d-block">
+                                    Imagen Actual
+                                </label>
 
-                                    <img src="{{ asset('storage/' . $edificio->imagen_edificio) }}" width="250"
-                                        class="img-thumbnail">
-
-                                </div>
+                                <img src="{{ asset('storage/' . $edificio->imagen_edificio) }}" class="img-thumbnail"
+                                    style="max-height:180px;">
 
                             @endif
 
-                            <div class="mb-3">
+                        </div>
 
-                                <label class="form-label">
-                                    Logo del edificio
-                                </label>
-
-                                <input type="file" name="logo_edificio" class="form-control">
-
-                            </div>
+                        <div class="col-md-6 text-center">
 
                             @if($edificio->logo_edificio)
 
-                                <div class="mb-3 text-center">
+                                <label class="form-label d-block">
+                                    Logo Actual
+                                </label>
 
-                                    <img src="{{ asset('storage/' . $edificio->logo_edificio) }}" width="120"
-                                        class="img-thumbnail">
-
-                                </div>
+                                <img src="{{ asset('storage/' . $edificio->logo_edificio) }}" class="img-thumbnail"
+                                    style="max-height:180px;">
 
                             @endif
 
-                            <div class="d-flex justify-content-between">
-
-                                <a href="{{ route('edificios.index') }}" class="btn btn-secondary">
-                                    Volver
-                                </a>
-
-                                <button type="submit" class="btn btn-success">
-                                    Actualizar
-                                </button>
-
-                            </div>
-
-                        </form>
+                        </div>
 
                     </div>
 
-                </div>
+                    <hr>
+
+                    <div class="d-flex justify-content-end">
+
+                        <a href="{{ route('edificios.index') }}" class="btn btn-secondary me-2">
+
+                            <i class="bi bi-arrow-left"></i>
+
+                            Cancelar
+
+                        </a>
+
+                        <button type="submit" class="btn btn-success">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            Actualizar
+
+                        </button>
+
+                    </div>
+
+                </form>
 
             </div>
 

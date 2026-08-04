@@ -12,18 +12,89 @@
     <div class="container py-4">
 
         <div class="mb-3">
-            <a href="" class="btn btn-success">
-                Calcular Prorrateo
-            </a>
+            <form action="{{ route('expensas_aguas.calcularProrrateo', $apertura->id) }}" method="POST">
+
+                @csrf
+
+                <button class="btn btn-success">
+
+                    <i class="bi bi-calculator"></i>
+
+                    Calcular Prorrateo
+
+                </button>
+            </form>
             <a href="{{ route('pago-expensas.index') }}" class="btn btn-secondary">
                 Atras
             </a>
+                <div class="text-end mt-2">
+
+                    @if($apertura->prorrateo_agua > 0)
+
+                        <div>
+
+                            <span class="badge bg-success fs-6">
+
+                                <i class="bi bi-calculator"></i>
+
+                                Prorrateo:
+                                 {{ number_format($apertura->prorrateo_agua, 4) }}
+
+                            </span>
+
+                        </div>
+
+                    @else
+
+                        <div>
+
+                            <span class="badge bg-warning text-dark fs-6">
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                Prorrateo aún no definido
+
+                            </span>
+
+                        </div>
+
+                    @endif
+
+                    <div class="mt-2">
+
+                        <span class="badge bg-info fs-6">
+
+                            <i class="bi bi-droplet-half"></i>
+
+                            Consumo Total:
+                            {{ number_format($consumoTotal, 2) }} m³
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+       
+
+
+
         </div>
 
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
+        @endif
+
+        @if(session('error'))
+
+            <div class="alert alert-danger">
+
+                {{ session('error') }}
+
+            </div>
+
         @endif
 
         <div class="card shadow">

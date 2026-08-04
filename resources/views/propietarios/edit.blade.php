@@ -1,132 +1,218 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h3>Editar Propietario</h3>
+        <h3>👤 Editar Propietario</h3>
     </x-slot>
 
     <div class="container">
 
-        <div class="card shadow p-4">
+        <div class="card shadow">
 
-            <h4 class="mb-4">
-                Editar Propietario
-            </h4>
+            <div class="card-header bg-warning text-dark">
 
-            <form method="POST" action="{{ route('propietarios.update', $propietario->id) }}">
+                <h5 class="mb-0">
+                    <i class="bi bi-pencil-square"></i>
+                    Editar Propietario
+                </h5>
 
-                @csrf
-                @method('PUT')
+            </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">
-                            Nombres del Propietario
-                        </label>
-                        <input type="text" name="nombres" value="{{ $propietario->nombres }}" class="form-control"
-                            required>
-                    </div>
-                    <div class="col-md-6 mb-3">
+            <div class="card-body">
 
-                        <label class="form-label">
-                            Apellido Paterno
-                        </label>
+                <form method="POST" action="{{ route('propietarios.update', $propietario->id) }}">
 
-                        <input type="text" name="apellido_paterno" value="{{ $propietario->apellido_paterno }}"
-                            class="form-control" required>
+                    @csrf
+                    @method('PUT')
 
-                    </div>
+                    <!-- FILA 1 -->
 
-                    <div class="col-md-6 mb-3">
+                    <div class="row">
 
-                        <label class="form-label">
-                            Apellido Materno
-                        </label>
+                        <div class="col-md-4 mb-3">
 
-                        <input type="text" name="apellido_materno" value="{{ $propietario->apellido_materno }}"
-                            class="form-control" required>
+                            <label class="form-label fw-bold">
+                                Nombres
+                            </label>
 
-                    </div>
+                            <input
+                                type="text"
+                                name="nombres"
+                                value="{{ old('nombres', $propietario->nombres) }}"
+                                class="form-control"
+                                required>
 
-                    <div class="col-md-6 mb-3">
+                        </div>
 
-                        <label class="form-label">
-                            Número de Carnet
-                        </label>
+                        <div class="col-md-4 mb-3">
 
-                        <input type="text" name="carnet" value="{{ $propietario->carnet }}" class="form-control"
-                            required>
+                            <label class="form-label fw-bold">
+                                Apellido Paterno
+                            </label>
 
-                    </div>
+                            <input
+                                type="text"
+                                name="apellido_paterno"
+                                value="{{ old('apellido_paterno', $propietario->apellido_paterno) }}"
+                                class="form-control"
+                                required>
 
-                    <div class="col-md-6 mb-3">
+                        </div>
 
-                        <label class="form-label">
-                            Dirección
-                        </label>
+                        <div class="col-md-4 mb-3">
 
-                        <input type="text" name="direccion" value="{{ $propietario->direccion }}" class="form-control"
-                            required>
+                            <label class="form-label fw-bold">
+                                Apellido Materno
+                            </label>
 
-                    </div>
+                            <input
+                                type="text"
+                                name="apellido_materno"
+                                value="{{ old('apellido_materno', $propietario->apellido_materno) }}"
+                                class="form-control"
+                                required>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Correo</label>
-                        <input type="email" name="correo" class="form-control @error('correo') is-invalid @enderror"
-                            value="{{ old('correo') }}" required>
-
-                        @error('correo')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-                            Celular
-                        </label>
-
-                        <input type="text" name="celular" value="{{ $propietario->celular }}" class="form-control"
-                            required>
+                        </div>
 
                     </div>
 
-                    <div class="col-md-6 mb-3">
+                    <!-- FILA 2 -->
 
-                        <label class="form-label">
-                            Edificio
-                        </label>
+                    <div class="row">
 
-                        <select name="edificio_id" class="form-control" required>
+                        <div class="col-md-4 mb-3">
 
-                            @foreach($edificios as $edificio)
+                            <label class="form-label fw-bold">
+                                Nº de Carnet
+                            </label>
 
-                                <option value="{{ $edificio->id }}" {{ $propietario->edificio_id == $edificio->id ? 'selected' : '' }}>
+                            <input
+                                type="text"
+                                name="carnet"
+                                value="{{ old('carnet', $propietario->carnet) }}"
+                                class="form-control"
+                                required>
 
-                                    {{ $edificio->nombre }}
+                        </div>
 
-                                </option>
+                        <div class="col-md-4 mb-3">
 
-                            @endforeach
+                            <label class="form-label fw-bold">
+                                Celular
+                            </label>
 
-                        </select>
+                            <input
+                                type="text"
+                                name="celular"
+                                value="{{ old('celular', $propietario->celular) }}"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Correo Electrónico
+                            </label>
+
+                            <input
+                                type="email"
+                                name="correo"
+                                value="{{ old('correo', $propietario->correo) }}"
+                                class="form-control @error('correo') is-invalid @enderror"
+                                required>
+
+                            @error('correo')
+
+                                <div class="invalid-feedback">
+
+                                    {{ $message }}
+
+                                </div>
+
+                            @enderror
+
+                        </div>
 
                     </div>
 
-                </div>
+                    <!-- FILA 3 -->
 
-                <button class="btn btn-success">
-                    Actualizar
-                </button>
+                    <div class="row">
 
-                <a href="{{ route('propietarios.index') }}" class="btn btn-secondary">
+                        <div class="col-md-8 mb-3">
 
-                    Cancelar
+                            <label class="form-label fw-bold">
+                                Dirección
+                            </label>
 
-                </a>
+                            <input
+                                type="text"
+                                name="direccion"
+                                value="{{ old('direccion', $propietario->direccion) }}"
+                                class="form-control"
+                                required>
 
-            </form>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Edificio
+                            </label>
+
+                            <select
+                                name="edificio_id"
+                                class="form-select"
+                                required>
+
+                                @foreach($edificios as $edificio)
+
+                                    <option
+                                        value="{{ $edificio->id }}"
+                                        {{ old('edificio_id', $propietario->edificio_id) == $edificio->id ? 'selected' : '' }}>
+
+                                        {{ $edificio->nombre }}
+
+                                    </option>
+
+                                @endforeach
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-end">
+
+                        <a
+                            href="{{ route('propietarios.index') }}"
+                            class="btn btn-secondary me-2">
+
+                            <i class="bi bi-arrow-left"></i>
+
+                            Cancelar
+
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn btn-success">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            Actualizar
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 

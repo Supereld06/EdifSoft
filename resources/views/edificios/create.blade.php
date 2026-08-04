@@ -1,96 +1,149 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h3>Registrar Edificio</h3>
+        <h3>🏢 Registrar Edificio</h3>
     </x-slot>
 
     <div class="container">
 
-        <div class="card shadow p-4">
+        <div class="card shadow">
 
-            <h4 class="mb-4">Nuevo Edificio</h4>
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-building"></i>
+                    Nuevo Edificio
+                </h5>
+            </div>
 
-            <form method="POST" action="{{ route('edificios.store') }}" enctype="multipart/form-data">
+            <div class="card-body">
 
-                @csrf
+                <form method="POST" action="{{ route('edificios.store') }}" enctype="multipart/form-data">
 
-                <div class="mb-3">
-                    <label class="form-label">
-                        Nombre del edificio
-                    </label>
+                    @csrf
 
-                    <input type="text" name="nombre" class="form-control" required>
-                </div>
+                   
 
-                <div class="mb-3">
-                    <label class="form-label">
-                        Dirección
-                    </label>
+                    <div class="row">
 
-                    <input type="text" name="direccion" class="form-control" required>
-                </div>
+                        <div class="col-md-4 mb-3">
 
-                <div class="mb-3">
-                    <label class="form-label">
-                        Número de departamentos
-                    </label>
+                            <label class="form-label">
+                                Nombre del edificio
+                            </label>
 
-                    <input type="number" name="numero_departamentos" class="form-control" required>
-                </div>
+                            <input type="text" name="nombre" class="form-control" required>
 
-                <div class="mb-3">
-                    <label class="form-label">
-                        País
-                    </label>
+                        </div>
 
-                    <input type="text" name="pais" class="form-control">
-                </div>
+                        <div class="col-md-4 mb-3">
 
-                <div class="mb-3">
-                    <label class="form-label">
-                        Ciudad
-                    </label>
+                            <label class="form-label">
+                                Dirección
+                            </label>
 
-                    <input type="text" name="ciudad" class="form-control">
-                </div>
+                            <input type="text" name="direccion" class="form-control" required>
 
-                <div class="mb-3">
-                    <label class="form-label">
-                        Zona
-                    </label>
+                        </div>
 
-                    <input type="text" name="zona" class="form-control">
-                </div>
+                        <div class="col-md-4 mb-3">
 
-                <div class="mb-3">
+                            <label class="form-label">
+                                Nº Departamentos
+                            </label>
 
-                    <label class="form-label">
-                        Imagen del edificio
-                    </label>
+                            <input type="number" name="numero_departamentos" class="form-control" required>
 
-                    <input type="file" name="imagen_edificio" class="form-control">
+                        </div>
 
-                </div>
+                    </div>
 
-                <div class="mb-3">
+                    <!-- FILA 2 -->
 
-                    <label class="form-label">
-                        Logo del edificio
-                    </label>
+                    <div class="row">
 
-                    <input type="file" name="logo_edificio" class="form-control">
+                        <div class="col-md-4 mb-3">
 
-                </div>
+                            <label class="form-label">
+                                País
+                            </label>
 
-                <button class="btn btn-primary">
-                    Guardar
-                </button>
+                            <input type="text" name="pais" class="form-control">
 
-                <a href="{{ route('edificios.index') }}" class="btn btn-secondary">
-                    Cancelar
-                </a>
+                        </div>
 
-            </form>
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label">
+                                Ciudad
+                            </label>
+
+                            <input type="text" name="ciudad" class="form-control">
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label">
+                                Zona
+                            </label>
+
+                            <input type="text" name="zona" class="form-control">
+
+                        </div>
+
+                    </div>
+
+                    <!-- FILA 3 -->
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Imagen del edificio
+                            </label>
+
+                            <input type="file" name="imagen_edificio" class="form-control">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Logo del edificio
+                            </label>
+
+                            <input type="file" name="logo_edificio" class="form-control">
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-end">
+
+                        <a href="{{ route('edificios.index') }}" class="btn btn-secondary me-2">
+
+                            <i class="bi bi-arrow-left"></i>
+
+                            Cancelar
+
+                        </a>
+
+                        <button type="submit" class="btn btn-success">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            Guardar
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 

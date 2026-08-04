@@ -1,78 +1,151 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h3>Registrar Estacionamiento</h3>
+        <h3>🚗 Registrar Estacionamiento</h3>
     </x-slot>
 
     <div class="container">
 
-        <div class="card shadow p-4">
+        <div class="card shadow">
 
-            <form action="{{ route('estacionamientos.store') }}" method="POST">
+            <div class="card-header bg-primary text-white">
 
-                @csrf
+                <h5 class="mb-0">
+                    <i class="bi bi-p-square"></i>
+                    Nuevo Estacionamiento
+                </h5>
 
-                <div class="mb-3">
-                    <label>Tipo de Estacionamiento</label>
-                    <input type="text"
-                        name="tipo_estacionamiento"
-                        class="form-control"
-                        required>
-                </div>
+            </div>
 
-                <div class="mb-3">
-                    <label>Número de Estacionamiento</label>
-                    <input type="text"
-                        name="numero_estacionamiento"
-                        class="form-control"
-                        required>
-                </div>
+            <div class="card-body">
 
-                <div class="mb-3">
-                    <label>Ubicación</label>
-                    <input type="text"
-                        name="ubicacion"
-                        class="form-control">
-                </div>
+                <form action="{{ route('estacionamientos.store') }}" method="POST">
 
-                <div class="mb-3">
-                    <label>Detalle</label>
-                    <textarea name="detalle"
-                        class="form-control"></textarea>
-                </div>
+                    @csrf
 
-                <div class="mb-3">
+                    <!-- FILA 1 -->
 
-                    <label>Propietario</label>
+                    <div class="row">
 
-                    <select name="propietario_id" class="form-control">
+                        <div class="col-md-4 mb-3">
 
-                        @foreach($propietarios as $propietario)
+                            <label class="form-label fw-bold">
+                                Tipo de Estacionamiento
+                            </label>
 
-                        <option value="{{ $propietario->id }}">
-                            {{ $propietario->nombres }}
-                            {{ $propietario->apellido_paterno }}
-                        </option>
+                            <input type="text" name="tipo_estacionamiento" class="form-control" required>
 
-                        @endforeach
+                        </div>
 
-                    </select>
+                        <div class="col-md-4 mb-3">
 
-                </div>
+                            <label class="form-label fw-bold">
+                                Número de Estacionamiento
+                            </label>
 
-                <button type="submit" class="btn btn-success">
-                    Guardar
-                </button>
+                            <input type="text" name="numero_estacionamiento" class="form-control" required>
 
-                <button type="button"
-                    class="btn btn-secondary"
-                    onclick="window.history.back()">
+                        </div>
 
-                    Cancelar
+                        <div class="col-md-4 mb-3">
 
-                </button>
+                            <label class="form-label fw-bold">
+                                Ubicación
+                            </label>
 
-            </form>
+                            <input type="text" name="ubicacion" class="form-control">
+
+                        </div>
+
+                    </div>
+
+                    <!-- FILA 2 -->
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Propietario
+                            </label>
+
+                            <select name="propietario_id" class="form-select" required>
+
+                                <option value="">
+                                    Seleccione un propietario...
+                                </option>
+
+                                @foreach($propietarios as $propietario)
+
+                                    <option value="{{ $propietario->id }}">
+
+                                        {{ $propietario->nombres }}
+                                        {{ $propietario->apellido_paterno }}
+                                        {{ $propietario->apellido_materno }}
+
+                                    </option>
+
+                                @endforeach
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Edificio
+                            </label>
+
+                            <input type="text" class="form-control" value="{{ session('edificio_nombre') }}" readonly>
+
+                            <input type="hidden" name="edificio_id" value="{{ session('edificio_id') }}">
+
+                        </div>
+
+                    </div>
+
+                    <!-- FILA 3 -->
+
+                    <div class="row">
+
+                        <div class="col-md-12 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Detalle
+                            </label>
+
+                            <textarea name="detalle" rows="4" class="form-control"></textarea>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-end">
+
+                        <a href="{{ route('estacionamientos.index') }}" class="btn btn-secondary me-2">
+
+                            <i class="bi bi-arrow-left"></i>
+
+                            Cancelar
+
+                        </a>
+
+                        <button type="submit" class="btn btn-success">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            Guardar
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 

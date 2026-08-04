@@ -67,7 +67,6 @@ class AperturaExpensaController extends Controller
             'expensa_tiendas' => 'required|numeric',
             'expensa_parqueo' => 'required|numeric',
             'factura_agua' => 'required|numeric',
-            'prorrateo_agua' => 'required|numeric',
             'edificio_id' => 'required|exists:edificios,id',
 
         ]);
@@ -96,7 +95,7 @@ class AperturaExpensaController extends Controller
             'expensa_tiendas' => $request->expensa_tiendas,
             'expensa_parqueo' => $request->expensa_parqueo,
             'factura_agua' => $request->factura_agua,
-            'prorrateo_agua' => $request->prorrateo_agua,
+            'prorrateo_agua' => 0,
             'edificio_id' => $request->edificio_id,
 
         ]);

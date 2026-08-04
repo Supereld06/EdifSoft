@@ -1,97 +1,211 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h3>Editar Departamento</h3>
+        <h3>🏠 Editar Departamento</h3>
     </x-slot>
 
     <div class="container">
 
-        <div class="card shadow p-4">
+        <div class="card shadow">
 
-            <h4 class="mb-4">Editar Departamento</h4>
+            <div class="card-header bg-warning text-dark">
 
-            <form method="POST" action="{{ route('departamentos.update', $departamento->id) }}">
+                <h5 class="mb-0">
+                    <i class="bi bi-pencil-square"></i>
+                    Editar Departamento
+                </h5>
 
-                @csrf
-                @method('PUT')
+            </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Tipo de Departamento</label>
+            <div class="card-body">
 
-                    <select name="tipo_departamento" class="form-control" required>
+                <form method="POST" action="{{ route('departamentos.update', $departamento->id) }}">
 
-                        <option value="Mono Ambiente" {{ $departamento->tipo_departamento == 'Mono Ambiente' ? 'selected' : '' }}>
-                            Mono Ambiente
-                        </option>
+                    @csrf
+                    @method('PUT')
 
-                        <option value="2 Dormitorios" {{ $departamento->tipo_departamento == '2 Dormitorios' ? 'selected' : '' }}>
-                            2 Dormitorios
-                        </option>
+                    <!-- FILA 1 -->
 
-                        <option value="3 Dormitorios" {{ $departamento->tipo_departamento == '3 Dormitorios' ? 'selected' : '' }}>
-                            3 Dormitorios
-                        </option>
+                    <div class="row">
 
-                    </select>
-                </div>
+                        <div class="col-md-4 mb-3">
 
-                <div class="mb-3">
-                    <label class="form-label">Número de Departamento</label>
+                            <label class="form-label fw-bold">
+                                Tipo de Departamento
+                            </label>
 
-                    <input type="text" name="numero_departamento" value="{{ $departamento->numero_departamento }}"
-                        class="form-control" required>
-                </div>
+                            <select
+                                name="tipo_departamento"
+                                class="form-select"
+                                required>
 
-                <div class="mb-3">
-                    <label class="form-label">Piso</label>
+                                <option value="Mono Ambiente"
+                                    {{ $departamento->tipo_departamento == 'Mono Ambiente' ? 'selected' : '' }}>
+                                    Mono Ambiente
+                                </option>
 
-                    <input type="number" name="piso" value="{{ $departamento->piso }}" class="form-control" required>
-                </div>
+                                <option value="2 Dormitorios"
+                                    {{ $departamento->tipo_departamento == '2 Dormitorios' ? 'selected' : '' }}>
+                                    2 Dormitorios
+                                </option>
 
-                <div class="mb-3">
-                    <label class="form-label">Co-Propietario</label>
+                                <option value="3 Dormitorios"
+                                    {{ $departamento->tipo_departamento == '3 Dormitorios' ? 'selected' : '' }}>
+                                    3 Dormitorios
+                                </option>
 
-                    <input type="text" name="co_propietario" value="{{ $departamento->co_propietario }}"
-                        class="form-control">
-                </div>
+                            </select>
 
-                <div class="mb-3">
-                    <label class="form-label">Observaciones</label>
+                        </div>
 
-                    <textarea name="observaciones" class="form-control"
-                        rows="4">{{ $departamento->observaciones }}</textarea>
-                </div>
+                        <div class="col-md-4 mb-3">
 
-                <div class="mb-3">
-                    <label class="form-label">Propietario</label>
+                            <label class="form-label fw-bold">
+                                Número de Departamento
+                            </label>
 
-                    <select name="propietario_id" class="form-control" required>
+                            <input
+                                type="text"
+                                name="numero_departamento"
+                                value="{{ old('numero_departamento', $departamento->numero_departamento) }}"
+                                class="form-control"
+                                required>
 
-                        @foreach($propietarios as $prop)
+                        </div>
 
-                            <option value="{{ $prop->id }}" {{ $departamento->propietario_id == $prop->id ? 'selected' : '' }}>
+                        <div class="col-md-4 mb-3">
 
-                                {{ $prop->nombres }}
-                                {{ $prop->apellido_paterno }}
+                            <label class="form-label fw-bold">
+                                Piso
+                            </label>
 
-                            </option>
+                            <input
+                                type="number"
+                                name="piso"
+                                value="{{ old('piso', $departamento->piso) }}"
+                                class="form-control"
+                                required>
 
-                        @endforeach
+                        </div>
 
-                    </select>
-                </div>
+                    </div>
 
-                <input type="hidden" name="edificio_id" value="{{ $departamento->edificio_id }}">
+                    <!-- FILA 2 -->
 
-                <button class="btn btn-success">
-                    Actualizar
-                </button>
+                    <div class="row">
 
-                <a href="{{ route('departamentos.index') }}" class="btn btn-secondary">
-                    Cancelar
-                </a>
+                        <div class="col-md-4 mb-3">
 
-            </form>
+                            <label class="form-label fw-bold">
+                                Propietario
+                            </label>
+
+                            <select
+                                name="propietario_id"
+                                class="form-select"
+                                required>
+
+                                @foreach($propietarios as $prop)
+
+                                    <option
+                                        value="{{ $prop->id }}"
+                                        {{ old('propietario_id', $departamento->propietario_id) == $prop->id ? 'selected' : '' }}>
+
+                                        {{ $prop->nombres }}
+                                        {{ $prop->apellido_paterno }}
+                                        {{ $prop->apellido_materno }}
+
+                                    </option>
+
+                                @endforeach
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Co-Propietario
+                            </label>
+
+                            <input
+                                type="text"
+                                name="co_propietario"
+                                value="{{ old('co_propietario', $departamento->co_propietario) }}"
+                                class="form-control">
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Edificio
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="{{ session('edificio_nombre') }}"
+                                readonly>
+
+                            <input
+                                type="hidden"
+                                name="edificio_id"
+                                value="{{ $departamento->edificio_id }}">
+
+                        </div>
+
+                    </div>
+
+                    <!-- FILA 3 -->
+
+                    <div class="row">
+
+                        <div class="col-md-12 mb-3">
+
+                            <label class="form-label fw-bold">
+                                Observaciones
+                            </label>
+
+                            <textarea
+                                name="observaciones"
+                                rows="4"
+                                class="form-control">{{ old('observaciones', $departamento->observaciones) }}</textarea>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-end">
+
+                        <a
+                            href="{{ route('departamentos.index') }}"
+                            class="btn btn-secondary me-2">
+
+                            <i class="bi bi-arrow-left"></i>
+
+                            Cancelar
+
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn btn-success">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            Actualizar
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 

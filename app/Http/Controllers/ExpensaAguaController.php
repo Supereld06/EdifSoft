@@ -328,24 +328,30 @@ class ExpensaAguaController extends Controller
         ]);
     }
 
-    public function lecturas($apertura)
+    public function lecturas($aperturaId)
     {
+        $apertura = AperturaExpensa::findOrFail($aperturaId);
+
         $expensas = ExpensaAgua::with([
             'departamento',
             'propietario'
         ])
+            ->where('apertura_expensa_id', $apertura->id)
             ->where('edificio_id', session('edificio_id'))
-            ->where('apertura_expensa_id', $apertura)
             ->orderBy('departamento_id')
             ->get();
 
-        $apertura = AperturaExpensa::findOrFail($apertura);
+        $consumoTotal = ExpensaAgua::where(
+            'apertura_expensa_id',
+            $apertura->id
+        )->sum('lectura_pagar');
 
         return view(
             'expensas_aguas.lecturas',
             compact(
                 'expensas',
-                'apertura'
+                'apertura',
+                'consumoTotal'
             )
         );
     }
@@ -389,4 +395,112 @@ class ExpensaAguaController extends Controller
                 'Lectura actualizada correctamente.'
             );
     }
+
+
+    public function calcularProrrateo($aperturaId)
+    {
+        $apertura = AperturaExpensa::where(
+            'edificio_id',
+            session('edificio_id')
+        )->findOrFail($aperturaId);
+
+        // Verificar si existen lecturas pendientes
+        $pendientes = ExpensaAgua::where(
+            'apertura_expensa_id',
+            $apertura->id
+        )
+            ->where(
+                'lectura_actual',
+                0
+            )
+            ->count();
+
+        if ($pendientes > 0) {
+
+            return back()->with(
+                'error',
+                'Aún faltan lecturas por realizar.'
+            );
+
+        }
+
+        $totalConsumo = ExpensaAgua::where(
+            'apertura_expensa_id',
+            $apertura->id
+        )->sum('lectura_pagar');
+
+        if ($totalConsumo <= 0) {
+
+            return back()->with(
+                'error',
+                'El consumo total es cero.'
+            );
+
+        }
+
+        $prorrateo =
+
+            $apertura->factura_agua / $totalConsumo;
+
+        $apertura->update([
+            'prorrateo_agua' => round($prorrateo, 4)
+        ]);
+
+        // Actualizar todas las expensas del mes
+        $expensas = ExpensaAgua::where(
+            'apertura_expensa_id',
+            $apertura->id
+        )->get();
+
+        foreach ($expensas as $expensa) {
+
+            $total = round(
+                $expensa->lectura_pagar * $prorrateo,
+                2
+            );
+
+            // Mantener pagos ya realizados
+            $pagado = $expensa->pagado;
+
+            $saldo = $total - $pagado;
+
+            if ($saldo < 0) {
+                $saldo = 0;
+            }
+
+            if ($saldo == 0) {
+
+                $estado = 'PAGADO';
+
+            } elseif ($pagado > 0) {
+
+                $estado = 'PARCIAL';
+
+            } else {
+
+                $estado = 'PENDIENTE';
+
+            }
+
+            $expensa->update([
+
+                'prorrateo' => round($prorrateo, 4),
+
+                'total' => $total,
+
+                'saldo' => $saldo,
+
+                'estado' => $estado,
+
+            ]);
+        }
+
+
+        return back()->with(
+            'success',
+            'Prorrateo calculado y expensas de agua actualizadas correctamente.'
+        );
+    }
+
+
 }
