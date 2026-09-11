@@ -1,11 +1,18 @@
-/* SOLO layout, no estilos visuales globales */
+/* =========================================================
+   CONFIGURACIÓN GENERAL
+   ========================================================= */
+
 body {
     position: relative;
     min-height: 100vh;
-    font-size: 20px;
+    font-size: 16px;
 }
 
-/* Fondo con opacidad */
+
+/* =========================================================
+   FONDO
+   ========================================================= */
+
 body::before {
     content: "";
     position: fixed;
@@ -14,23 +21,33 @@ body::before {
     width: 100%;
     height: 100%;
 
-    background-image: url('../images/fondo.jpg'); 
+    background-image: url('../images/fondo.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 
-    opacity: 0.50; /* 85% de opacidad */    
-
+    opacity: 0.50;
     z-index: -1;
 }
 
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
 .header-fondo {
-    background-color: rgba(200, 200, 200, 0.54); /* plomo claro transparente */
-    padding: 5px 5px;
+    background-color: rgba(200, 200, 200, 0.54);
+    padding: 5px;
     border-radius: 8px;
     text-align: center;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
+
+
+/* =========================================================
+   LAYOUT PRINCIPAL
+   ========================================================= */
 
 .layout {
     display: flex;
@@ -41,7 +58,15 @@ body::before {
     width: 250px;
 }
 
-/* usa clases propias */
+.content {
+    flex: 1;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
 .sidebar-custom .nav-link {
     color: #ddd;
 }
@@ -57,11 +82,11 @@ body::before {
     margin-bottom: 15px;
 }
 
-.content {
-    flex: 1;
-}
 
-/* CONTENEDOR CENTRAL */
+/* =========================================================
+   CONTENEDOR CENTRAL
+   ========================================================= */
+
 .contenedor {
     width: 90%;
     max-width: 900px;
@@ -70,14 +95,22 @@ body::before {
     text-align: center;
 }
 
-/* GRID */
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
 }
 
-/* CARD PERSONALIZADA (NO usar .card directo) */
+
+/* =========================================================
+   CARDS PERSONALIZADAS
+   ========================================================= */
+
 .card-custom {
     padding: 25px;
     cursor: pointer;
@@ -93,9 +126,360 @@ body::before {
     margin-bottom: 10px;
 }
 
-.text-muted{
+
+/* =========================================================
+   TEXTOS
+   ========================================================= */
+
+.text-muted {
     font-size: 12px;
     font-family: Consolas, "Courier New", monospace;
 }
 
 
+/* =========================================================
+   BUSCADOR DE PROPIETARIOS
+   ========================================================= */
+
+#buscarPropietario {
+    font-size: 1rem;
+    height: 42px;
+}
+
+#btnBuscar,
+#limpiarBusqueda {
+    height: 42px;
+    width: 48px;
+}
+
+#buscarPropietario+.input-group-text,
+.input-group-text {
+    height: 42px;
+}
+
+
+/* =========================================================
+   TABLA
+   ========================================================= */
+
+.table {
+    font-size: 1rem;
+}
+
+.table thead th {
+    font-size: 0.92rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    vertical-align: middle;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    white-space: nowrap;
+}
+
+.table tbody td {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.nombre-propietario {
+    font-size: 1rem;
+}
+
+.table-hover tbody tr {
+    transition: all 0.15s ease;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+
+/* =========================================================
+   BOTONES GENERALES
+   ========================================================= */
+
+.btn {
+    border-radius: 8px;
+}
+
+.btn-outline-warning:hover {
+    color: #fff;
+}
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.badge {
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   FORMULARIO PROPIETARIO
+   ========================================================= */
+
+.formulario-propietario {
+    border-radius: 14px;
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.55);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+
+/* =========================================================
+   CUERPO DEL FORMULARIO
+   ========================================================= */
+
+.formulario-propietario .card-body {
+    background: rgba(255, 255, 255, 0.38);
+    padding: 1rem !important;
+}
+
+
+/* =========================================================
+   CABECERA DEL FORMULARIO
+   ========================================================= */
+
+.formulario-propietario .card-header {
+    padding: 0.65rem 1rem !important;
+}
+
+
+/* =========================================================
+   ICONO DE CABECERA
+   ========================================================= */
+
+.icon-header {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.18);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.15rem;
+}
+
+
+/* =========================================================
+   TÍTULOS DE SECCIÓN
+   ========================================================= */
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    padding-bottom: 5px;
+    margin-bottom: 8px !important;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+
+/* =========================================================
+   LABELS
+   ========================================================= */
+
+.formulario-propietario .form-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 3px;
+}
+
+
+/* =========================================================
+   CAMPOS OBLIGATORIOS
+   ========================================================= */
+
+.campo-obligatorio {
+    color: #dc3545;
+    font-weight: bold;
+    margin-left: 2px;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.formulario-propietario .form-control {
+    height: 40px;
+    font-size: 0.95rem;
+
+    border-color: rgba(0, 0, 0, 0.14);
+    background: rgba(255, 255, 255, 0.58);
+}
+
+.formulario-propietario .form-control:focus {
+    background: rgba(255, 255, 255, 0.85);
+
+    border-color: #86b7fe;
+
+    box-shadow:
+        0 0 0 0.12rem rgba(13, 110, 253, 0.12);
+}
+
+
+/* =========================================================
+   ICONOS DE LOS CAMPOS
+   ========================================================= */
+
+.formulario-propietario .input-group-text {
+    height: 40px;
+    padding: 0 10px;
+
+    border-color: rgba(0, 0, 0, 0.14);
+    background: rgba(255, 255, 255, 0.45);
+
+    font-size: 1rem;
+}
+
+.icono-nombre {
+    color: #0d6efd;
+}
+
+.icono-carnet {
+    color: #6f42c1;
+}
+
+.icono-celular {
+    color: #198754;
+}
+
+.icono-correo {
+    color: #0d6efd;
+}
+
+.icono-direccion {
+    color: #dc3545;
+}
+
+
+/* =========================================================
+   MENSAJES DE ERROR
+   ========================================================= */
+
+.mensaje-error {
+    color: #dc3545;
+    font-size: 0.82rem;
+    margin-top: 2px;
+    font-weight: 500;
+}
+
+.mensaje-error i {
+    margin-right: 2px;
+}
+
+
+/* =========================================================
+   MENSAJE GENERAL DE ERRORES
+   ========================================================= */
+
+.formulario-propietario+.alert {
+    font-size: 0.90rem;
+}
+
+
+/* =========================================================
+   NOTA DE CAMPOS OBLIGATORIOS
+   ========================================================= */
+
+.nota-obligatorios {
+    font-size: 0.80rem;
+    color: #6c757d;
+
+    background: rgba(13, 110, 253, 0.05);
+
+    border-radius: 7px;
+
+    padding: 6px 10px !important;
+}
+
+.nota-obligatorios i {
+    color: #0d6efd;
+    margin-right: 4px;
+}
+
+.nota-obligatorios strong {
+    color: #dc3545;
+}
+
+
+/* =========================================================
+   BOTONES DEL FORMULARIO
+   ========================================================= */
+
+.formulario-propietario .btn {
+    border-radius: 7px;
+
+    padding: 7px 15px;
+
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   SEPARADOR
+   ========================================================= */
+
+.formulario-propietario hr {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+
+/* =========================================================
+   REDUCIR ESPACIOS DENTRO DEL FORMULARIO
+   ========================================================= */
+
+.formulario-propietario .mb-3 {
+    margin-bottom: 0.55rem !important;
+}
+
+.formulario-propietario .mt-2 {
+    margin-top: 0.45rem !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .formulario-propietario .card-body {
+        padding: 0.9rem !important;
+    }
+
+    .formulario-propietario .btn {
+        width: 100%;
+    }
+
+    .formulario-propietario .form-label {
+        font-size: 0.95rem;
+    }
+
+    .formulario-propietario .form-control {
+        height: 40px;
+        font-size: 0.95rem;
+    }
+
+    .formulario-propietario .input-group-text {
+        height: 40px;
+        font-size: 1rem;
+    }
+
+}
