@@ -297,7 +297,7 @@
                                     <td class="text-center">
 
                                         <a href="{{ route('propietarios.edit', $prop->id) }}"
-                                            class="btn btn-sm btn-outline-warning" title="Editar propietario">
+                                            class="btn btn-sm btn-outline-info" title="Editar propietario">
 
                                             <i class="bi bi-pencil-square"></i>
 

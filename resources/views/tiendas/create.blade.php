@@ -1,135 +1,278 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h3>🏪 Registrar Tienda</h3>
+        <div>
+            <h3 class="mb-1 fw-bold">
+                <i class="bi bi-shop text-primary"></i>
+                Registrar Tienda
+            </h3>
+
+            <small class="text-muted">
+                Registra los datos de una nueva tienda en el sistema.
+            </small>
+        </div>
     </x-slot>
 
-    <div class="container">
 
-        <div class="card shadow">
+    <div class="container-fluid py-4 px-4">
 
-            <div class="card-header bg-primary text-white">
+        <div class="card border-0 shadow-sm formulario-tienda">
 
-                <h5 class="mb-0">
-                    <i class="bi bi-shop"></i>
-                    Nueva Tienda
-                </h5>
+            {{-- CABECERA --}}
+            <div class="card-header bg-primary text-white py-3 border-0">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="icon-header me-3">
+                        <i class="bi bi-shop"></i>
+                    </div>
+
+                    <div>
+                        <h5 class="mb-0 fw-bold">
+                            Nueva Tienda
+                        </h5>
+
+                        <small class="opacity-75">
+                            Complete la información solicitada
+                        </small>
+                    </div>
+
+                </div>
 
             </div>
 
-            <div class="card-body">
+
+            {{-- CUERPO --}}
+            <div class="card-body p-4">
 
                 <form action="{{ route('tiendas.store') }}" method="POST">
 
                     @csrf
 
-                    <!-- FILA 1 -->
+
+                    {{-- DATOS DE LA TIENDA --}}
+                    <div class="section-title mb-3">
+
+                        <i class="bi bi-shop text-primary"></i>
+
+                        <span>
+                            Datos de la tienda
+                        </span>
+
+                    </div>
+
 
                     <div class="row">
 
+                        {{-- TIPO DE TIENDA --}}
                         <div class="col-md-4 mb-3">
 
-                            <label class="form-label fw-bold">
+                            <label class="form-label">
+
                                 Tipo de Tienda
+
+                                <span class="campo-obligatorio">*</span>
+
                             </label>
 
-                            <input type="text" name="tipo_tienda" class="form-control" required>
+                            <div class="input-group">
+
+                                <span class="input-group-text icono-nombre">
+                                    <i class="bi bi-tags-fill"></i>
+                                </span>
+
+                                <input type="text" name="tipo_tienda" value="{{ old('tipo_tienda') }}"
+                                    class="form-control" placeholder="Ej. Comercial" required>
+
+                            </div>
 
                         </div>
 
+
+                        {{-- NUMERO DE TIENDA --}}
                         <div class="col-md-4 mb-3">
 
-                            <label class="form-label fw-bold">
+                            <label class="form-label">
+
                                 Número de Tienda
+
+                                <span class="campo-obligatorio">*</span>
+
                             </label>
 
-                            <input type="text" name="numero_tienda" class="form-control" required>
+                            <div class="input-group">
+
+                                <span class="input-group-text icono-nombre">
+                                    <i class="bi bi-hash"></i>
+                                </span>
+
+                                <input type="text" name="numero_tienda" value="{{ old('numero_tienda') }}"
+                                    class="form-control" placeholder="Número de tienda" required>
+
+                            </div>
 
                         </div>
 
+
+                        {{-- UBICACION --}}
                         <div class="col-md-4 mb-3">
 
-                            <label class="form-label fw-bold">
+                            <label class="form-label">
+
                                 Ubicación
+
                             </label>
 
-                            <input type="text" name="ubicacion" class="form-control">
+                            <div class="input-group">
+
+                                <span class="input-group-text icono-direccion">
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                </span>
+
+                                <input type="text" name="ubicacion" value="{{ old('ubicacion') }}" class="form-control"
+                                    placeholder="Ubicación de la tienda" required>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                    <!-- FILA 2 -->
+
+                    {{-- PROPIETARIO Y EDIFICIO --}}
+                    <div class="section-title mb-3 mt-2">
+
+                        <i class="bi bi-person-lines-fill text-success"></i>
+
+                        <span>
+                            Propietario y edificio
+                        </span>
+
+                    </div>
+
 
                     <div class="row">
 
+                        {{-- PROPIETARIO --}}
                         <div class="col-md-6 mb-3">
 
-                            <label class="form-label fw-bold">
+                            <label class="form-label">
+
                                 Propietario
+
+                                <span class="campo-obligatorio">*</span>
+
                             </label>
 
-                            <select name="propietario_id" class="form-select" required>
+                            <div class="input-group">
 
-                                <option value="">
-                                    Seleccione un propietario...
-                                </option>
+                                <select name="propietario_id" id="propietario_id" class="form-select" required>
 
-                                @foreach($propietarios as $propietario)
+                                    <option value=""></option>
 
-                                    @if($propietario->edificio_id == $edificio_id)
+                                    @foreach($propietarios as $propietario)
 
-                                        <option value="{{ $propietario->id }}">
+                                        @if($propietario->edificio_id == $edificio_id)
 
-                                            {{ $propietario->nombres }}
-                                            {{ $propietario->apellido_paterno }}
-                                            {{ $propietario->apellido_materno }}
+                                            <option value="{{ $propietario->id }}" {{ old('propietario_id') == $propietario->id ? 'selected' : '' }}>
 
-                                        </option>
+                                                {{ $propietario->nombres }}
+                                                {{ $propietario->apellido_paterno }}
+                                                {{ $propietario->apellido_materno }}
 
-                                    @endif
+                                            </option>
 
-                                @endforeach
+                                        @endif
 
-                            </select>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
 
                         </div>
 
+
+                        {{-- EDIFICIO --}}
                         <div class="col-md-6 mb-3">
 
-                            <label class="form-label fw-bold">
+                            <label class="form-label">
+
                                 Edificio
+
+                                <span class="campo-obligatorio">*</span>
+
                             </label>
 
-                            <input type="text" class="form-control" value="{{ session('edificio_nombre') }}" readonly>
+                            <div class="input-group">
 
-                            <input type="hidden" name="edificio_id" value="{{ $edificio_id }}">
+                                <span class="input-group-text icono-direccion">
+                                    <i class="bi bi-buildings-fill"></i>
+                                </span>
+
+                                <input type="text" class="form-control" value="{{ session('edificio_nombre') }}"
+                                    readonly>
+
+                            </div>
+
+                            <input type="hidden" name="edificio_id" value="{{ $edificio_id }}" required>
 
                         </div>
 
                     </div>
 
-                    <!-- FILA 3 -->
+
+                    {{-- DETALLES --}}
+                    <div class="section-title mb-3 mt-2">
+
+                        <i class="bi bi-card-text text-danger"></i>
+
+                        <span>
+                            Información adicional
+                        </span>
+
+                    </div>
+
 
                     <div class="row">
 
                         <div class="col-md-12 mb-3">
 
-                            <label class="form-label fw-bold">
+                            <label class="form-label">
                                 Detalles
                             </label>
 
-                            <textarea name="detalles_tienda" rows="4" class="form-control"></textarea>
+                            <div class="input-group">
+
+                                <textarea name="detalles_tienda" rows="3" class="form-control"
+                                    placeholder="Ingrese detalles de la tienda (opcional)">{{ old('detalles_tienda') }}</textarea>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                    <hr>
 
-                    <div class="d-flex justify-content-end">
+                    {{-- NOTA --}}
+                    <div class="nota-obligatorios mt-2 mb-3">
 
-                        <a href="{{ route('tiendas.index') }}" class="btn btn-secondary me-2">
+                        <i class="bi bi-info-circle-fill"></i>
+
+                        Los campos marcados con
+                        <strong>*</strong>
+                        son obligatorios.
+
+                    </div>
+
+
+                    <hr class="my-4">
+
+
+                    {{-- BOTONES --}}
+                    <div class="d-flex justify-content-end gap-2">
+
+                        <a href="{{ route('tiendas.index') }}" class="btn btn-secondary">
 
                             <i class="bi bi-arrow-left"></i>
 
@@ -137,11 +280,12 @@
 
                         </a>
 
+
                         <button type="submit" class="btn btn-success">
 
-                            <i class="bi bi-check-circle"></i>
+                            <i class="bi bi-check-circle-fill"></i>
 
-                            Guardar
+                            Guardar Tienda
 
                         </button>
 
@@ -154,5 +298,167 @@
         </div>
 
     </div>
+
+
+    {{-- ESTILOS Y SELECT2 --}}
+    @push('scripts')
+
+        <style>
+            .formulario-tienda {
+                border-radius: 8px;
+            }
+
+            .icon-header {
+                width: 42px;
+                height: 42px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(255, 255, 255, 0.15);
+                border-radius: 8px;
+                font-size: 20px;
+            }
+
+            .section-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 16px;
+                font-weight: 700;
+                border-bottom: 1px solid #e9ecef;
+                padding-bottom: 8px;
+            }
+
+            .section-title i {
+                font-size: 18px;
+            }
+
+            .form-label {
+                font-weight: 600;
+            }
+
+            .campo-obligatorio {
+                color: #dc3545;
+                font-weight: bold;
+            }
+
+            .input-group-text {
+                min-width: 42px;
+                justify-content: center;
+            }
+
+            .icono-nombre {
+                background-color: #f8f9fa;
+            }
+
+            .icono-carnet {
+                background-color: #f8f9fa;
+            }
+
+            .icono-direccion {
+                background-color: #f8f9fa;
+            }
+
+            .nota-obligatorios {
+                background-color: #f8f9fa;
+                border-radius: 6px;
+                padding: 10px 12px;
+                font-size: 13px;
+                color: #6c757d;
+            }
+
+            .nota-obligatorios i {
+                color: #0d6efd;
+                margin-right: 5px;
+            }
+
+
+            /* SELECT2 */
+
+            .select2-container {
+                width: 100% !important;
+            }
+
+            .select2-container--default .select2-selection--single {
+
+                height: 38px;
+
+                border: 1px solid #ced4da;
+
+                border-radius: 5px;
+
+                padding: 5px 10px;
+
+                background-color: #fff;
+
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+
+                line-height: 26px;
+
+                color: #212529;
+
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+
+                height: 36px;
+
+            }
+
+            .select2-container--default.select2-container--focus .select2-selection--single {
+
+                border-color: #86b7fe;
+
+                outline: 0;
+
+                box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+
+            }
+        </style>
+
+
+        <script>
+
+            $(document).ready(function () {
+
+                $('#propietario_id').select2({
+
+                    placeholder: 'Seleccione propietario...',
+
+                    allowClear: true,
+
+                    width: '100%',
+
+                    language: {
+
+                        noResults: function () {
+
+                            return "No se encontró ningún propietario";
+
+                        },
+
+                        searching: function () {
+
+                            return "Buscando...";
+
+                        },
+
+                        inputTooShort: function () {
+
+                            return "Escriba para buscar";
+
+                        }
+
+                    }
+
+                });
+
+            });
+
+        </script>
+
+    @endpush
 
 </x-app-layout>

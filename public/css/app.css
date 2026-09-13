@@ -453,6 +453,476 @@ body::before {
     margin-top: 0.45rem !important;
 }
 
+/* =========================================================
+EDIFICIOS
+========================================================= */
+
+.edificios-contenedor {
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.88);
+}
+
+.edificios-body {
+    padding: 1.5rem !important;
+}
+
+/* =========================================================
+BUSCADOR DE EDIFICIOS
+========================================================= */
+
+.buscador-edificios {
+    max-width: 650px;
+}
+
+#buscarEdificio {
+    height: 42px;
+    font-size: 1rem;
+}
+
+#btnBuscarEdificio,
+#limpiarBusquedaEdificio {
+    height: 42px;
+    width: 48px;
+}
+
+.buscador-edificios .input-group-text {
+    height: 42px;
+}
+
+/* =========================================================
+TARJETA DEL EDIFICIO
+========================================================= */
+
+.edificio-card {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 480px;
+
+    border-radius: 18px !important;
+
+    background: rgba(255, 255, 255, 0.90);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+
+}
+
+.edificio-card {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.18) !important;
+
+}
+
+/* =========================================================
+IMAGEN DEL EDIFICIO COMO FONDO
+========================================================= */
+
+.edificio-fondo {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    opacity: 0.16;
+
+    z-index: 0;
+
+    transition:
+        transform 0.4s ease,
+        opacity 0.3s ease;
+
+}
+
+.edificio-card .edificio-fondo {
+    transform: scale(1.04);
+    opacity: 0.22;
+}
+
+.edificio-fondo::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background: rgba(255, 255, 255, 0.58);
+
+}
+
+/* =========================================================
+FONDO CUANDO NO EXISTE IMAGEN
+========================================================= */
+
+.edificio-fondo-default {
+    background:
+        linear-gradient(135deg,
+            rgba(13, 110, 253, 0.15),
+            rgba(108, 117, 125, 0.15));
+}
+
+/* =========================================================
+CONTENIDO DE LA CARD
+========================================================= */
+
+.edificio-contenido {
+    position: relative;
+
+    z-index: 1;
+
+    min-height: 480px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 1.35rem;
+
+}
+
+/* =========================================================
+LOGO CIRCULAR
+========================================================= */
+
+.edificio-logo-container {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 0.9rem;
+
+}
+
+/*
+
+MUY IMPORTANTE:
+Estas propiedades fuerzan al logo a mantener
+exactamente la misma proporción.
+*/
+
+.edificio-logo-container img.edificio-logo {
+    display: block;
+
+    width: 90px !important;
+    height: 90px !important;
+
+    min-width: 90px;
+    max-width: 90px;
+
+    min-height: 90px;
+    max-height: 90px;
+
+    aspect-ratio: 1 / 1;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    border-radius: 50% !important;
+
+    border: 4px solid rgba(255, 255, 255, 0.95);
+
+    background-color: #ffffff;
+
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.18);
+
+    flex-shrink: 0;
+
+}
+
+/* =========================================================
+LOGO POR DEFECTO
+========================================================= */
+
+.edificio-logo-default {
+    width: 90px;
+    height: 90px;
+
+    min-width: 90px;
+    min-height: 90px;
+
+    aspect-ratio: 1 / 1;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    border: 4px solid rgba(255, 255, 255, 0.95);
+
+    background: rgba(255, 255, 255, 0.90);
+
+    color: #0d6efd;
+
+    font-size: 2.3rem;
+
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.18);
+
+    flex-shrink: 0;
+
+}
+
+/* =========================================================
+INFORMACIÓN DEL EDIFICIO
+========================================================= */
+
+.edificio-info {
+    padding: 0 0.5rem;
+}
+
+.edificio-nombre {
+    font-size: 1.25rem;
+
+    font-weight: 700;
+
+    margin-bottom: 0.45rem;
+
+    color: #212529;
+
+    line-height: 1.25;
+
+}
+
+.edificio-direccion {
+    font-size: 0.86rem;
+
+    color: #495057;
+
+    line-height: 1.4;
+
+}
+
+.edificio-direccion i {
+    margin-right: 3px;
+}
+
+/* =========================================================
+UBICACIÓN
+========================================================= */
+
+.edificio-ubicacion {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 0.9rem;
+
+}
+
+.edificio-ubicacion span {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 5px 8px;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.76);
+
+    border: 1px solid rgba(0, 0, 0, 0.07);
+
+    font-size: 0.74rem;
+
+    color: #495057;
+
+}
+
+.edificio-ubicacion i {
+    color: #0d6efd;
+}
+
+/* =========================================================
+ESTADÍSTICAS
+========================================================= */
+
+.edificio-estadisticas {
+    margin-top: auto;
+
+    padding-top: 1rem;
+
+}
+
+.edificio-estadistica {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 78px;
+
+    padding: 7px 3px;
+
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.76);
+
+    border: 1px solid rgba(0, 0, 0, 0.07);
+
+    text-align: center;
+
+    transition: all 0.2s ease;
+
+}
+
+.edificio-estadistica {
+    background: rgba(255, 255, 255, 0.95);
+
+    transform: translateY(-2px);
+
+}
+
+.edificio-estadistica i {
+    font-size: 1.1rem;
+
+    margin-bottom: 2px;
+
+}
+
+.edificio-estadistica strong {
+    font-size: 1.05rem;
+
+    line-height: 1.1;
+
+}
+
+.edificio-estadistica small {
+    font-size: 0.64rem;
+
+    color: #6c757d;
+
+    margin-top: 3px;
+
+}
+
+/* =========================================================
+BOTÓN EDITAR
+========================================================= */
+
+.edificio-acciones {
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 0.9rem;
+
+}
+
+.edificio-acciones .btn {
+    border-radius: 8px;
+
+    padding: 6px 16px;
+
+    font-size: 0.88rem;
+
+    font-weight: 500;
+
+}
+
+/* =========================================================
+   VISTA PREVIA DE IMAGEN DEL EDIFICIO
+   ========================================================= */
+
+.preview-edificio {
+    width: 180px;
+    height: 110px;
+    margin: 8px auto 0;
+    padding: 5px;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    background: #f8f9fa;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-edificio img {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    /* IMPORTANTE: no deforma ni recorta */
+    object-fit: contain;
+    object-position: center;
+}
+
+
+/* =========================================================
+   VISTA PREVIA DEL LOGO
+   ========================================================= */
+
+.preview-logo {
+    width: 90px;
+    height: 90px;
+    margin: 8px auto 0;
+    padding: 4px;
+
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+    border-radius: 50%;
+    background: #f8f9fa;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .10);
+}
+
+.preview-logo img {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    /* No se estira ni se deforma */
+    object-fit: contain;
+    object-position: center;
+
+    border-radius: 50%;
+}
+
+.formulario-propietario,
+.formulario-departamento,
+.formulario-tienda,
+.formulario-estacionamiento {
+    background: rgba(255, 255, 255, 0.60);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 10px;
+}
+
 
 /* =========================================================
    RESPONSIVE
@@ -482,4 +952,168 @@ body::before {
         font-size: 1rem;
     }
 
+    .edificios-body {
+        padding: 1rem !important;
+    }
+
+    .edificio-contenido {
+        padding: 1.2rem;
+    }
+
+    .edificio-card {
+        min-height: 460px;
+    }
+
+    .edificio-contenido {
+        min-height: 460px;
+    }
+
+    .edificio-logo-container img.edificio-logo {
+        width: 82px !important;
+        height: 82px !important;
+
+        min-width: 82px;
+        max-width: 82px;
+
+        min-height: 82px;
+        max-height: 82px;
+    }
+
+    .edificio-logo-default {
+        width: 82px;
+        height: 82px;
+
+        min-width: 82px;
+        min-height: 82px;
+    }
+
+    .edificio-nombre {
+        font-size: 1.15rem;
+    }
+
+    .buscador-edificios {
+        max-width: 100%;
+    }
+
+    /* ========================================================= FORMULARIO DE EDIFICIOS ========================================================= */
+    .archivo-edificio {
+        min-height: 78px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        background: #f8f9fa;
+        transition: all .2s ease;
+    }
+
+    .archivo-edificio:hover {
+        border-color: #0d6efd;
+        background: #fff;
+    }
+
+    .archivo-icono {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        background: rgba(13, 110, 253, .10);
+        color: #0d6efd;
+        font-size: 1.25rem;
+    }
+
+    .archivo-icono.logo {
+        background: rgba(25, 135, 84, .10);
+        color: #198754;
+    }
+
+    .archivo-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .archivo-info strong {
+        font-size: .88rem;
+        color: #212529;
+    }
+
+    .archivo-info small {
+        margin-top: 2px;
+        font-size: .72rem;
+        color: #6c757d;
+    }
+
+    .archivo-edificio .btn {
+        white-space: nowrap;
+        border-radius: 7px;
+    }
+
+    /* ARCHIVO SELECCIONADO */
+    .archivo-seleccionado {
+        min-height: 20px;
+        margin-top: 5px;
+        padding-left: 4px;
+        font-size: .76rem;
+        color: #198754;
+        word-break: break-word;
+    }
+
+}
+
+/* =========================================================
+PANTALLAS MUY PEQUEÑAS
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .edificio-contenido {
+        padding: 1rem;
+    }
+
+    .edificio-logo-container img.edificio-logo {
+        width: 76px !important;
+        height: 76px !important;
+
+        min-width: 76px;
+        max-width: 76px;
+
+        min-height: 76px;
+        max-height: 76px;
+    }
+
+    .edificio-logo-default {
+        width: 76px;
+        height: 76px;
+
+        min-width: 76px;
+        min-height: 76px;
+    }
+
+    .archivo-edificio {
+        min-height: auto;
+        flex-wrap: wrap;
+    }
+
+    .archivo-info {
+        flex: 1;
+    }
+
+    .archivo-edificio .btn {
+        width: auto;
+    }
+
+    .preview-edificio {
+        height: 130px;
+    }
+
+    .preview-logo {
+        width: 120px;
+        height: 120px;
+    }
 }

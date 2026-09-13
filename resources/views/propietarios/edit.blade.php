@@ -3,7 +3,7 @@
     <x-slot name="header">
         <div>
             <h3 class="mb-1 fw-bold">
-                <i class="bi bi-pencil-square text-warning"></i>
+                <i class="bi bi-pencil-square text-info"></i>
                 Editar Propietario
             </h3>
             <small class="text-muted">
@@ -36,7 +36,7 @@
         <div class="card border-0 shadow-sm formulario-propietario">
 
             {{-- CABECERA --}}
-            <div class="card-header bg-info text-dark border-0">
+            <div class="card-header bg-info text-white border-0">
                 <div class="d-flex align-items-center">
 
                     <div class="icon-header me-3">
