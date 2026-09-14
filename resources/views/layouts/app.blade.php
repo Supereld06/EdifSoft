@@ -40,6 +40,48 @@
                     <li class="nav-item">
                         <a href="{{ route('dashboard') }}" class="nav-link text-white">🏠 Dashboard</a>
                     </li>
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link dropdown-toggle" href="#" id="cajasDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+
+                            💰 Cajas
+
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="cajasDropdown">
+
+                            <li>
+                                <a class="dropdown-item" href="{{ route('cajas.index') }}">
+                                    💰 Listado de Cajas
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="{{ route('cajas.create') }}">
+                                    ➕ Nueva Caja
+                                </a>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+                                <span class="dropdown-item-text text-muted">
+                                    Movimientos
+                                </span>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="{{ route('cajas.index') }}">
+                                    📋 Movimientos de Caja
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </li>
                     <li class="nav-item">
                         <a href="{{ route('edificios.index') }}" class="nav-link text-white">🏙️ Edificios</a>
                     </li>

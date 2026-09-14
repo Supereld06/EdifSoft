@@ -1,194 +1,688 @@
 <x-app-layout>
 
-    <x-slot name="header">
-        <h3>✏️ Editar Apertura de Expensas</h3>
-    </x-slot>
+<x-slot name="header">
 
-    <div class="container">
+    <div>
+        <h3 class="mb-1 fw-bold">
+            <i class="bi bi-pencil-square text-info"></i>
+            Editar Apertura de Expensas
+        </h3>
 
-        <div class="card shadow">
+        <small class="text-muted">
+            Modifica los datos de la apertura de expensas
+        </small>
+    </div>
 
-            <div class="card-header bg-warning text-dark">
+</x-slot>
 
-                <h5 class="mb-0">
-                    <i class="bi bi-pencil-square"></i>
-                    Modificar Apertura
-                </h5>
 
-            </div>
+<div class="container-fluid py-2 px-4">
 
-            <div class="card-body">
+    {{-- MENSAJE GENERAL DE ERRORES --}}
+    @if($errors->any())
 
-                <form method="POST" action="{{ route('apertura-expensas.update', $apertura_expensa) }}">
+        <div class="alert alert-danger shadow-sm border-0 mb-3">
 
-                    @csrf
-                    @method('PUT')
+            <div class="d-flex align-items-start">
 
-                    <!-- FILA 1 -->
+                <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
 
-                    <div class="row">
+                <div>
 
-                        <div class="col-md-4 mb-3">
+                    <strong>
+                        Revisa los datos del formulario
+                    </strong>
 
-                            <label class="form-label fw-bold">
-                                Mes
-                            </label>
-
-                            <input type="text" name="mes" class="form-control" value="{{ $apertura_expensa->mes }}"
-                                required>
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
-                                Gestión
-                            </label>
-
-                            <input type="number" name="gestion" class="form-control"
-                                value="{{ $apertura_expensa->gestion }}" required>
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
-                                Edificio
-                            </label>
-
-                            <input type="text" class="form-control" value="{{ session('edificio_nombre') }}" readonly>
-
-                            <input type="hidden" name="edificio_id" value="{{ session('edificio_id') }}">
-
-                        </div>
-
+                    <div class="small mt-1">
+                        Por favor completa o corrige los campos
+                        marcados antes de continuar.
                     </div>
 
-                    <!-- FILA 2 -->
-
-                    <div class="row">
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
-                                Saldo Inicial (Bs.)
-                            </label>
-
-                            <input type="number" step="0.01" name="saldo_inicial" class="form-control"
-                                value="{{ $apertura_expensa->saldo_inicial }}" required>
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
-                                Efectivo Inicial (Bs.)
-                            </label>
-
-                            <input type="number" step="0.01" name="efectivo_inicial" class="form-control"
-                                value="{{ $apertura_expensa->efectivo_inicial }}" required>
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
-                                Factura Agua (Bs.)
-                            </label>
-
-                            <input type="number" step="0.01" name="factura_agua" class="form-control"
-                                value="{{ $apertura_expensa->factura_agua }}" required>
-
-                        </div>
-
-                    </div>
-
-                    <!-- FILA 3 -->
-
-                    <div class="row">
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
-                                Expensa Departamentos (Bs.)
-                            </label>
-
-                            <input type="number" step="0.01" name="expensa_departamentos" class="form-control"
-                                value="{{ $apertura_expensa->expensa_departamentos }}" required>
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
-                                Expensa Tiendas (Bs.)
-                            </label>
-
-                            <input type="number" step="0.01" name="expensa_tiendas" class="form-control"
-                                value="{{ $apertura_expensa->expensa_tiendas }}" required>
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
-                                Expensa Parqueos (Bs.)
-                            </label>
-
-                            <input type="number" step="0.01" name="expensa_parqueo" class="form-control"
-                                value="{{ $apertura_expensa->expensa_parqueo }}" required>
-
-                        </div>
-
-                    </div>
-
-                    <!-- FILA 4 -->
-
-                    <div class="row">
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
-                                Prorrateo Agua
-                            </label>
-
-                            <input type="number" step="0.0001" name="prorrateo_agua" class="form-control"
-                                value="{{ $apertura_expensa->prorrateo_agua }}" readonly>
-
-                            <small class="text-muted">
-                                Se calcula automáticamente desde Lecturas de Agua.
-                            </small>
-
-                        </div>
-
-                    </div>
-
-                    <hr>
-
-                    <div class="d-flex justify-content-end">
-
-                        <a href="{{ route('apertura-expensas.index') }}" class="btn btn-secondary me-2">
-
-                            <i class="bi bi-arrow-left"></i>
-                            Cancelar
-
-                        </a>
-
-                        <button type="submit" class="btn btn-warning">
-
-                            <i class="bi bi-check-circle"></i>
-                            Actualizar
-
-                        </button>
-
-                    </div>
-
-                </form>
+                </div>
 
             </div>
 
         </div>
 
+    @endif
+
+
+    <div class="card border-0 shadow-sm formulario-apertura">
+
+
+        {{-- CABECERA --}}
+        <div class="card-header bg-info text-white border-0">
+
+            <div class="d-flex align-items-center">
+
+                <div class="icon-header me-3">
+
+                    <i class="bi bi-calendar2-check-fill"></i>
+
+                </div>
+
+                <div>
+
+                    <h5 class="mb-0 fw-bold">
+                        Modificar Apertura
+                    </h5>
+
+                    <small class="opacity-75">
+                        Actualiza la información de la apertura
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- CUERPO --}}
+        <div class="card-body p-3">
+
+            <form method="POST"
+                  action="{{ route('apertura-expensas.update', $apertura_expensa) }}">
+
+                @csrf
+
+                @method('PUT')
+
+
+                {{-- =================================
+                     INFORMACIÓN GENERAL
+                ================================== --}}
+
+                <div class="section-title mb-3">
+
+                    <i class="bi bi-calendar3 text-primary"></i>
+
+                    <span>Información general</span>
+
+                </div>
+
+
+                <div class="row g-2">
+
+
+                    {{-- MES --}}
+                    <div class="col-md-4 mb-2">
+
+                        <label class="form-label">
+
+                            Mes
+
+                            <span class="campo-obligatorio">*</span>
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text icono-mes">
+
+                                <i class="bi bi-calendar-month"></i>
+
+                            </span>
+
+                            <input
+                                type="text"
+                                name="mes"
+                                value="{{ old('mes', $apertura_expensa->mes) }}"
+                                class="form-control @error('mes') is-invalid @enderror"
+                                placeholder="Ej. Enero"
+                                required
+                            >
+
+                        </div>
+
+                        @error('mes')
+
+                            <div class="mensaje-error">
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                {{ $message }}
+
+                            </div>
+
+                        @enderror
+
+                    </div>
+
+
+                    {{-- GESTIÓN --}}
+                    <div class="col-md-4 mb-2">
+
+                        <label class="form-label">
+
+                            Gestión
+
+                            <span class="campo-obligatorio">*</span>
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text icono-gestion">
+
+                                <i class="bi bi-calendar3"></i>
+
+                            </span>
+
+                            <input
+                                type="number"
+                                name="gestion"
+                                value="{{ old('gestion', $apertura_expensa->gestion) }}"
+                                class="form-control @error('gestion') is-invalid @enderror"
+                                placeholder="Ej. 2026"
+                                min="2000"
+                                max="2100"
+                                required
+                            >
+
+                        </div>
+
+                        @error('gestion')
+
+                            <div class="mensaje-error">
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                {{ $message }}
+
+                            </div>
+
+                        @enderror
+
+                    </div>
+
+
+                    {{-- EDIFICIO --}}
+                    <div class="col-md-4 mb-2">
+
+                        <label class="form-label">
+
+                            Edificio
+
+                            <span class="campo-obligatorio">*</span>
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text icono-edificio">
+
+                                <i class="bi bi-building-fill"></i>
+
+                            </span>
+
+                            <input
+                                type="text"
+                                class="form-control bg-light"
+                                value="{{ session('edificio_nombre') }}"
+                                readonly
+                            >
+
+                        </div>
+
+                        <input
+                            type="hidden"
+                            name="edificio_id"
+                            value="{{ session('edificio_id') }}"
+                        >
+
+                        @error('edificio_id')
+
+                            <div class="mensaje-error">
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                {{ $message }}
+
+                            </div>
+
+                        @enderror
+
+                    </div>
+
+                </div>
+
+
+                {{-- =================================
+                     DATOS INICIALES
+                ================================== --}}
+
+                <div class="section-title mb-3 mt-2">
+
+                    <i class="bi bi-wallet2 text-success"></i>
+
+                    <span>Datos iniciales</span>
+
+                </div>
+
+
+                <div class="row g-2">
+
+
+                    {{-- SALDO INICIAL --}}
+                    <div class="col-md-4 mb-2">
+
+                        <label class="form-label">
+
+                            Saldo Inicial (Bs.)
+
+                            <span class="campo-obligatorio">*</span>
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text icono-dinero">
+
+                                <i class="bi bi-cash-stack"></i>
+
+                            </span>
+
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                name="saldo_inicial"
+                                value="{{ old('saldo_inicial', $apertura_expensa->saldo_inicial) }}"
+                                class="form-control @error('saldo_inicial') is-invalid @enderror"
+                                placeholder="0.00"
+                                required
+                            >
+
+                        </div>
+
+                        @error('saldo_inicial')
+
+                            <div class="mensaje-error">
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                {{ $message }}
+
+                            </div>
+
+                        @enderror
+
+                    </div>
+
+
+                    {{-- EFECTIVO INICIAL --}}
+                    <div class="col-md-4 mb-2">
+
+                        <label class="form-label">
+
+                            Efectivo Inicial (Bs.)
+
+                            <span class="campo-obligatorio">*</span>
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text icono-dinero">
+
+                                <i class="bi bi-cash"></i>
+
+                            </span>
+
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                name="efectivo_inicial"
+                                value="{{ old('efectivo_inicial', $apertura_expensa->efectivo_inicial) }}"
+                                class="form-control @error('efectivo_inicial') is-invalid @enderror"
+                                placeholder="0.00"
+                                required
+                            >
+
+                        </div>
+
+                        @error('efectivo_inicial')
+
+                            <div class="mensaje-error">
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                {{ $message }}
+
+                            </div>
+
+                        @enderror
+
+                    </div>
+
+
+                    {{-- FACTURA AGUA --}}
+                    <div class="col-md-4 mb-2">
+
+                        <label class="form-label">
+
+                            Factura Agua (Bs.)
+
+                            <span class="campo-obligatorio">*</span>
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text icono-agua">
+
+                                <i class="bi bi-droplet-fill"></i>
+
+                            </span>
+
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                name="factura_agua"
+                                value="{{ old('factura_agua', $apertura_expensa->factura_agua) }}"
+                                class="form-control @error('factura_agua') is-invalid @enderror"
+                                placeholder="0.00"
+                                required
+                            >
+
+                        </div>
+
+                        @error('factura_agua')
+
+                            <div class="mensaje-error">
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                {{ $message }}
+
+                            </div>
+
+                        @enderror
+
+                    </div>
+
+                </div>
+
+
+                {{-- =================================
+                     EXPENSAS
+                ================================== --}}
+
+                <div class="section-title mb-3 mt-2">
+
+                    <i class="bi bi-cash-coin text-success"></i>
+
+                    <span>Montos de expensas</span>
+
+                </div>
+
+
+                <div class="row g-2">
+
+
+                    {{-- DEPARTAMENTOS --}}
+                    <div class="col-md-4 mb-2">
+
+                        <label class="form-label">
+
+                            Expensa Departamentos (Bs.)
+
+                            <span class="campo-obligatorio">*</span>
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text icono-departamento">
+
+                                <i class="bi bi-house-door-fill"></i>
+
+                            </span>
+
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                name="expensa_departamentos"
+                                value="{{ old('expensa_departamentos', $apertura_expensa->expensa_departamentos) }}"
+                                class="form-control @error('expensa_departamentos') is-invalid @enderror"
+                                placeholder="0.00"
+                                required
+                            >
+
+                        </div>
+
+                        @error('expensa_departamentos')
+
+                            <div class="mensaje-error">
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                {{ $message }}
+
+                            </div>
+
+                        @enderror
+
+                    </div>
+
+
+                    {{-- TIENDAS --}}
+                    <div class="col-md-4 mb-2">
+
+                        <label class="form-label">
+
+                            Expensa Tiendas (Bs.)
+
+                            <span class="campo-obligatorio">*</span>
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text icono-tienda">
+
+                                <i class="bi bi-shop"></i>
+
+                            </span>
+
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                name="expensa_tiendas"
+                                value="{{ old('expensa_tiendas', $apertura_expensa->expensa_tiendas) }}"
+                                class="form-control @error('expensa_tiendas') is-invalid @enderror"
+                                placeholder="0.00"
+                                required
+                            >
+
+                        </div>
+
+                        @error('expensa_tiendas')
+
+                            <div class="mensaje-error">
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                {{ $message }}
+
+                            </div>
+
+                        @enderror
+
+                    </div>
+
+
+                    {{-- PARQUEOS --}}
+                    <div class="col-md-4 mb-2">
+
+                        <label class="form-label">
+
+                            Expensa Parqueos (Bs.)
+
+                            <span class="campo-obligatorio">*</span>
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text icono-parqueo">
+
+                                <i class="bi bi-car-front-fill"></i>
+
+                            </span>
+
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                name="expensa_parqueo"
+                                value="{{ old('expensa_parqueo', $apertura_expensa->expensa_parqueo) }}"
+                                class="form-control @error('expensa_parqueo') is-invalid @enderror"
+                                placeholder="0.00"
+                                required
+                            >
+
+                        </div>
+
+                        @error('expensa_parqueo')
+
+                            <div class="mensaje-error">
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                {{ $message }}
+
+                            </div>
+
+                        @enderror
+
+                    </div>
+
+                </div>
+
+
+                {{-- =================================
+                     AGUA
+                ================================== --}}
+
+                <div class="section-title mb-3 mt-2">
+
+                    <i class="bi bi-droplet-fill text-info"></i>
+
+                    <span>Información de agua</span>
+
+                </div>
+
+
+                <div class="row g-2">
+
+
+                    {{-- PRORRATEO --}}
+                    <div class="col-md-4 mb-2">
+
+                        <label class="form-label">
+
+                            Prorrateo Agua
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text icono-agua">
+
+                                <i class="bi bi-calculator-fill"></i>
+
+                            </span>
+
+                            <input
+                                type="number"
+                                step="0.0001"
+                                name="prorrateo_agua"
+                                value="{{ old('prorrateo_agua', $apertura_expensa->prorrateo_agua) }}"
+                                class="form-control bg-light @error('prorrateo_agua') is-invalid @enderror"
+                                readonly
+                            >
+
+                        </div>
+
+                        <small class="text-muted">
+
+                            <i class="bi bi-info-circle"></i>
+
+                            Se calcula automáticamente desde Lecturas de Agua.
+
+                        </small>
+
+                        @error('prorrateo_agua')
+
+                            <div class="mensaje-error">
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                {{ $message }}
+
+                            </div>
+
+                        @enderror
+
+                    </div>
+
+                </div>
+
+
+                {{-- NOTA --}}
+                <div class="nota-obligatorios mt-2 mb-2">
+
+                    <i class="bi bi-info-circle-fill"></i>
+
+                    Los campos marcados con
+
+                    <strong>*</strong>
+
+                    son obligatorios.
+
+                </div>
+
+
+                <hr class="my-2">
+
+
+                {{-- BOTONES --}}
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a href="{{ route('apertura-expensas.index') }}"
+                       class="btn btn-secondary">
+
+                        <i class="bi bi-arrow-left"></i>
+
+                        Cancelar
+
+                    </a>
+
+
+                    <button type="submit"
+                            class="btn btn-success">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Actualizar
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
     </div>
+
+</div>
 
 </x-app-layout>

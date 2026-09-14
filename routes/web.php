@@ -15,7 +15,8 @@ use App\Http\Controllers\ExpensaEstacionamientoController;
 use App\Http\Controllers\ReciboExpensaTiendaController;
 use App\Http\Controllers\ReciboExpensaEstacionamientoController;
 use App\Http\Controllers\ExpensaAguaController;
-
+use App\Http\Controllers\CajaController;
+use App\Http\Controllers\MovimientoCajaController;
 /*
 |--------------------------------------------------------------------------
 | Rutas protegidas (requieren login)
@@ -180,8 +181,32 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/expensas-aguas/apertura/{id}', [ExpensaAguaController::class, 'getApertura']);
     Route::get('/expensas-aguas/lecturas/{apertura}', [ExpensaAguaController::class, 'lecturas'])->name('expensas_aguas.lecturas');
     Route::put('/expensas-aguas/actualizar-lectura/{id}', [ExpensaAguaController::class, 'actualizarLectura'])->name('expensas_aguas.actualizarLectura');
-    Route::post('/expensas-aguas/calcular-prorrateo/{apertura}',[ExpensaAguaController::class, 'calcularProrrateo'])->name('expensas_aguas.calcularProrrateo');
+    Route::post('/expensas-aguas/calcular-prorrateo/{apertura}', [ExpensaAguaController::class, 'calcularProrrateo'])->name('expensas_aguas.calcularProrrateo');
 
+    //Cajas
+    Route::get('/cajas', [CajaController::class, 'index'])->name('cajas.index');
+    Route::get('/cajas/create', [CajaController::class, 'create'])->name('cajas.create');
+    Route::post('/cajas', [CajaController::class, 'store'])->name('cajas.store');
+    Route::get('/cajas/{id}/edit', [CajaController::class, 'edit'])->name('cajas.edit');
+    Route::put('/cajas/{id}', [CajaController::class, 'update'])->name('cajas.update');
+
+
+    //MOVIMIENTOS
+    Route::get('/cajas/{id}/movimientos', [MovimientoCajaController::class, 'index'])->name('cajas.movimientos');
+    Route::get('/cajas/{id}/ingreso', [MovimientoCajaController::class, 'createIngreso'])->name('cajas.ingreso.create');
+    Route::post('/cajas/{id}/ingreso', [MovimientoCajaController::class, 'storeIngreso'])->name('cajas.ingreso.store');
+    Route::get('/cajas/{id}/egreso', [MovimientoCajaController::class, 'createEgreso'])->name('cajas.egreso.create');
+    Route::post('/cajas/{id}/egreso', [MovimientoCajaController::class, 'storeEgreso'])->name('cajas.egreso.store');
+    Route::get('/cajas/{id}/transferencia', [MovimientoCajaController::class, 'createTransferencia'])->name('cajas.transferencia.create');
+    Route::post('/cajas/{id}/transferencia', [MovimientoCajaController::class, 'storeTransferencia'])->name('cajas.transferencia.store');
+
+    Route::get('/cajas/movimientos/{id}/recibo',[MovimientoCajaController::class, 'recibo'])->name('cajas.movimiento.recibo');
+    Route::get('/cajas/transferencias/{transferenciaId}/recibo',[MovimientoCajaController::class, 'reciboTransferencia'])->name('cajas.transferencia.recibo');
+    Route::get('/cajas/movimientos/{id}/anular',[MovimientoCajaController::class, 'confirmarAnulacion'])->name('cajas.movimiento.anular');
+
+    Route::post('/cajas/movimientos/{id}/anular',[MovimientoCajaController::class, 'anular'])->name('cajas.movimiento.anular.store');
+
+    Route::get('/cajas/{id}/movimientos/pdf',[MovimientoCajaController::class, 'pdf'])->name('cajas.movimientos.pdf');
 });
 
 /*

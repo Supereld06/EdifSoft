@@ -916,12 +916,311 @@ BOTÓN EDITAR
 .formulario-propietario,
 .formulario-departamento,
 .formulario-tienda,
-.formulario-estacionamiento {
+.formulario-estacionamiento,
+.formulario-apertura {
     background: rgba(255, 255, 255, 0.60);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border-radius: 10px;
 }
+
+
+/* =========================================
+   APERTURA DE EXPENSAS - DISEÑO COMPACTO
+   ========================================= */
+
+.formulario-apertura {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.formulario-apertura .card-header {
+    padding: 0.65rem 1rem !important;
+}
+
+.formulario-apertura .icon-header {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.formulario-apertura .card-header h5 {
+    font-size: 1rem;
+}
+
+.formulario-apertura .card-header small {
+    font-size: 0.75rem;
+}
+
+.formulario-apertura .card-body {
+    padding: 1rem !important;
+}
+
+.formulario-apertura .section-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 5px;
+    margin-bottom: 0.6rem !important;
+}
+
+.formulario-apertura .section-title i {
+    font-size: 1rem;
+}
+
+.formulario-apertura .form-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.formulario-apertura .row {
+    --bs-gutter-y: 0;
+}
+
+.formulario-apertura .mb-3 {
+    margin-bottom: 0.55rem !important;
+}
+
+.formulario-apertura .form-control {
+    min-height: 34px;
+    height: 34px;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.85rem;
+}
+
+.formulario-apertura .input-group-text {
+    min-width: 36px;
+    width: 36px;
+    padding: 0.25rem;
+    justify-content: center;
+    font-size: 0.85rem;
+}
+
+.formulario-apertura .campo-obligatorio {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.formulario-apertura .mensaje-error {
+    color: #dc3545;
+    font-size: 0.72rem;
+    margin-top: 2px;
+    line-height: 1.1;
+}
+
+.formulario-apertura .mensaje-error i {
+    margin-right: 2px;
+}
+
+.formulario-apertura .nota-obligatorios {
+    background: #f8f9fa;
+    border-left: 3px solid #0d6efd;
+    padding: 6px 9px;
+    border-radius: 4px;
+    color: #6c757d;
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem !important;
+}
+
+.formulario-apertura hr {
+    margin: 0.8rem 0 !important;
+}
+
+.formulario-apertura small.text-muted {
+    font-size: 0.7rem;
+    line-height: 1.1;
+    display: block;
+    margin-top: 2px;
+}
+
+.formulario-apertura .btn {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.82rem;
+}
+
+.formulario-apertura .icono-fecha {
+    color: #0d6efd;
+}
+
+.formulario-apertura .icono-gestion {
+    color: #6f42c1;
+}
+
+.formulario-apertura .icono-edificio {
+    color: #0d6efd;
+}
+
+.formulario-apertura .icono-dinero {
+    color: #198754;
+}
+
+.formulario-apertura .icono-agua {
+    color: #0dcaf0;
+}
+
+.formulario-apertura .icono-departamento {
+    color: #fd7e14;
+}
+
+.formulario-apertura .icono-tienda {
+    color: #ffc107;
+}
+
+.formulario-apertura .icono-parqueo {
+    color: #dc3545;
+}
+
+.formulario-apertura .form-control:focus {
+    box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.15);
+}
+
+
+/* =========================================
+   CAJAS - INDEX
+   ========================================= */
+
+/* Contenedor principal */
+.cajas-contenedor {
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.35) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Encabezado */
+.cajas-icon-header {
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* Tarjeta de cada caja */
+.caja-card {
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+}
+
+/* Efecto al pasar el mouse */
+.caja-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.10) !important;
+}
+
+/* Icono de caja */
+.caja-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(233, 242, 255, 0.55);
+    color: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+}
+
+/* Nombre */
+.caja-card h6 {
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+/* Estado */
+.caja-card .badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.35rem 0.5rem;
+}
+
+/* Descripción */
+.caja-descripcion {
+    min-height: 34px;
+    font-size: 0.85rem;
+    color: #6c757d;
+    line-height: 1.25;
+}
+
+/* Saldo */
+.caja-saldo {
+    background: rgba(248, 249, 250, 0.35);
+    border-radius: 8px;
+    padding: 8px 10px;
+    border: 1px solid rgba(237, 240, 242, 0.35);
+}
+
+.caja-saldo small {
+    font-size: 0.9rem;
+}
+
+.caja-saldo h4 {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+/* Botones */
+.caja-card .btn {
+    font-size: 0.9rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+}
+
+.caja-card .btn i {
+    margin-right: 3px;
+}
+
+/* Estado vacío */
+.cajas-vacio {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cajas-vacio-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: rgba(233, 242, 255, 0.55);
+    color: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+.cajas-vacio h5 {
+    font-size: 1rem;
+}
+
+.cajas-vacio p {
+    font-size: 0.85rem;
+}
+
+
+
+
+
+
 
 
 /* =========================================================

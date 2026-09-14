@@ -1,175 +1,272 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <h3>🚗 Editar Estacionamiento</h3>
+        <div>
+            <h3 class="mb-1 fw-bold">
+                <i class="bi bi-pencil-square text-info"></i>
+                Editar Estacionamiento
+            </h3>
+            <small class="text-muted">
+                Modifica los datos del estacionamiento
+            </small>
+        </div>
     </x-slot>
 
-    <div class="container">
+    <div class="container-fluid py-2 px-4">
 
-        <div class="card shadow">
+        {{-- MENSAJES DE ERROR GENERALES --}}
+        @if($errors->any())
+            <div class="alert alert-danger shadow-sm border-0 mb-3">
+                <div class="fw-bold mb-1">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    No se pudo actualizar el estacionamiento
+                </div>
+                <ul class="mb-0 ps-3">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-            <div class="card-header bg-warning text-dark">
+        <div class="card border-0 shadow-sm formulario-estacionamiento">
 
-                <h5 class="mb-0">
-                    <i class="bi bi-pencil-square"></i>
-                    Editar Estacionamiento
-                </h5>
+            {{-- ENCABEZADO --}}
+            <div class="card-header bg-info text-white border-0">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="icon-header me-3">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+
+                    <div>
+
+                        <h5 class="mb-0 fw-bold">
+                            Editar Estacionamiento
+                        </h5>
+
+                        <small class="opacity-75">
+                            Actualiza la información solicitada
+                        </small>
+
+                    </div>
+
+                </div>
 
             </div>
 
-            <div class="card-body">
 
-                <form action="{{ route('estacionamientos.update', $estacionamiento->id) }}"
-                    method="POST">
+            <div class="card-body p-3">
+
+                <form action="{{ route('estacionamientos.update', $estacionamiento->id) }}" method="POST">
 
                     @csrf
                     @method('PUT')
 
-                    <!-- FILA 1 -->
+                    {{-- DATOS DEL ESTACIONAMIENTO --}}
+                    <div class="section-title mb-3">
+                        <i class="bi bi-car-front-fill text-primary"></i>
+                        <span>Datos del estacionamiento</span>
+                    </div>
 
-                    <div class="row">
+                    <div class="row g-2">
 
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
-                                Tipo de Estacionamiento
+                        {{-- TIPO --}}
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">
+                                Tipo de estacionamiento
+                                <span class="campo-obligatorio">*</span>
                             </label>
 
-                            <input
-                                type="text"
-                                name="tipo_estacionamiento"
-                                class="form-control"
-                                value="{{ old('tipo_estacionamiento', $estacionamiento->tipo_estacionamiento) }}"
-                                required>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-car-front"></i>
+                                </span>
 
+                                <input type="text" name="tipo_estacionamiento"
+                                    class="form-control @error('tipo_estacionamiento') is-invalid @enderror"
+                                    value="{{ old('tipo_estacionamiento', $estacionamiento->tipo_estacionamiento) }}"
+                                    placeholder="Ej. Privado" required>
+                            </div>
+
+                            @error('tipo_estacionamiento')
+                                <div class="mensaje-error">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
-                                Número de Estacionamiento
+                        {{-- NUMERO --}}
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">
+                                Número de estacionamiento
+                                <span class="campo-obligatorio">*</span>
                             </label>
 
-                            <input
-                                type="text"
-                                name="numero_estacionamiento"
-                                class="form-control"
-                                value="{{ old('numero_estacionamiento', $estacionamiento->numero_estacionamiento) }}"
-                                required>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-hash"></i>
+                                </span>
 
+                                <input type="text" name="numero_estacionamiento"
+                                    class="form-control @error('numero_estacionamiento') is-invalid @enderror"
+                                    value="{{ old('numero_estacionamiento', $estacionamiento->numero_estacionamiento) }}"
+                                    placeholder="Ej. E-01" required>
+                            </div>
+
+                            @error('numero_estacionamiento')
+                                <div class="mensaje-error">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label fw-bold">
+                        {{-- UBICACION --}}
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">
                                 Ubicación
                             </label>
 
-                            <input
-                                type="text"
-                                name="ubicacion"
-                                class="form-control"
-                                value="{{ old('ubicacion', $estacionamiento->ubicacion) }}">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                </span>
 
+                                <input type="text" name="ubicacion"
+                                    class="form-control @error('ubicacion') is-invalid @enderror"
+                                    value="{{ old('ubicacion', $estacionamiento->ubicacion) }}"
+                                    placeholder="Ej. Planta baja">
+                            </div>
+
+                            @error('ubicacion')
+                                <div class="mensaje-error">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
                     </div>
 
-                    <!-- FILA 2 -->
+                    {{-- PROPIETARIO Y EDIFICIO --}}
+                    <div class="section-title mb-3 mt-2">
+                        <i class="bi bi-person-vcard-fill text-primary"></i>
+                        <span>Propietario y edificio</span>
+                    </div>
 
-                    <div class="row">
+                    <div class="row g-2">
 
-                        <div class="col-md-6 mb-3">
-
-                            <label class="form-label fw-bold">
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">
                                 Propietario
+                                <span class="campo-obligatorio">*</span>
                             </label>
 
-                            <select
-                                name="propietario_id"
-                                class="form-select"
-                                required>
+                            <select name="propietario_id" id="propietario_id"
+                                class="form-select @error('propietario_id') is-invalid @enderror" required>
+
+                                <option value=""></option>
 
                                 @foreach($propietarios as $propietario)
-
-                                    <option
-                                        value="{{ $propietario->id }}"
-                                        {{ old('propietario_id', $estacionamiento->propietario_id) == $propietario->id ? 'selected' : '' }}>
+                                    <option value="{{ $propietario->id }}" {{ old('propietario_id', $estacionamiento->propietario_id) == $propietario->id ? 'selected' : '' }}>
 
                                         {{ $propietario->nombres }}
                                         {{ $propietario->apellido_paterno }}
                                         {{ $propietario->apellido_materno }}
 
                                     </option>
-
                                 @endforeach
 
                             </select>
 
+                            @error('propietario_id')
+                                <div class="mensaje-error">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-
-                        <div class="col-md-6 mb-3">
-
-                            <label class="form-label fw-bold">
+                        {{-- EDIFICIO --}}
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">
                                 Edificio
+                                <span class="campo-obligatorio">*</span>
                             </label>
 
-                            <input
-                                type="text"
-                                class="form-control"
-                                value="{{ session('edificio_nombre') }}"
-                                readonly>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-buildings-fill"></i>
+                                </span>
 
-                            <input
-                                type="hidden"
-                                name="edificio_id"
-                                value="{{ $estacionamiento->edificio_id }}">
+                                <input type="text" class="form-control" value="{{ session('edificio_nombre') }}"
+                                    readonly>
+                            </div>
 
+                            <input type="hidden" name="edificio_id" value="{{ $estacionamiento->edificio_id }}"
+                                required>
+
+                            @error('edificio_id')
+                                <div class="mensaje-error">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
                     </div>
 
-                    <!-- FILA 3 -->
+                    {{-- INFORMACIÓN ADICIONAL --}}
+                    <div class="section-title mb-3 mt-2">
+                        <i class="bi bi-card-text text-primary"></i>
+                        <span>Información adicional</span>
+                    </div>
 
-                    <div class="row">
+                    <div class="row g-2">
 
-                        <div class="col-md-12 mb-3">
-
-                            <label class="form-label fw-bold">
+                        {{-- DETALLE --}}
+                        <div class="col-md-12 mb-2">
+                            <label class="form-label">
                                 Detalle
                             </label>
 
-                            <textarea
-                                name="detalle"
-                                rows="4"
-                                class="form-control">{{ old('detalle', $estacionamiento->detalle) }}</textarea>
+                            <textarea name="detalle" rows="2"
+                                class="form-control @error('detalle') is-invalid @enderror"
+                                placeholder="Información adicional del estacionamiento...">{{ old('detalle', $estacionamiento->detalle) }}</textarea>
 
+                            @error('detalle')
+                                <div class="mensaje-error">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
                     </div>
 
-                    <hr>
+                    {{-- NOTA --}}
+                    <div class="nota-obligatorios mt-2 mb-2">
+                        <i class="bi bi-info-circle-fill"></i>
+                        Los campos marcados con <strong>*</strong> son obligatorios.
+                    </div>
 
-                    <div class="d-flex justify-content-end">
+                    <hr class="my-2">
 
-                        <a
-                            href="{{ route('estacionamientos.index') }}"
-                            class="btn btn-secondary me-2">
+                    {{-- BOTONES --}}
+                    <div class="d-flex justify-content-end gap-2">
+
+                        <a href="{{ route('estacionamientos.index') }}" class="btn btn-secondary">
 
                             <i class="bi bi-arrow-left"></i>
-
                             Cancelar
-
                         </a>
 
-                        <button
-                            type="submit"
-                            class="btn btn-success">
+                        <button type="submit" class="btn btn-success">
 
-                            <i class="bi bi-check-circle"></i>
-
+                            <i class="bi bi-check-circle-fill"></i>
                             Actualizar
-
                         </button>
 
                     </div>
@@ -177,9 +274,36 @@
                 </form>
 
             </div>
-
         </div>
-
     </div>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function () {
+
+                $('#propietario_id').select2({
+                    placeholder: 'Seleccione propietario...',
+                    allowClear: true,
+                    width: '100%',
+
+                    language: {
+                        noResults: function () {
+                            return "No se encontró ningún propietario";
+                        },
+
+                        searching: function () {
+                            return "Buscando...";
+                        },
+
+                        inputTooShort: function () {
+                            return "Escriba para buscar";
+                        }
+                    }
+                });
+
+            });
+        </script>
+    @endpush
+
 
 </x-app-layout>
