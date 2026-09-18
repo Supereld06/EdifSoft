@@ -1,50 +1,93 @@
 <x-app-layout>
 
-    <div class="container-fluid">
+    <x-slot name="header">
 
-        {{-- ENCABEZADO --}}
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-center">
 
             <div>
 
-                <h2 class="mb-1">
-                    📋 Movimientos de Caja
-                </h2>
+                <h3 class="mb-1 fw-bold">
+                    <i class="bi bi-arrow-left-right text-primary"></i>
+                    Movimientos de Caja
+                </h3>
 
-                <p class="text-muted mb-0">
-                    Caja:
-                    <strong>
-                        {{ $caja->nombre }}
-                    </strong>
-                </p>
+                <small class="text-muted">
+                    Registro y administración de movimientos —
+                    <strong>{{ $caja->nombre }}</strong>
+                </small>
 
             </div>
 
-            <div class="d-flex gap-2">
+        </div>
 
-                <a href="{{ route('cajas.index') }}" class="btn btn-secondary">
-                    ← Cajas
+    </x-slot>
+
+
+    <div class="container-fluid py-2 px-4">
+
+        {{-- BOTONES --}}
+        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+
+            <div class="d-flex gap-1 flex-wrap">
+
+                <a href="{{ route('cajas.index') }}" class="btn btn-secondary shadow-sm">
+
+                    <i class="bi bi-arrow-left"></i>
+                    Cajas
+
                 </a>
 
-                <a href="{{ route('cajas.ingreso.create', $caja->id) }}" class="btn btn-success">
-                    ➕ Ingreso
+
+                <a href="{{ route('cajas.ingreso.create', $caja->id) }}" class="btn btn-success shadow-sm">
+
+                    <i class="bi bi-plus-circle-fill"></i>
+                    Ingreso
+
                 </a>
 
-                <a href="{{ route('cajas.egreso.create', $caja->id) }}" class="btn btn-danger">
-                    ➖ Egreso
+
+                <a href="{{ route('cajas.egreso.create', $caja->id) }}" class="btn btn-danger shadow-sm">
+
+                    <i class="bi bi-dash-circle-fill"></i>
+                    Egreso
+
                 </a>
 
-                <a href="{{ route('cajas.transferencia.create', $caja->id) }}" class="btn btn-primary">
-                    🔄 Transferencia
+
+                <a href="{{ route('cajas.transferencia.create', $caja->id) }}" class="btn btn-primary shadow-sm">
+
+                    <i class="bi bi-arrow-left-right"></i>
+                    Transferencia
+
                 </a>
+
 
                 <a href="{{ route('cajas.movimientos.pdf', array_merge(
     ['id' => $caja->id],
     request()->query()
-)) }}" target="_blank" class="btn btn-dark">
-                    📄 PDF
+)) }}" target="_blank" class="btn btn-danger">
+                    <i class="bi bi-file-earmark-pdf-fill"></i>
+                    PDF
                 </a>
+
+                {{-- EXCEL --}}
+                <a href="{{ route('cajas.movimientos.excel', array_merge(
+    ['id' => $caja->id],
+    request()->query()
+)) }}" class="btn btn-success">
+                    <i class="bi bi-file-earmark-excel-fill"></i>
+                    Excel
+                </a>
+
+            </div>
+
+
+            <div class="text-muted">
+
+                <i class="bi bi-wallet2"></i>
+
+                Caja:
+                <strong>{{ $caja->nombre }}</strong>
 
             </div>
 
@@ -52,10 +95,11 @@
 
 
         {{-- MENSAJES --}}
-
         @if(session('success'))
 
-            <div class="alert alert-success alert-dismissible fade show">
+            <div class="alert alert-success alert-dismissible fade show shadow-sm py-2 mb-2" role="alert">
+
+                <i class="bi bi-check-circle-fill me-2"></i>
 
                 {{ session('success') }}
 
@@ -69,7 +113,9 @@
 
         @if(session('error'))
 
-            <div class="alert alert-danger alert-dismissible fade show">
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm py-2 mb-2" role="alert">
+
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
 
                 {{ session('error') }}
 
@@ -82,44 +128,37 @@
 
 
         {{-- RESUMEN --}}
+        <div class="row g-2 mb-2">
 
-        <div class="row g-3 mb-4">
+            {{-- SALDO --}}
+            <div class="col-lg-4">
 
-            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
 
-                <div class="card shadow-sm border-0">
+                    <div class="card-body py-2 px-3">
 
-                    <div class="card-body">
+                        <div class="d-flex align-items-center">
 
-                        <div class="text-muted small">
-                            Saldo actual
-                        </div>
+                            <div class="rounded-circle bg-primary bg-opacity-10
+                                text-primary d-flex align-items-center
+                                justify-content-center me-2" style="width:40px;height:40px;min-width:40px;">
 
-                        <div class="fs-3 fw-bold">
-                            Bs.
-                            {{ number_format($caja->saldo, 2) }}
-                        </div>
+                                <i class="bi bi-wallet2"></i>
 
-                    </div>
+                            </div>
 
-                </div>
+                            <div>
 
-            </div>
+                                <div class="text-muted">
+                                    Saldo actual
+                                </div>
 
+                                <div class="fs-4 fw-bold">
+                                    Bs. {{ number_format($caja->saldo, 2) }}
+                                </div>
 
-            <div class="col-md-4">
+                            </div>
 
-                <div class="card shadow-sm border-0">
-
-                    <div class="card-body">
-
-                        <div class="text-muted small">
-                            Total ingresos activos
-                        </div>
-
-                        <div class="fs-3 fw-bold text-success">
-                            Bs.
-                            {{ number_format($totalIngresos, 2) }}
                         </div>
 
                     </div>
@@ -129,19 +168,73 @@
             </div>
 
 
-            <div class="col-md-4">
+            {{-- INGRESOS --}}
+            <div class="col-lg-4">
 
-                <div class="card shadow-sm border-0">
+                <div class="card border-0 shadow-sm h-100">
 
-                    <div class="card-body">
+                    <div class="card-body py-2 px-3">
 
-                        <div class="text-muted small">
-                            Total egresos activos
+                        <div class="d-flex align-items-center">
+
+                            <div class="rounded-circle bg-success bg-opacity-10
+                                text-success d-flex align-items-center
+                                justify-content-center me-2" style="width:40px;height:40px;min-width:40px;">
+
+                                <i class="bi bi-arrow-down-circle-fill"></i>
+
+                            </div>
+
+                            <div>
+
+                                <div class="text-muted">
+                                    Total ingresos activos
+                                </div>
+
+                                <div class="fs-4 fw-bold text-success">
+                                    Bs. {{ number_format($totalIngresos, 2) }}
+                                </div>
+
+                            </div>
+
                         </div>
 
-                        <div class="fs-3 fw-bold text-danger">
-                            Bs.
-                            {{ number_format($totalEgresos, 2) }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {{-- EGRESOS --}}
+            <div class="col-lg-4">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body py-2 px-3">
+
+                        <div class="d-flex align-items-center">
+
+                            <div class="rounded-circle bg-danger bg-opacity-10
+                                text-danger d-flex align-items-center
+                                justify-content-center me-2" style="width:40px;height:40px;min-width:40px;">
+
+                                <i class="bi bi-arrow-up-circle-fill"></i>
+
+                            </div>
+
+                            <div>
+
+                                <div class="text-muted">
+                                    Total egresos activos
+                                </div>
+
+                                <div class="fs-4 fw-bold text-danger">
+                                    Bs. {{ number_format($totalEgresos, 2) }}
+                                </div>
+
+                            </div>
+
                         </div>
 
                     </div>
@@ -154,19 +247,39 @@
 
 
         {{-- FILTROS --}}
+        <div class="card border-0 shadow-sm overflow-hidden mb-2">
 
-        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white py-2 px-3 border-0">
 
-            <div class="card-body">
+                <h5 class="mb-0 fw-bold">
+
+                    <i class="bi bi-funnel-fill text-primary me-2"></i>
+
+                    Filtrar movimientos
+
+                </h5>
+
+                <small class="text-muted">
+                    Busca por tipo, estado, fecha o concepto
+                </small>
+
+            </div>
+
+
+            <div class="card-body py-2 px-3">
 
                 <form method="GET" action="{{ route('cajas.movimientos', $caja->id) }}">
 
                     <div class="row g-2 align-items-end">
 
-                        <div class="col-md-2">
+                        {{-- TIPO --}}
+                        <div class="col-xl-2 col-lg-2 col-md-6">
 
-                            <label class="form-label">
+                            <label class="form-label fw-semibold mb-1">
+
+                                <i class="bi bi-list-check text-primary me-1"></i>
                                 Tipo
+
                             </label>
 
                             <select name="tipo" class="form-select">
@@ -188,10 +301,14 @@
                         </div>
 
 
-                        <div class="col-md-2">
+                        {{-- ESTADO --}}
+                        <div class="col-xl-2 col-lg-2 col-md-6">
 
-                            <label class="form-label">
+                            <label class="form-label fw-semibold mb-1">
+
+                                <i class="bi bi-check-circle text-primary me-1"></i>
                                 Estado
+
                             </label>
 
                             <select name="estado" class="form-select">
@@ -213,10 +330,14 @@
                         </div>
 
 
-                        <div class="col-md-2">
+                        {{-- DESDE --}}
+                        <div class="col-xl-2 col-lg-2 col-md-6">
 
-                            <label class="form-label">
+                            <label class="form-label fw-semibold mb-1">
+
+                                <i class="bi bi-calendar-event text-primary me-1"></i>
                                 Desde
+
                             </label>
 
                             <input type="date" name="fecha_desde" class="form-control"
@@ -225,10 +346,14 @@
                         </div>
 
 
-                        <div class="col-md-2">
+                        {{-- HASTA --}}
+                        <div class="col-xl-2 col-lg-2 col-md-6">
 
-                            <label class="form-label">
+                            <label class="form-label fw-semibold mb-1">
+
+                                <i class="bi bi-calendar-check text-primary me-1"></i>
                                 Hasta
+
                             </label>
 
                             <input type="date" name="fecha_hasta" class="form-control"
@@ -237,10 +362,14 @@
                         </div>
 
 
-                        <div class="col-md-3">
+                        {{-- BUSCAR --}}
+                        <div class="col-xl-3 col-lg-3 col-md-8">
 
-                            <label class="form-label">
+                            <label class="form-label fw-semibold mb-1">
+
+                                <i class="bi bi-search text-primary me-1"></i>
                                 Buscar
+
                             </label>
 
                             <input type="text" name="buscar" class="form-control"
@@ -249,11 +378,26 @@
                         </div>
 
 
-                        <div class="col-md-1">
+                        {{-- BOTONES --}}
+                        <div class="col-xl-1 col-lg-1 col-md-4">
 
-                            <button class="btn btn-dark w-100">
-                                🔎
-                            </button>
+                            <div class="d-flex gap-1">
+
+                                <button type="submit" class="btn btn-primary shadow-sm" title="Buscar">
+
+                                    <i class="bi bi-search"></i>
+
+                                </button>
+
+
+                                <a href="{{ route('cajas.movimientos', $caja->id) }}"
+                                    class="btn btn-secondary shadow-sm" title="Limpiar filtros">
+
+                                    <i class="bi bi-x-circle"></i>
+
+                                </a>
+
+                            </div>
 
                         </div>
 
@@ -267,356 +411,419 @@
 
 
         {{-- TABLA --}}
+        <div class="card border-0 shadow-sm overflow-hidden">
 
-        <div class="card shadow-sm">
+            {{-- CABECERA --}}
+            <div class="card-header bg-white py-2 px-3 border-0">
 
-            <div class="card-body p-0">
+                <div class="d-flex justify-content-between align-items-center">
 
-                <div class="table-responsive">
+                    <div>
 
-                    <table class="table table-hover table-bordered align-middle mb-0">
+                        <h5 class="mb-0 fw-bold">
 
-                        <thead class="table-dark">
+                            <i class="bi bi-arrow-left-right text-primary me-2"></i>
 
-                            <tr>
+                            Movimientos registrados
 
-                                <th>
-                                    Fecha
-                                </th>
+                        </h5>
 
-                                <th>
-                                    Tipo
-                                </th>
+                        <small class="text-muted">
+                            Historial de movimientos de la caja
+                        </small>
 
-                                <th>
-                                    Concepto
-                                </th>
+                    </div>
 
-                                <th>
-                                    Usuario
-                                </th>
 
-                                <th class="text-end">
-                                    Monto
-                                </th>
+                    <span class="badge bg-primary rounded-pill px-3 py-2" style="font-size: 0.95rem;">
 
-                                <th class="text-end">
-                                    Saldo anterior
-                                </th>
+                        {{ $movimientos->total() }} movimientos
 
-                                <th class="text-end">
-                                    Saldo nuevo
-                                </th>
-
-                                <th>
-                                    Estado
-                                </th>
-
-                                <th>
-                                    Usuario
-                                </th>
-
-                                <th class="text-center">
-                                    Acciones
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody>
-
-                            @forelse($movimientos as $movimiento)
-
-                                <tr @if($movimiento->estado === 'anulado') class="table-secondary" @endif>
-
-                                    {{-- FECHA --}}
-
-                                    <td>
-
-                                        {{ $movimiento->fecha->format('d/m/Y') }}
-
-                                        <br>
-
-                                        <small class="text-muted">
-                                            {{ $movimiento->fecha->format('H:i') }}
-                                        </small>
-
-                                    </td>
-
-
-                                    {{-- TIPO --}}
-
-                                    <td>
-
-                                        @if($movimiento->tipo === 'ingreso')
-
-                                            <span class="badge bg-success">
-                                                INGRESO
-                                            </span>
-
-                                        @else
-
-                                            <span class="badge bg-danger">
-                                                EGRESO
-                                            </span>
-
-                                        @endif
-
-
-                                        @if($movimiento->transferencia_id)
-
-                                            <br>
-
-                                            <span class="badge bg-primary mt-1">
-                                                🔄 TRANSFERENCIA
-                                            </span>
-
-                                        @endif
-
-                                    </td>
-
-
-                                    {{-- CONCEPTO --}}
-
-                                    <td>
-
-                                        <strong>
-                                            {{ $movimiento->concepto }}
-                                        </strong>
-
-                                        @if($movimiento->transferencia_id)
-
-                                            <br>
-
-                                            <small class="text-muted">
-                                                {{ $movimiento->transferencia_id }}
-                                            </small>
-
-                                        @endif
-
-
-                                        @if($movimiento->observacion)
-
-                                            <br>
-
-                                            <small class="text-muted">
-                                                {{ $movimiento->observacion }}
-                                            </small>
-
-                                        @endif
-
-                                    </td>
-
-
-                                    {{-- USUARIO --}}
-
-                                    <td>
-
-                                        {{ $movimiento->usuario?->name ?? 'N/A' }}
-
-                                    </td>
-
-
-                                    {{-- MONTO --}}
-
-                                    <td class="text-end fw-bold">
-
-                                        @if($movimiento->tipo === 'ingreso')
-
-                                            <span class="text-success">
-                                                + Bs.
-                                                {{ number_format($movimiento->monto, 2) }}
-                                            </span>
-
-                                        @else
-
-                                            <span class="text-danger">
-                                                - Bs.
-                                                {{ number_format($movimiento->monto, 2) }}
-                                            </span>
-
-                                        @endif
-
-                                    </td>
-
-
-                                    {{-- SALDO ANTERIOR --}}
-
-                                    <td class="text-end">
-
-                                        Bs.
-                                        {{ number_format($movimiento->saldo_anterior, 2) }}
-
-                                    </td>
-
-
-                                    {{-- SALDO NUEVO --}}
-
-                                    <td class="text-end">
-
-                                        Bs.
-                                        {{ number_format($movimiento->saldo_nuevo, 2) }}
-
-                                    </td>
-
-
-                                    {{-- ESTADO --}}
-
-                                    <td>
-
-                                        @if($movimiento->estado === 'activo')
-
-                                            <span class="badge bg-success">
-                                                ACTIVO
-                                            </span>
-
-                                        @else
-
-                                            <span class="badge bg-danger">
-                                                ANULADO
-                                            </span>
-
-                                            @if($movimiento->anulado_en)
-
-                                                <br>
-
-                                                <small class="text-muted">
-                                                    {{ $movimiento->anulado_en->format('d/m/Y H:i') }}
-                                                </small>
-
-                                            @endif
-
-                                        @endif
-
-                                    </td>
-
-                                    <td class="">
-                                        {{ $movimiento->usuario?->name ?? 'N/A' }}
-                                    </td>
-
-
-                                    {{-- ACCIONES --}}
-
-                                    <td class="text-center">
-
-                                        <div class="d-flex justify-content-center gap-1 flex-wrap">
-
-                                            {{-- RECIBO --}}
-
-                                            @if($movimiento->transferencia_id)
-
-                                                                                <a href="{{ route(
-                                                    'cajas.transferencia.recibo',
-                                                    $movimiento->transferencia_id
-                                                ) }}" target="_blank" class="btn btn-sm btn-outline-primary"
-                                                                                    title="Imprimir recibo de transferencia">
-
-                                                                                    🖨️
-
-                                                                                </a>
-
-                                            @else
-
-                                                                                <a href="{{ route(
-                                                    'cajas.movimiento.recibo',
-                                                    $movimiento->id
-                                                ) }}" target="_blank" class="btn btn-sm btn-outline-primary"
-                                                                                    title="Imprimir recibo">
-
-                                                                                    🖨️
-
-                                                                                </a>
-
-                                            @endif
-
-
-                                            {{-- ANULAR --}}
-
-                                            @if(
-                                                                                    $movimiento->estado === 'activo'
-                                                                                    &&
-                                                                                    $movimiento->referencia_tipo !== 'anulacion_movimiento'
-                                                                                    &&
-                                                                                    $movimiento->referencia_tipo !== 'anulacion_transferencia'
-                                                                                )
-
-                                                                                <a href="{{ route(
-                                                    'cajas.movimiento.anular',
-                                                    $movimiento->id
-                                                ) }}" class="btn btn-sm btn-outline-danger" title="Anular movimiento">
-
-                                                                                    ↩️
-
-                                                                                </a>
-
-                                            @endif
-
-                                        </div>
-
-
-                                        {{-- INFORMACIÓN DE ANULACIÓN --}}
-
-                                        @if($movimiento->estado === 'anulado')
-
-                                            <div class="mt-2">
-
-                                                <small class="text-danger">
-
-                                                    Anulado por:
-                                                    {{ $movimiento->usuarioAnulacion?->name ?? 'N/A' }}
-
-                                                </small>
-
-                                                @if($movimiento->motivo_anulacion)
-
-                                                    <br>
-
-                                                    <small class="text-muted">
-
-                                                        {{ $movimiento->motivo_anulacion }}
-
-                                                    </small>
-
-                                                @endif
-
-                                            </div>
-
-                                        @endif
-
-                                    </td>
-
-                                </tr>
-
-                            @empty
-
-                                <tr>
-
-                                    <td colspan="9" class="text-center py-5 text-muted">
-
-                                        No existen movimientos para mostrar.
-
-                                    </td>
-
-                                </tr>
-
-                            @endforelse
-
-                        </tbody>
-
-                    </table>
+                    </span>
 
                 </div>
 
             </div>
 
 
+            {{-- TABLA --}}
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th class="px-3">
+                                Fecha
+                            </th>
+
+                            <th>
+                                Tipo
+                            </th>
+
+                            <th>
+                                Concepto
+                            </th>
+
+                            <th>
+                                Usuario
+                            </th>
+
+                            <th class="text-end">
+                                Monto
+                            </th>
+
+                            <th class="text-end">
+                                Saldo anterior
+                            </th>
+
+                            <th class="text-end">
+                                Saldo nuevo
+                            </th>
+
+                            <th>
+                                Estado
+                            </th>
+
+                            <th>
+                                Usuario
+                            </th>
+
+                            <th class="text-center">
+                                Acciones
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @forelse($movimientos as $movimiento)
+
+                            <tr @if($movimiento->estado === 'anulado') class="table-secondary" @endif>
+
+
+                                {{-- FECHA --}}
+                                <td class="px-3">
+
+                                    <div class="fw-semibold">
+
+                                        <i class="bi bi-calendar3 text-primary me-1"></i>
+
+                                        {{ $movimiento->fecha->format('d/m/Y') }}
+
+                                    </div>
+
+                                    <small class="text-muted">
+                                        <i class="bi bi-clock me-1"></i>
+                                        {{ $movimiento->fecha->format('H:i') }}
+                                    </small>
+
+                                </td>
+
+
+                                {{-- TIPO --}}
+                                <td>
+
+                                    @if($movimiento->tipo === 'ingreso')
+
+                                        <span class="badge bg-success rounded-pill px-2 py-1">
+
+                                            <i class="bi bi-arrow-down-circle-fill me-1"></i>
+                                            INGRESO
+
+                                        </span>
+
+                                    @else
+
+                                        <span class="badge bg-danger rounded-pill px-2 py-1">
+
+                                            <i class="bi bi-arrow-up-circle-fill me-1"></i>
+                                            EGRESO
+
+                                        </span>
+
+                                    @endif
+
+
+                                    @if($movimiento->transferencia_id)
+
+                                        <span class="badge bg-primary rounded-pill px-2 py-1 mt-1">
+
+                                            <i class="bi bi-arrow-left-right me-1"></i>
+                                            TRANSFERENCIA
+
+                                        </span>
+
+                                    @endif
+
+                                </td>
+
+
+                                {{-- CONCEPTO --}}
+                                <td>
+
+                                    <div class="fw-semibold">
+                                        {{ $movimiento->concepto }}
+                                    </div>
+
+
+                                    @if($movimiento->transferencia_id)
+
+                                        <small class="text-muted d-block">
+                                            <i class="bi bi-link-45deg"></i>
+                                            {{ $movimiento->transferencia_id }}
+                                        </small>
+
+                                    @endif
+
+
+                                    @if($movimiento->observacion)
+
+                                        <small class="text-muted d-block">
+                                            <i class="bi bi-chat-left-text me-1"></i>
+                                            {{ $movimiento->observacion }}
+                                        </small>
+
+                                    @endif
+
+                                </td>
+
+
+                                {{-- USUARIO --}}
+                                <td>
+
+                                    <i class="bi bi-person-fill text-primary me-1"></i>
+
+                                    {{ $movimiento->usuario?->name ?? 'N/A' }}
+
+                                </td>
+
+
+                                {{-- MONTO --}}
+                                <td class="text-end fw-bold">
+
+                                    @if($movimiento->tipo === 'ingreso')
+
+                                        <span class="text-success">
+                                            + Bs.
+                                            {{ number_format($movimiento->monto, 2) }}
+                                        </span>
+
+                                    @else
+
+                                        <span class="text-danger">
+                                            - Bs.
+                                            {{ number_format($movimiento->monto, 2) }}
+                                        </span>
+
+                                    @endif
+
+                                </td>
+
+
+                                {{-- SALDO ANTERIOR --}}
+                                <td class="text-end">
+
+                                    Bs.
+                                    {{ number_format($movimiento->saldo_anterior, 2) }}
+
+                                </td>
+
+
+                                {{-- SALDO NUEVO --}}
+                                <td class="text-end">
+
+                                    Bs.
+                                    {{ number_format($movimiento->saldo_nuevo, 2) }}
+
+                                </td>
+
+
+                                {{-- ESTADO --}}
+                                <td>
+
+                                    @if($movimiento->estado === 'activo')
+
+                                        <span class="badge bg-success rounded-pill px-2 py-1">
+
+                                            <i class="bi bi-check-circle-fill me-1"></i>
+                                            ACTIVO
+
+                                        </span>
+
+                                    @else
+
+                                        <span class="badge bg-danger rounded-pill px-2 py-1">
+
+                                            <i class="bi bi-x-circle-fill me-1"></i>
+                                            ANULADO
+
+                                        </span>
+
+
+                                        @if($movimiento->anulado_en)
+
+                                            <small class="text-muted d-block">
+
+                                                {{ $movimiento->anulado_en->format('d/m/Y H:i') }}
+
+                                            </small>
+
+                                        @endif
+
+                                    @endif
+
+                                </td>
+
+
+                                {{-- USUARIO --}}
+                                <td>
+
+                                    <i class="bi bi-person-fill text-primary me-1"></i>
+
+                                    {{ $movimiento->usuario?->name ?? 'N/A' }}
+
+                                </td>
+
+
+                                {{-- ACCIONES --}}
+                                <td class="text-center">
+
+                                    <div class="d-flex justify-content-center gap-1">
+
+
+                                        {{-- RECIBO --}}
+                                        @if($movimiento->transferencia_id)
+
+                                                                        <a href="{{ route(
+                                                'cajas.transferencia.recibo',
+                                                $movimiento->transferencia_id
+                                            ) }}" target="_blank" class="btn btn-sm btn-outline-primary"
+                                                                            title="Imprimir recibo de transferencia">
+
+                                                                            <i class="bi bi-printer-fill"></i>
+
+                                                                        </a>
+
+                                        @else
+
+                                                                        <a href="{{ route(
+                                                'cajas.movimiento.recibo',
+                                                $movimiento->id
+                                            ) }}" target="_blank" class="btn btn-sm btn-outline-primary"
+                                                                            title="Imprimir recibo">
+
+                                                                            <i class="bi bi-printer-fill"></i>
+
+                                                                        </a>
+
+                                        @endif
+
+
+                                        {{-- ANULAR --}}
+                                        @if(
+                                                                            $movimiento->estado === 'activo'
+                                                                            &&
+                                                                            $movimiento->referencia_tipo !== 'anulacion_movimiento'
+                                                                            &&
+                                                                            $movimiento->referencia_tipo !== 'anulacion_transferencia'
+                                                                        )
+
+                                                                        <a href="{{ route(
+                                                'cajas.movimiento.anular',
+                                                $movimiento->id
+                                            ) }}" class="btn btn-sm btn-outline-danger" title="Anular movimiento">
+
+                                                                            <i class="bi bi-arrow-counterclockwise"></i>
+
+                                                                        </a>
+
+                                        @endif
+
+                                    </div>
+
+
+                                    {{-- INFORMACIÓN DE ANULACIÓN --}}
+                                    @if($movimiento->estado === 'anulado')
+
+                                        <div class="mt-1">
+
+                                            <small class="text-danger">
+
+                                                <i class="bi bi-person-x-fill me-1"></i>
+
+                                                Anulado por:
+                                                {{ $movimiento->usuarioAnulacion?->name ?? 'N/A' }}
+
+                                            </small>
+
+
+                                            @if($movimiento->motivo_anulacion)
+
+                                                <small class="text-muted d-block">
+
+                                                    <i class="bi bi-chat-left-text me-1"></i>
+
+                                                    {{ $movimiento->motivo_anulacion }}
+
+                                                </small>
+
+                                            @endif
+
+                                        </div>
+
+                                    @endif
+
+                                </td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+
+                                <td colspan="10" class="text-center py-4">
+
+                                    <div class="text-muted">
+
+                                        <i class="bi bi-arrow-left-right fs-1 d-block mb-2"></i>
+
+                                        <h5>No existen movimientos registrados</h5>
+
+                                        <p class="mb-0">
+                                            No hay movimientos que coincidan con los filtros seleccionados.
+                                        </p>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {{-- PAGINACIÓN --}}
             @if($movimientos->hasPages())
 
-                <div class="card-footer">
+                <div class="card-footer bg-white border-0 py-2">
 
-                    {{ $movimientos->links() }}
+                    <div class="d-flex justify-content-center">
+
+                        {{ $movimientos->links() }}
+
+                    </div>
 
                 </div>
 

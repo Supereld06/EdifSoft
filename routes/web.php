@@ -200,13 +200,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cajas/{id}/transferencia', [MovimientoCajaController::class, 'createTransferencia'])->name('cajas.transferencia.create');
     Route::post('/cajas/{id}/transferencia', [MovimientoCajaController::class, 'storeTransferencia'])->name('cajas.transferencia.store');
 
-    Route::get('/cajas/movimientos/{id}/recibo',[MovimientoCajaController::class, 'recibo'])->name('cajas.movimiento.recibo');
-    Route::get('/cajas/transferencias/{transferenciaId}/recibo',[MovimientoCajaController::class, 'reciboTransferencia'])->name('cajas.transferencia.recibo');
-    Route::get('/cajas/movimientos/{id}/anular',[MovimientoCajaController::class, 'confirmarAnulacion'])->name('cajas.movimiento.anular');
-
-    Route::post('/cajas/movimientos/{id}/anular',[MovimientoCajaController::class, 'anular'])->name('cajas.movimiento.anular.store');
-
-    Route::get('/cajas/{id}/movimientos/pdf',[MovimientoCajaController::class, 'pdf'])->name('cajas.movimientos.pdf');
+    Route::get('/cajas/movimientos/{id}/recibo', [MovimientoCajaController::class, 'recibo'])->name('cajas.movimiento.recibo');
+    Route::get('/cajas/transferencias/{transferenciaId}/recibo', [MovimientoCajaController::class, 'reciboTransferencia'])->name('cajas.transferencia.recibo');
+    Route::get('/cajas/movimientos/{id}/anular', [MovimientoCajaController::class, 'confirmarAnulacion'])->name('cajas.movimiento.anular');
+    Route::post('/cajas/movimientos/{id}/anular', [MovimientoCajaController::class, 'anular'])->name('cajas.movimiento.anular.store');
+    Route::get('/cajas/{id}/movimientos/pdf', [MovimientoCajaController::class, 'pdf'])->name('cajas.movimientos.pdf');
+    Route::get('/cajas/{id}/movimientos/excel',[MovimientoCajaController::class, 'excel'])->name('cajas.movimientos.excel');
 });
 
 /*

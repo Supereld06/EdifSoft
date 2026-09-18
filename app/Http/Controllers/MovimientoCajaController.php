@@ -7,6 +7,8 @@ use App\Models\MovimientoCaja;
 use App\Services\CajaService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use App\Exports\MovimientoCajaExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
 
 class MovimientoCajaController extends Controller
@@ -918,6 +920,108 @@ class MovimientoCajaController extends Controller
 
         return $pdf->stream(
             'movimientos-caja-' . $caja->nombre . '.pdf'
+        );
+    }
+
+    public function excel(Request $request, $id)
+    {
+        $caja = $this->obtenerCaja($id);
+
+        $query = MovimientoCaja::with([
+            'usuario',
+            'usuarioAnulacion',
+        ])
+            ->where('caja_id', $caja->id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTRO POR TIPO
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('tipo')) {
+            $query->where('tipo', $request->tipo);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTRO POR ESTADO
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTRO DESDE
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate(
+                'fecha',
+                '>=',
+                $request->fecha_desde
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTRO HASTA
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate(
+                'fecha',
+                '<=',
+                $request->fecha_hasta
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | BUSCAR
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('buscar')) {
+            $buscar = trim($request->buscar);
+
+            $query->where(function ($q) use ($buscar) {
+                $q->where(
+                    'concepto',
+                    'like',
+                    '%' . $buscar . '%'
+                )
+                    ->orWhere(
+                        'observacion',
+                        'like',
+                        '%' . $buscar . '%'
+                    )
+                    ->orWhere(
+                        'transferencia_id',
+                        'like',
+                        '%' . $buscar . '%'
+                    );
+            });
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | OBTENER TODOS LOS MOVIMIENTOS FILTRADOS
+        |--------------------------------------------------------------------------
+        */
+        $movimientos = $query
+            ->orderBy('fecha', 'desc')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | GENERAR EXCEL
+        |--------------------------------------------------------------------------
+        */
+        return Excel::download(
+            new MovimientoCajaExport($movimientos),
+            'movimientos-caja-' . $caja->nombre . '.xlsx'
         );
     }
 }
