@@ -52,34 +52,302 @@ body::before {
 .layout {
     display: flex;
     min-height: 100vh;
-}
-
-.sidebar {
-    width: 250px;
-}
-
-.content {
-    flex: 1;
+    width: 100%;
 }
 
 
 /* =========================================================
-   SIDEBAR
+   SIDEBAR EDIFSOFT
+   Sidebar fijo + menú con scroll independiente
+   ========================================================= */
+
+.sidebar-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+
+    width: 230px;
+    height: 100vh;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 15px !important;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   CABECERA DEL SIDEBAR
+   ========================================================= */
+
+.sidebar-header {
+    flex: 0 0 auto;
+    text-align: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.edifsoft-logo {
+    font-size: 1.65rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.edifsoft-logo span {
+    color: orange;
+}
+
+.edifsoft-logo strong {
+    color: white;
+}
+
+
+/* =========================================================
+   LOGO DEL EDIFICIO EN SIDEBAR
+   Scopeado para no interferir con las tarjetas de edificios
+   ========================================================= */
+
+.sidebar-header .edificio-logo-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.logo-edificio-sidebar {
+    width: 82px;
+    height: 82px;
+    flex: 0 0 82px;
+
+    background: rgba(255, 255, 255, 0.95);
+    border: 3px solid rgba(255, 193, 7, 0.85);
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.logo-edificio-sidebar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.30);
+}
+
+.logo-edificio-sidebar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 5px;
+}
+
+.logo-vacio {
+    color: #6c757d;
+    font-size: 2.2rem;
+}
+
+
+/* =========================================================
+   EDIFICIO Y USUARIO
+   ========================================================= */
+
+.nombre-edificio-sidebar {
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    overflow-wrap: anywhere;
+}
+
+.usuario-sidebar {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   MENÚ CON SCROLL INDEPENDIENTE
+   ========================================================= */
+
+.sidebar-menu {
+    flex: 1 1 auto;
+    min-height: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    margin-top: 10px;
+    padding: 0 4px 4px 0;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.30) transparent;
+}
+
+.sidebar-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-menu::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.30);
+    border-radius: 10px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.50);
+}
+
+
+/* =========================================================
+   ENLACES DEL SIDEBAR
    ========================================================= */
 
 .sidebar-custom .nav-link {
     color: #ddd;
+    border-radius: 8px;
+    margin-bottom: 3px;
+    padding: 8px 10px;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        padding-left 0.2s ease;
 }
 
-.sidebar-custom .nav-link:hover {
-    background: #343a40;
+.sidebar-custom .nav-link:hover,
+.sidebar-custom .nav-link:focus-visible {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    padding-left: 15px;
+}
+
+.sidebar-custom .nav-link:active {
+    transform: scale(0.98);
+}
+
+.sidebar-custom .nav-link[aria-expanded="true"] {
+    background: rgba(255, 255, 255, 0.10);
     color: white;
 }
 
-.user-box {
-    border-bottom: 1px solid #444;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+
+/* =========================================================
+   SUBMENÚS
+   ========================================================= */
+
+.sidebar-custom .collapse .nav-link {
+    font-size: 0.92rem;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.sidebar-custom .collapse .nav-link:hover,
+.sidebar-custom .collapse .nav-link:focus-visible {
+    padding-left: 13px;
+}
+
+
+/* =========================================================
+   FOOTER DEL SIDEBAR
+   Siempre visible, fuera del scroll del menú
+   ========================================================= */
+
+.sidebar-footer {
+    flex: 0 0 auto;
+
+    padding-top: 8px;
+    margin-top: 4px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+
+/* =========================================================
+   BOTÓN CERRAR SESIÓN - COMPACTO
+   ========================================================= */
+
+.btn-cerrar-sesion {
+    width: 100%;
+
+    min-height: 34px;
+    padding: 5px 10px !important;
+
+    border-radius: 7px !important;
+    border: 0;
+
+    font-size: 0.82rem !important;
+    line-height: 1.2;
+    font-weight: 600;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+.btn-cerrar-sesion:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.04);
+    box-shadow: 0 3px 8px rgba(95, 93, 93, 0.007);
+}
+
+.btn-cerrar-sesion:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-cerrar-sesion i {
+    font-size: 0.85rem;
+    margin-right: 3px;
+}
+
+
+/* =========================================================
+   ECONDORCET
+   ========================================================= */
+
+.footer-econdorcet {
+    text-align: center;
+    margin-top: 6px;
+    padding-top: 2px;
+    padding-bottom: 1px;
+
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.68rem;
+    letter-spacing: 0.5px;
+}
+
+.footer-econdorcet small {
+    font-size: inherit;
+}
+
+
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
+
+.content {
+    min-width: 0;
+    min-height: 100vh;
+    width: calc(100% - 230px);
+    margin-left: 230px;
 }
 
 
@@ -1637,4 +1905,4 @@ PANTALLAS MUY PEQUEÑAS
         width: 120px;
         height: 120px;
     }
-}
+} 
