@@ -1,141 +1,298 @@
 <x-app-layout>
 
-<div class="container">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <x-slot name="header">
 
         <div>
-            <h2>✏️ Editar Caja</h2>
+            <h3 class="mb-1 fw-bold">
+                <i class="bi bi-pencil-square text-info"></i>
+                Editar Caja
+            </h3>
 
-            <p class="text-muted mb-0">
-                {{ $caja->nombre }}
-            </p>
+            <small class="text-muted">
+                Modifica la información de la caja seleccionada
+            </small>
         </div>
 
-        <a href="{{ route('cajas.index') }}"
-           class="btn btn-secondary">
-            ← Volver
-        </a>
-
-    </div>
+    </x-slot>
 
 
-    @if($errors->any())
+    <div class="container-fluid py-4 px-4">
 
-        <div class="alert alert-danger">
+        {{-- MENSAJE GENERAL DE ERRORES --}}
+        @if($errors->any())
 
-            <ul class="mb-0">
+            <div class="alert alert-danger shadow-sm border-0 mb-4">
 
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
+                <div class="d-flex align-items-start">
 
-            </ul>
+                    <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
 
-        </div>
+                    <div>
 
-    @endif
+                        <strong>
+                            Revisa los datos del formulario
+                        </strong>
 
-
-    <div class="card shadow-sm">
-
-        <div class="card-body">
-
-            <form action="{{ route('cajas.update', $caja->id) }}"
-                  method="POST">
-
-                @csrf
-                @method('PUT')
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-                            Nombre
-                        </label>
-
-                        <input type="text"
-                               name="nombre"
-                               class="form-control"
-                               value="{{ old('nombre', $caja->nombre) }}"
-                               required>
+                        <div class="small mt-1">
+                            Por favor completa o corrige los campos
+                            marcados antes de continuar.
+                        </div>
 
                     </div>
 
+                </div>
 
-                    <div class="col-md-6 mb-3">
+            </div>
 
-                        <label class="form-label">
-                            Estado
-                        </label>
+        @endif
 
-                        <select name="estado"
-                                class="form-select">
 
-                            <option value="1"
-                                {{ $caja->estado ? 'selected' : '' }}>
-                                Activa
-                            </option>
+        <div class="card border-0 shadow-sm formulario-propietario">
 
-                            <option value="0"
-                                {{ !$caja->estado ? 'selected' : '' }}>
-                                Inactiva
-                            </option>
+            {{-- CABECERA --}}
+            <div class="card-header bg-info text-white py-3 border-0">
 
-                        </select>
+                <div class="d-flex align-items-center">
 
+                    <div class="icon-header me-3">
+                        <i class="bi bi-pencil-square"></i>
                     </div>
 
+                    <div>
 
-                    <div class="col-12 mb-3">
+                        <h5 class="mb-0 fw-bold">
+                            Editar Caja
+                        </h5>
 
-                        <label class="form-label">
-                            Descripción
-                        </label>
-
-                        <textarea name="descripcion"
-                                  class="form-control"
-                                  rows="3">{{ old('descripcion', $caja->descripcion) }}</textarea>
-
-                    </div>
-
-
-                    <div class="col-md-6">
-
-                        <label class="form-label">
-                            Saldo actual
-                        </label>
-
-                        <input type="text"
-                               class="form-control"
-                               value="Bs {{ number_format($caja->saldo, 2) }}"
-                               disabled>
-
-                        <small class="text-muted">
-                            El saldo se modifica mediante movimientos.
+                        <small class="opacity-75">
+                            {{ $caja->nombre }}
                         </small>
 
                     </div>
 
                 </div>
 
+            </div>
 
-                <div class="d-flex justify-content-end mt-4">
 
-                    <button type="submit"
-                            class="btn btn-primary">
-                        💾 Actualizar
-                    </button>
+            {{-- CUERPO --}}
+            <div class="card-body p-4">
 
-                </div>
+                <form action="{{ route('cajas.update', $caja->id) }}" method="POST">
 
-            </form>
+                    @csrf
+                    @method('PUT')
+
+
+                    {{-- INFORMACIÓN DE LA CAJA --}}
+                    <div class="section-title mb-3">
+
+                        <i class="bi bi-wallet2 text-info"></i>
+
+                        <span>
+                            Información de la caja
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        {{-- NOMBRE --}}
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Nombre de la caja
+                                <span class="campo-obligatorio">*</span>
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text icono-nombre">
+                                    <i class="bi bi-wallet-fill"></i>
+                                </span>
+
+                                <input type="text" name="nombre" value="{{ old('nombre', $caja->nombre) }}"
+                                    class="form-control @error('nombre') is-invalid @enderror"
+                                    placeholder="Ej. Caja Principal">
+
+                            </div>
+
+                            @error('nombre')
+
+                                <div class="mensaje-error">
+
+                                    <i class="bi bi-exclamation-circle"></i>
+
+                                    {{ $message }}
+
+                                </div>
+
+                            @enderror
+
+                        </div>
+
+
+                        {{-- ESTADO --}}
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Estado
+                                <span class="campo-obligatorio">*</span>
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text icono-edificio">
+                                    <i class="bi bi-toggle-on"></i>
+                                </span>
+
+                                <select name="estado" class="form-select @error('estado') is-invalid @enderror">
+
+                                    <option value="1" {{ old('estado', $caja->estado) ? 'selected' : '' }}>
+                                        Activa
+                                    </option>
+
+                                    <option value="0" {{ !old('estado', $caja->estado) ? 'selected' : '' }}>
+                                        Inactiva
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            @error('estado')
+
+                                <div class="mensaje-error">
+
+                                    <i class="bi bi-exclamation-circle"></i>
+
+                                    {{ $message }}
+
+                                </div>
+
+                            @enderror
+
+                        </div>
+
+
+                        {{-- DESCRIPCIÓN --}}
+                        <div class="col-12 mb-3">
+
+                            <label class="form-label">
+
+                                Descripción
+
+                                <span class="text-muted small">
+                                    (opcional)
+                                </span>
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text icono-direccion align-items-start pt-3">
+                                    <i class="bi bi-card-text"></i>
+                                </span>
+
+                                <textarea name="descripcion"
+                                    class="form-control @error('descripcion') is-invalid @enderror" rows="4"
+                                    placeholder="Ingrese una descripción o detalle de la caja">{{ old('descripcion', $caja->descripcion) }}</textarea>
+
+                            </div>
+
+                            @error('descripcion')
+
+                                <div class="mensaje-error">
+
+                                    <i class="bi bi-exclamation-circle"></i>
+
+                                    {{ $message }}
+
+                                </div>
+
+                            @enderror
+
+                        </div>
+
+
+                        {{-- SALDO ACTUAL --}}
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Saldo actual
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text icono-celular">
+                                    <i class="bi bi-currency-dollar"></i>
+                                </span>
+
+                                <input type="text" class="form-control" value="Bs {{ number_format($caja->saldo, 2) }}"
+                                    disabled>
+
+                            </div>
+
+                            <small class="text-muted mt-1 d-block">
+
+                                <i class="bi bi-info-circle"></i>
+                                El saldo se modifica mediante movimientos.
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- NOTA --}}
+                    <div class="nota-obligatorios mt-2 mb-3">
+
+                        <i class="bi bi-info-circle-fill"></i>
+
+                        Los campos marcados con
+                        <strong>*</strong>
+                        son obligatorios.
+
+                    </div>
+
+
+                    <hr class="my-4">
+
+
+                    {{-- BOTONES --}}
+                    <div class="d-flex justify-content-end gap-2">
+
+                        <a href="{{ route('cajas.index') }}" class="btn btn-secondary">
+
+                            <i class="bi bi-arrow-left"></i>
+                            Cancelar
+
+                        </a>
+
+
+                        <button type="submit" class="btn btn-info text-white">
+
+                            <i class="bi bi-check-circle-fill"></i>
+                            Actualizar Caja
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 </x-app-layout>

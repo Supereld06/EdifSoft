@@ -1,77 +1,161 @@
 <x-app-layout>
 
-    <div class="container">
+    <x-slot name="header">
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="mb-1 fw-bold">
+                <i class="bi bi-arrow-left-right text-warning"></i>
+                Transferir entre Cajas
+            </h3>
 
-            <div>
-                <h2>🔄 Transferir entre Cajas</h2>
-
-                <p class="text-muted mb-0">
-                    Desde: <strong>{{ $caja->nombre }}</strong>
-                </p>
-            </div>
-
-            <a href="{{ route('cajas.movimientos', $caja->id) }}"
-               class="btn btn-secondary">
-                ← Volver
-            </a>
-
+            <small class="text-muted">
+                Transfiere fondos desde la caja seleccionada hacia otra caja
+            </small>
         </div>
 
+    </x-slot>
+
+
+    <div class="container-fluid py-4 px-4">
 
         {{-- MENSAJE DE ERROR GENERAL --}}
         @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
+
+            <div class="alert alert-danger shadow-sm border-0 mb-4">
+
+                <div class="d-flex align-items-start">
+
+                    <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+
+                    <div>
+
+                        <strong>
+                            No se pudo realizar la transferencia
+                        </strong>
+
+                        <div class="small mt-1">
+                            {{ session('error') }}
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
+
         @endif
 
 
         {{-- MENSAJE DE ÉXITO --}}
         @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+
+            <div class="alert alert-success shadow-sm border-0 mb-4">
+
+                <div class="d-flex align-items-start">
+
+                    <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+
+                    <div>
+
+                        <strong>
+                            Transferencia realizada correctamente
+                        </strong>
+
+                        <div class="small mt-1">
+                            {{ session('success') }}
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
+
         @endif
 
 
         {{-- ERRORES DE VALIDACIÓN --}}
         @if($errors->any())
 
-            <div class="alert alert-danger">
+            <div class="alert alert-danger shadow-sm border-0 mb-4">
 
-                <strong>Se encontraron los siguientes errores:</strong>
+                <div class="d-flex align-items-start">
 
-                <ul class="mb-0 mt-2">
+                    <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
 
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
+                    <div>
 
-                </ul>
+                        <strong>
+                            Revisa los datos del formulario
+                        </strong>
+
+                        <div class="small mt-1">
+                            Por favor completa o corrige los campos
+                            marcados antes de continuar.
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
         @endif
 
 
-        <div class="card shadow-sm">
+        <div class="card border-0 shadow-sm formulario-propietario">
 
-            <div class="card-header">
-                <strong>Nueva transferencia</strong>
+            {{-- CABECERA --}}
+            <div class="card-header bg-warning text-dark py-3 border-0">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="icon-header me-3">
+                        <i class="bi bi-arrow-left-right"></i>
+                    </div>
+
+                    <div>
+
+                        <h5 class="mb-0 fw-bold">
+                            Nueva Transferencia
+                        </h5>
+
+                        <small class="opacity-75">
+                            Desde: {{ $caja->nombre }}
+                        </small>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="card-body">
+
+            {{-- CUERPO --}}
+            <div class="card-body p-4">
 
                 {{-- SALDO DISPONIBLE --}}
-                <div class="alert alert-light border">
+                <div class="alert alert-light border shadow-sm mb-4">
 
-                    <strong>Saldo disponible:</strong>
+                    <div class="d-flex align-items-center">
 
-                    <span class="text-success fw-bold">
-                        Bs {{ number_format($caja->saldo, 2) }}
-                    </span>
+                        <div class="me-3">
+                            <i class="bi bi-wallet2 fs-3 text-primary"></i>
+                        </div>
+
+                        <div>
+
+                            <small class="text-muted d-block">
+                                Saldo disponible de la caja
+                            </small>
+
+                            <span class="text-success fw-bold fs-4">
+                                Bs {{ number_format($caja->saldo, 2) }}
+                            </span>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -82,94 +166,198 @@
                     @csrf
 
 
-                    {{-- CAJA DESTINO --}}
-                    <div class="mb-3">
+                    {{-- INFORMACIÓN DE LA TRANSFERENCIA --}}
+                    <div class="section-title mb-3">
 
-                        <label class="form-label">
-                            Caja destino <span class="text-danger">*</span>
-                        </label>
+                        <i class="bi bi-arrow-left-right text-warning"></i>
 
-                        <select name="caja_destino_id"
-                                class="form-select @error('caja_destino_id') is-invalid @enderror"
-                                required>
-
-                            <option value="">
-                                -- Seleccione una caja --
-                            </option>
-
-                            @foreach($cajasDestino as $destino)
-
-                                <option value="{{ $destino->id }}"
-                                    {{ old('caja_destino_id') == $destino->id ? 'selected' : '' }}>
-
-                                    {{ $destino->nombre }}
-                                    — Bs {{ number_format($destino->saldo, 2) }}
-
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                        @error('caja_destino_id')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
+                        <span>
+                            Información de la transferencia
+                        </span>
 
                     </div>
 
 
-                    {{-- CONCEPTO --}}
-                    <div class="mb-3">
+                    <div class="row">
 
-                        <label class="form-label">
-                            Concepto <span class="text-danger">*</span>
-                        </label>
+                        {{-- CAJA DESTINO --}}
+                        <div class="col-md-6 mb-3">
 
-                        <input type="text"
-                               name="concepto"
-                               class="form-control @error('concepto') is-invalid @enderror"
-                               value="{{ old('concepto') }}"
-                               placeholder="Ej.: Transferencia de fondos"
-                               maxlength="255"
-                               required>
+                            <label class="form-label">
 
-                        @error('concepto')
-                            <div class="invalid-feedback">
-                                {{ $message }}
+                                Caja destino
+                                <span class="campo-obligatorio">*</span>
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text icono-edificio">
+                                    <i class="bi bi-safe2-fill"></i>
+                                </span>
+
+                                <select name="caja_destino_id"
+                                        class="form-select @error('caja_destino_id') is-invalid @enderror"
+                                        required>
+
+                                    <option value="">
+                                        -- Seleccione una caja --
+                                    </option>
+
+                                    @foreach($cajasDestino as $destino)
+
+                                        <option value="{{ $destino->id }}"
+                                            {{ old('caja_destino_id') == $destino->id ? 'selected' : '' }}>
+
+                                            {{ $destino->nombre }}
+                                            — Bs {{ number_format($destino->saldo, 2) }}
+
+                                        </option>
+
+                                    @endforeach
+
+                                </select>
+
                             </div>
-                        @enderror
 
-                    </div>
+                            @error('caja_destino_id')
+
+                                <div class="mensaje-error">
+
+                                    <i class="bi bi-exclamation-circle"></i>
+
+                                    {{ $message }}
+
+                                </div>
+
+                            @enderror
+
+                        </div>
 
 
-                    {{-- MONTO --}}
-                    <div class="mb-3">
+                        {{-- CONCEPTO --}}
+                        <div class="col-md-6 mb-3">
 
-                        <label class="form-label">
-                            Monto <span class="text-danger">*</span>
-                        </label>
+                            <label class="form-label">
 
-                        <div class="input-group">
+                                Concepto
+                                <span class="campo-obligatorio">*</span>
 
-                            <span class="input-group-text">
-                                Bs
-                            </span>
+                            </label>
 
-                            <input type="number"
-                                   name="monto"
-                                   class="form-control @error('monto') is-invalid @enderror"
-                                   step="0.01"
-                                   min="0.01"
-                                   max="{{ $caja->saldo }}"
-                                   value="{{ old('monto') }}"
-                                   required>
+                            <div class="input-group">
+
+                                <span class="input-group-text icono-nombre">
+                                    <i class="bi bi-receipt"></i>
+                                </span>
+
+                                <input type="text"
+                                       name="concepto"
+                                       value="{{ old('concepto') }}"
+                                       class="form-control @error('concepto') is-invalid @enderror"
+                                       placeholder="Ej. Transferencia de fondos"
+                                       maxlength="255">
+
+                            </div>
+
+                            @error('concepto')
+
+                                <div class="mensaje-error">
+
+                                    <i class="bi bi-exclamation-circle"></i>
+
+                                    {{ $message }}
+
+                                </div>
+
+                            @enderror
+
+                        </div>
+
+
+                        {{-- MONTO --}}
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Monto
+                                <span class="campo-obligatorio">*</span>
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text icono-celular">
+                                    <i class="bi bi-currency-dollar"></i>
+                                </span>
+
+                                <input type="number"
+                                       name="monto"
+                                       value="{{ old('monto') }}"
+                                       class="form-control @error('monto') is-invalid @enderror"
+                                       step="0.01"
+                                       min="0.01"
+                                       max="{{ $caja->saldo }}"
+                                       placeholder="0.00">
+
+                            </div>
 
                             @error('monto')
-                                <div class="invalid-feedback">
+
+                                <div class="mensaje-error">
+
+                                    <i class="bi bi-exclamation-circle"></i>
+
                                     {{ $message }}
+
                                 </div>
+
+                            @enderror
+
+                            <small class="text-muted mt-1 d-block">
+                                El monto no puede superar el saldo disponible.
+                            </small>
+
+                        </div>
+
+
+                        {{-- OBSERVACIÓN --}}
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Observación
+
+                                <span class="text-muted small">
+                                    (opcional)
+                                </span>
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text icono-direccion align-items-start pt-3">
+                                    <i class="bi bi-chat-left-text-fill"></i>
+                                </span>
+
+                                <textarea name="observacion"
+                                          class="form-control @error('observacion') is-invalid @enderror"
+                                          rows="4"
+                                          maxlength="1000"
+                                          placeholder="Observaciones opcionales">{{ old('observacion') }}</textarea>
+
+                            </div>
+
+                            @error('observacion')
+
+                                <div class="mensaje-error">
+
+                                    <i class="bi bi-exclamation-circle"></i>
+
+                                    {{ $message }}
+
+                                </div>
+
                             @enderror
 
                         </div>
@@ -177,49 +365,56 @@
                     </div>
 
 
-                    {{-- OBSERVACIÓN --}}
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Observación
-                        </label>
-
-                        <textarea name="observacion"
-                                  class="form-control @error('observacion') is-invalid @enderror"
-                                  rows="3"
-                                  maxlength="1000"
-                                  placeholder="Observaciones opcionales">{{ old('observacion') }}</textarea>
-
-                        @error('observacion')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-
-                    </div>
-
-
                     {{-- ADVERTENCIA --}}
-                    <div class="alert alert-warning">
+                    <div class="alert alert-warning border shadow-sm mt-2">
 
-                        <strong>Importante:</strong>
+                        <div class="d-flex align-items-start">
 
-                        esta operación generará automáticamente:
+                            <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
 
-                        <ul class="mb-0 mt-2">
+                            <div>
 
-                            <li>
-                                Un egreso en
-                                <strong>{{ $caja->nombre }}</strong>.
-                            </li>
+                                <strong>
+                                    Importante
+                                </strong>
 
-                            <li>
-                                Un ingreso en la caja destino.
-                            </li>
+                                <div class="small mt-1">
+                                    Esta operación generará automáticamente:
+                                </div>
 
-                        </ul>
+                                <ul class="mb-0 mt-2">
+
+                                    <li>
+                                        Un egreso en
+                                        <strong>{{ $caja->nombre }}</strong>.
+                                    </li>
+
+                                    <li>
+                                        Un ingreso en la caja destino.
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
 
                     </div>
+
+
+                    {{-- NOTA --}}
+                    <div class="nota-obligatorios mt-3 mb-3">
+
+                        <i class="bi bi-info-circle-fill"></i>
+
+                        Los campos marcados con
+                        <strong>*</strong>
+                        son obligatorios.
+
+                    </div>
+
+
+                    <hr class="my-4">
 
 
                     {{-- BOTONES --}}
@@ -228,14 +423,17 @@
                         <a href="{{ route('cajas.movimientos', $caja->id) }}"
                            class="btn btn-secondary">
 
+                            <i class="bi bi-arrow-left"></i>
                             Cancelar
 
                         </a>
 
+
                         <button type="submit"
                                 class="btn btn-warning">
 
-                            🔄 Realizar Transferencia
+                            <i class="bi bi-arrow-left-right"></i>
+                            Realizar Transferencia
 
                         </button>
 
@@ -250,3 +448,4 @@
     </div>
 
 </x-app-layout>
+
