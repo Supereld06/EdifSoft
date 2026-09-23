@@ -11,6 +11,7 @@ class MovimientoCaja extends Model
 
     protected $fillable = [
         'caja_id',
+        'tipo_movimiento_id',
         'tipo',
         'concepto',
         'monto',
@@ -54,5 +55,13 @@ class MovimientoCaja extends Model
     public function estaAnulado(): bool
     {
         return $this->estado === 'anulado';
+    }
+
+    public function tipoMovimiento()
+    {
+        return $this->belongsTo(
+            TipoMovimiento::class,
+            'tipo_movimiento_id'
+        );
     }
 }

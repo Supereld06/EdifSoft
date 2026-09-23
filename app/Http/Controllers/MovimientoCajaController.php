@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Caja;
 use App\Models\MovimientoCaja;
+use App\Models\TipoMovimiento;
 use App\Services\CajaService;
+use App\Exports\MovimientoCajaExport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use App\Exports\MovimientoCajaExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
 
@@ -28,21 +29,76 @@ class MovimientoCajaController extends Controller
     {
         $caja = $this->obtenerCaja($id);
 
+        /*
+        |--------------------------------------------------------------------------
+        | CONSULTA DE MOVIMIENTOS
+        |--------------------------------------------------------------------------
+        */
+
         $query = MovimientoCaja::with([
             'usuario',
             'usuarioAnulacion',
+            'tipoMovimiento'
         ])
             ->where('caja_id', $caja->id);
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTRO POR TIPO GENERAL
+        | ingreso / egreso
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->filled('tipo')) {
-            $query->where('tipo', $request->tipo);
+
+            $query->where(
+                'tipo',
+                $request->tipo
+            );
         }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTRO POR TIPO DE MOVIMIENTO
+        | Ejemplo: Expensas, Multas, Servicios, etc.
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('tipo_movimiento_id')) {
+
+            $query->where(
+                'tipo_movimiento_id',
+                $request->tipo_movimiento_id
+            );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTRO POR ESTADO
+        | activo / anulado
+        |--------------------------------------------------------------------------
+        */
 
         if ($request->filled('estado')) {
-            $query->where('estado', $request->estado);
+
+            $query->where(
+                'estado',
+                $request->estado
+            );
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTRO DESDE
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->filled('fecha_desde')) {
+
             $query->whereDate(
                 'fecha',
                 '>=',
@@ -50,7 +106,15 @@ class MovimientoCajaController extends Controller
             );
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTRO HASTA
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->filled('fecha_hasta')) {
+
             $query->whereDate(
                 'fecha',
                 '<=',
@@ -58,9 +122,16 @@ class MovimientoCajaController extends Controller
             );
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | BÚSQUEDA
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->filled('buscar')) {
 
-            $buscar = $request->buscar;
+            $buscar = trim($request->buscar);
 
             $query->where(function ($q) use ($buscar) {
 
@@ -82,11 +153,25 @@ class MovimientoCajaController extends Controller
             });
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | MOVIMIENTOS
+        |--------------------------------------------------------------------------
+        */
+
         $movimientos = $query
             ->orderByDesc('fecha')
             ->orderByDesc('id')
             ->paginate(20)
             ->withQueryString();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | TOTAL INGRESOS
+        |--------------------------------------------------------------------------
+        */
 
         $totalIngresos = MovimientoCaja::where(
             'caja_id',
@@ -96,6 +181,13 @@ class MovimientoCajaController extends Controller
             ->where('estado', 'activo')
             ->sum('monto');
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | TOTAL EGRESOS
+        |--------------------------------------------------------------------------
+        */
+
         $totalEgresos = MovimientoCaja::where(
             'caja_id',
             $caja->id
@@ -104,17 +196,68 @@ class MovimientoCajaController extends Controller
             ->where('estado', 'activo')
             ->sum('monto');
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | EDIFICIO ACTUAL
+        |--------------------------------------------------------------------------
+        */
+
+        $edificioId = session('edificio_id');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATÁLOGO DE INGRESOS
+        |--------------------------------------------------------------------------
+        */
+
+        $tiposIngreso = TipoMovimiento::where(
+            'edificio_id',
+            $edificioId
+        )
+            ->where('tipo', 'ingreso')
+            ->where('estado', true)
+            ->orderBy('orden')
+            ->orderBy('nombre')
+            ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATÁLOGO DE EGRESOS
+        |--------------------------------------------------------------------------
+        */
+
+        $tiposEgreso = TipoMovimiento::where(
+            'edificio_id',
+            $edificioId
+        )
+            ->where('tipo', 'egreso')
+            ->where('estado', true)
+            ->orderBy('orden')
+            ->orderBy('nombre')
+            ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | VISTA
+        |--------------------------------------------------------------------------
+        */
+
         return view(
             'cajas.movimientos.index',
             compact(
                 'caja',
                 'movimientos',
                 'totalIngresos',
-                'totalEgresos'
+                'totalEgresos',
+                'tiposIngreso',
+                'tiposEgreso'
             )
         );
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -126,12 +269,24 @@ class MovimientoCajaController extends Controller
     {
         $caja = $this->obtenerCaja($id);
 
+        $tiposIngreso = TipoMovimiento::where(
+            'edificio_id',
+            session('edificio_id')
+        )
+            ->where('tipo', 'ingreso')
+            ->where('estado', true)
+            ->orderBy('orden')
+            ->orderBy('nombre')
+            ->get();
+
         return view(
             'cajas.movimientos.ingreso',
-            compact('caja')
+            compact(
+                'caja',
+                'tiposIngreso'
+            )
         );
     }
-
 
     public function storeIngreso(Request $request, $id)
     {
@@ -143,6 +298,11 @@ class MovimientoCajaController extends Controller
                     'required',
                     'string',
                     'max:255',
+                ],
+
+                'tipo_movimiento_id' => [
+                    'required',
+                    'integer',
                 ],
 
                 'monto' => [
@@ -167,6 +327,12 @@ class MovimientoCajaController extends Controller
                 'concepto.max' =>
                     'El concepto no puede superar los 255 caracteres.',
 
+                'tipo_movimiento_id.required' =>
+                    'Debe seleccionar un tipo de ingreso.',
+
+                'tipo_movimiento_id.integer' =>
+                    'El tipo de ingreso seleccionado no es válido.',
+
                 'monto.required' =>
                     'El monto es obligatorio.',
 
@@ -186,13 +352,35 @@ class MovimientoCajaController extends Controller
 
         try {
 
+            $tipoMovimiento = TipoMovimiento::where(
+                'id',
+                $validated['tipo_movimiento_id']
+            )
+                ->where(
+                    'edificio_id',
+                    session('edificio_id')
+                )
+                ->where('tipo', 'ingreso')
+                ->where('estado', true)
+                ->first();
+
+            if (!$tipoMovimiento) {
+                return back()
+                    ->withInput()
+                    ->with(
+                        'error',
+                        'El tipo de ingreso seleccionado no es válido.'
+                    );
+            }
+
             $this->cajaService->ingresar(
                 $caja,
                 (float) $validated['monto'],
                 $validated['concepto'],
                 null,
                 null,
-                $validated['observacion'] ?? null
+                $validated['observacion'] ?? null,
+                $tipoMovimiento->id
             );
 
             return redirect()
@@ -216,7 +404,6 @@ class MovimientoCajaController extends Controller
         }
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | EGRESOS
@@ -227,12 +414,30 @@ class MovimientoCajaController extends Controller
     {
         $caja = $this->obtenerCaja($id);
 
+        /*
+        |--------------------------------------------------------------------------
+        | CATÁLOGO DE EGRESOS
+        |--------------------------------------------------------------------------
+        */
+
+        $tiposEgreso = TipoMovimiento::where(
+            'edificio_id',
+            session('edificio_id')
+        )
+            ->where('tipo', 'egreso')
+            ->where('estado', true)
+            ->orderBy('orden')
+            ->orderBy('nombre')
+            ->get();
+
         return view(
             'cajas.movimientos.egreso',
-            compact('caja')
+            compact(
+                'caja',
+                'tiposEgreso'
+            )
         );
     }
-
 
     public function storeEgreso(Request $request, $id)
     {
@@ -244,6 +449,11 @@ class MovimientoCajaController extends Controller
                     'required',
                     'string',
                     'max:255',
+                ],
+
+                'tipo_movimiento_id' => [
+                    'required',
+                    'integer',
                 ],
 
                 'monto' => [
@@ -268,6 +478,12 @@ class MovimientoCajaController extends Controller
                 'concepto.max' =>
                     'El concepto no puede superar los 255 caracteres.',
 
+                'tipo_movimiento_id.required' =>
+                    'Debe seleccionar un tipo de egreso.',
+
+                'tipo_movimiento_id.integer' =>
+                    'El tipo de egreso seleccionado no es válido.',
+
                 'monto.required' =>
                     'El monto es obligatorio.',
 
@@ -285,6 +501,27 @@ class MovimientoCajaController extends Controller
             ]
         );
 
+        $tipoMovimiento = TipoMovimiento::where(
+            'id',
+            $validated['tipo_movimiento_id']
+        )
+            ->where(
+                'edificio_id',
+                session('edificio_id')
+            )
+            ->where('tipo', 'egreso')
+            ->where('estado', true)
+            ->first();
+
+        if (!$tipoMovimiento) {
+            return back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'El tipo de egreso seleccionado no es válido.'
+                );
+        }
+
         try {
 
             $this->cajaService->egresar(
@@ -293,7 +530,8 @@ class MovimientoCajaController extends Controller
                 $validated['concepto'],
                 null,
                 null,
-                $validated['observacion'] ?? null
+                $validated['observacion'] ?? null,
+                $tipoMovimiento->id
             );
 
             return redirect()
@@ -316,7 +554,6 @@ class MovimientoCajaController extends Controller
                 );
         }
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -345,7 +582,6 @@ class MovimientoCajaController extends Controller
             )
         );
     }
-
 
     public function storeTransferencia(
         Request $request,
@@ -423,7 +659,6 @@ class MovimientoCajaController extends Controller
             ->first();
 
         if (!$cajaDestino) {
-
             return back()
                 ->withInput()
                 ->with(
@@ -464,7 +699,6 @@ class MovimientoCajaController extends Controller
         }
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | RECIBO DE INGRESO / EGRESO
@@ -489,7 +723,6 @@ class MovimientoCajaController extends Controller
             $movimiento->referencia_tipo === 'transferencia' ||
             $movimiento->transferencia_id
         ) {
-
             return redirect()->route(
                 'cajas.transferencia.recibo',
                 $movimiento->transferencia_id
@@ -510,7 +743,6 @@ class MovimientoCajaController extends Controller
 
         return $pdf->stream($nombre);
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -538,7 +770,6 @@ class MovimientoCajaController extends Controller
             ->get();
 
         if ($movimientos->count() !== 2) {
-
             abort(
                 404,
                 'Transferencia no encontrada.'
@@ -546,7 +777,6 @@ class MovimientoCajaController extends Controller
         }
 
         foreach ($movimientos as $movimiento) {
-
             $this->verificarEdificioCaja(
                 $movimiento->caja
             );
@@ -579,7 +809,6 @@ class MovimientoCajaController extends Controller
         );
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | CONFIRMAR ANULACIÓN
@@ -597,7 +826,6 @@ class MovimientoCajaController extends Controller
         );
 
         if ($movimiento->estado === 'anulado') {
-
             return redirect()
                 ->route(
                     'cajas.movimientos',
@@ -616,7 +844,6 @@ class MovimientoCajaController extends Controller
             $movimiento->referencia_tipo ===
             'anulacion_transferencia'
         ) {
-
             return redirect()
                 ->route(
                     'cajas.movimientos',
@@ -655,7 +882,6 @@ class MovimientoCajaController extends Controller
             compact('movimiento')
         );
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -745,7 +971,6 @@ class MovimientoCajaController extends Controller
         }
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | OBTENER CAJA DEL EDIFICIO ACTUAL
@@ -757,21 +982,22 @@ class MovimientoCajaController extends Controller
         $edificioId = session('edificio_id');
 
         if (!$edificioId) {
-
             abort(
                 403,
                 'No existe un edificio seleccionado.'
             );
         }
 
-        return Caja::where('id', $id)
+        return Caja::where(
+            'id',
+            $id
+        )
             ->where(
                 'edificio_id',
                 $edificioId
             )
             ->firstOrFail();
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -786,13 +1012,18 @@ class MovimientoCajaController extends Controller
             (int) $caja->edificio_id !==
             (int) session('edificio_id')
         ) {
-
             abort(
                 403,
                 'No tiene acceso a esta caja.'
             );
         }
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | PDF DE MOVIMIENTOS
+    |--------------------------------------------------------------------------
+    */
 
     public function pdf(Request $request, $id)
     {
@@ -801,161 +1032,30 @@ class MovimientoCajaController extends Controller
         $query = MovimientoCaja::with([
             'usuario',
             'usuarioAnulacion',
+            'tipoMovimiento',
         ])
-            ->where('caja_id', $caja->id);
+            ->where(
+                'caja_id',
+                $caja->id
+            );
 
-        /*
-        |--------------------------------------------------------------------------
-        | FILTRO POR TIPO
-        |--------------------------------------------------------------------------
-        */
+        // FILTRO POR TIPO
         if ($request->filled('tipo')) {
-            $query->where('tipo', $request->tipo);
+            $query->where(
+                'tipo',
+                $request->tipo
+            );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | FILTRO POR ESTADO
-        |--------------------------------------------------------------------------
-        */
+        // FILTRO POR ESTADO
         if ($request->filled('estado')) {
-            $query->where('estado', $request->estado);
+            $query->where(
+                'estado',
+                $request->estado
+            );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | FILTRO DESDE
-        |--------------------------------------------------------------------------
-        */
-        if ($request->filled('fecha_desde')) {
-            $query->whereDate('fecha', '>=', $request->fecha_desde);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | FILTRO HASTA
-        |--------------------------------------------------------------------------
-        */
-        if ($request->filled('fecha_hasta')) {
-            $query->whereDate('fecha', '<=', $request->fecha_hasta);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | BUSCAR
-        |--------------------------------------------------------------------------
-        */
-        if ($request->filled('buscar')) {
-
-            $buscar = trim($request->buscar);
-
-            $query->where(function ($q) use ($buscar) {
-
-                $q->where('concepto', 'like', '%' . $buscar . '%')
-                    ->orWhere('observacion', 'like', '%' . $buscar . '%')
-                    ->orWhere('transferencia_id', 'like', '%' . $buscar . '%');
-
-            });
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | OBTENER TODOS LOS MOVIMIENTOS
-        |--------------------------------------------------------------------------
-        |
-        | Aquí NO usamos paginate(), porque el PDF debe contener
-        | todos los resultados encontrados.
-        |
-        */
-        $movimientos = $query
-            ->orderBy('fecha', 'desc')
-            ->orderBy('id', 'desc')
-            ->get();
-
-        /*
-        |--------------------------------------------------------------------------
-        | TOTALES DEL REPORTE
-        |--------------------------------------------------------------------------
-        */
-        $totalIngresos = $movimientos
-            ->where('tipo', 'ingreso')
-            ->where('estado', 'activo')
-            ->sum('monto');
-
-        $totalEgresos = $movimientos
-            ->where('tipo', 'egreso')
-            ->where('estado', 'activo')
-            ->sum('monto');
-
-        /*
-        |--------------------------------------------------------------------------
-        | INFORMACIÓN DE FILTROS
-        |--------------------------------------------------------------------------
-        */
-        $filtros = [
-            'tipo' => $request->tipo,
-            'estado' => $request->estado,
-            'fecha_desde' => $request->fecha_desde,
-            'fecha_hasta' => $request->fecha_hasta,
-            'buscar' => $request->buscar,
-        ];
-
-        /*
-        |--------------------------------------------------------------------------
-        | GENERAR PDF
-        |--------------------------------------------------------------------------
-        */
-        $pdf = Pdf::loadView(
-            'cajas.movimientos.pdf',
-            compact(
-                'caja',
-                'movimientos',
-                'totalIngresos',
-                'totalEgresos',
-                'filtros'
-            )
-        );
-
-        $pdf->setPaper('letter', 'landscape');
-
-        return $pdf->stream(
-            'movimientos-caja-' . $caja->nombre . '.pdf'
-        );
-    }
-
-    public function excel(Request $request, $id)
-    {
-        $caja = $this->obtenerCaja($id);
-
-        $query = MovimientoCaja::with([
-            'usuario',
-            'usuarioAnulacion',
-        ])
-            ->where('caja_id', $caja->id);
-
-        /*
-        |--------------------------------------------------------------------------
-        | FILTRO POR TIPO
-        |--------------------------------------------------------------------------
-        */
-        if ($request->filled('tipo')) {
-            $query->where('tipo', $request->tipo);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | FILTRO POR ESTADO
-        |--------------------------------------------------------------------------
-        */
-        if ($request->filled('estado')) {
-            $query->where('estado', $request->estado);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | FILTRO DESDE
-        |--------------------------------------------------------------------------
-        */
+        // FILTRO DESDE
         if ($request->filled('fecha_desde')) {
             $query->whereDate(
                 'fecha',
@@ -964,11 +1064,7 @@ class MovimientoCajaController extends Controller
             );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | FILTRO HASTA
-        |--------------------------------------------------------------------------
-        */
+        // FILTRO HASTA
         if ($request->filled('fecha_hasta')) {
             $query->whereDate(
                 'fecha',
@@ -977,15 +1073,15 @@ class MovimientoCajaController extends Controller
             );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | BUSCAR
-        |--------------------------------------------------------------------------
-        */
+        // BÚSQUEDA
         if ($request->filled('buscar')) {
-            $buscar = trim($request->buscar);
+
+            $buscar = trim(
+                $request->buscar
+            );
 
             $query->where(function ($q) use ($buscar) {
+
                 $q->where(
                     'concepto',
                     'like',
@@ -1004,24 +1100,173 @@ class MovimientoCajaController extends Controller
             });
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | OBTENER TODOS LOS MOVIMIENTOS FILTRADOS
-        |--------------------------------------------------------------------------
-        */
+        // TODOS LOS RESULTADOS
         $movimientos = $query
-            ->orderBy('fecha', 'desc')
-            ->orderBy('id', 'desc')
+            ->orderBy(
+                'fecha',
+                'desc'
+            )
+            ->orderBy(
+                'id',
+                'desc'
+            )
             ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | GENERAR EXCEL
-        |--------------------------------------------------------------------------
-        */
+        // TOTAL INGRESOS
+        $totalIngresos = $movimientos
+            ->where(
+                'tipo',
+                'ingreso'
+            )
+            ->where(
+                'estado',
+                'activo'
+            )
+            ->sum('monto');
+
+        // TOTAL EGRESOS
+        $totalEgresos = $movimientos
+            ->where(
+                'tipo',
+                'egreso'
+            )
+            ->where(
+                'estado',
+                'activo'
+            )
+            ->sum('monto');
+
+        // FILTROS UTILIZADOS
+        $filtros = [
+            'tipo' => $request->tipo,
+            'estado' => $request->estado,
+            'fecha_desde' => $request->fecha_desde,
+            'fecha_hasta' => $request->fecha_hasta,
+            'buscar' => $request->buscar,
+        ];
+
+        // GENERAR PDF
+        $pdf = Pdf::loadView(
+            'cajas.movimientos.pdf',
+            compact(
+                'caja',
+                'movimientos',
+                'totalIngresos',
+                'totalEgresos',
+                'filtros'
+            )
+        );
+
+        $pdf->setPaper(
+            'letter',
+            'landscape'
+        );
+
+        return $pdf->stream(
+            'movimientos-caja-' .
+            $caja->nombre .
+            '.pdf'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | EXCEL DE MOVIMIENTOS
+    |--------------------------------------------------------------------------
+    */
+
+    public function excel(Request $request, $id)
+    {
+        $caja = $this->obtenerCaja($id);
+
+        $query = MovimientoCaja::with([
+            'usuario',
+            'usuarioAnulacion',
+            'tipoMovimiento',
+        ])
+            ->where(
+                'caja_id',
+                $caja->id
+            );
+
+        // FILTRO POR TIPO
+        if ($request->filled('tipo')) {
+            $query->where(
+                'tipo',
+                $request->tipo
+            );
+        }
+
+        // FILTRO POR ESTADO
+        if ($request->filled('estado')) {
+            $query->where(
+                'estado',
+                $request->estado
+            );
+        }
+
+        // FILTRO DESDE
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate(
+                'fecha',
+                '>=',
+                $request->fecha_desde
+            );
+        }
+
+        // FILTRO HASTA
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate(
+                'fecha',
+                '<=',
+                $request->fecha_hasta
+            );
+        }
+
+        // BÚSQUEDA
+        if ($request->filled('buscar')) {
+
+            $buscar = trim(
+                $request->buscar
+            );
+
+            $query->where(function ($q) use ($buscar) {
+
+                $q->where(
+                    'concepto',
+                    'like',
+                    '%' . $buscar . '%'
+                )
+                    ->orWhere(
+                        'observacion',
+                        'like',
+                        '%' . $buscar . '%'
+                    )
+                    ->orWhere(
+                        'transferencia_id',
+                        'like',
+                        '%' . $buscar . '%'
+                    );
+            });
+        }
+
+        // TODOS LOS MOVIMIENTOS FILTRADOS
+        $movimientos = $query
+            ->orderBy(
+                'fecha',
+                'desc'
+            )
+            ->orderBy(
+                'id',
+                'desc'
+            )
+            ->get();
+
         return Excel::download(
             new MovimientoCajaExport($movimientos),
-            'movimientos-caja-' . $caja->nombre . '.xlsx'
+            'movimientos-caja-' .
+            $caja->nombre .
+            '.xlsx'
         );
     }
 }

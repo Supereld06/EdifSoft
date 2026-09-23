@@ -3,16 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Caja;
+use App\Models\TipoMovimiento;
 use App\Services\CajaService;
 use Illuminate\Http\Request;
 
 class CajaController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | EDIFICIO SELECCIONADO
+    |--------------------------------------------------------------------------
+    */
+
     private function edificioId()
     {
         return session('edificio_id');
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | LISTADO DE CAJAS
+    |--------------------------------------------------------------------------
+    */
 
     public function index()
     {
@@ -20,38 +33,106 @@ class CajaController extends Controller
 
         if (!$edificioId) {
             return redirect()->back()
-                ->with('error', 'Debe seleccionar un edificio primero.');
+                ->with(
+                    'error',
+                    'Debe seleccionar un edificio primero.'
+                );
         }
 
-        $cajas = Caja::where('edificio_id', $edificioId)
+
+        /*
+        |--------------------------------------------------------------------------
+        | CAJAS
+        |--------------------------------------------------------------------------
+        */
+
+        $cajas = Caja::where(
+            'edificio_id',
+            $edificioId
+        )
             ->orderBy('nombre')
             ->get();
 
-        return view('cajas.index', compact('cajas'));
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATÁLOGO DE TIPOS DE MOVIMIENTO
+        |--------------------------------------------------------------------------
+        |
+        | Se cargan solamente los tipos pertenecientes
+        | al edificio actualmente seleccionado.
+        |
+        */
+
+        $tiposIngreso = TipoMovimiento::where(
+            'edificio_id',
+            $edificioId
+        )
+            ->where('tipo', 'ingreso')
+            ->orderBy('orden')
+            ->orderBy('nombre')
+            ->get();
+
+
+        $tiposEgreso = TipoMovimiento::where(
+            'edificio_id',
+            $edificioId
+        )
+            ->where('tipo', 'egreso')
+            ->orderBy('orden')
+            ->orderBy('nombre')
+            ->get();
+
+
+        return view(
+            'cajas.index',
+            compact(
+                'cajas',
+                'tiposIngreso',
+                'tiposEgreso'
+            )
+        );
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | CREAR CAJA
+    |--------------------------------------------------------------------------
+    */
 
     public function create()
     {
         if (!$this->edificioId()) {
             return redirect()->back()
-                ->with('error', 'Debe seleccionar un edificio primero.');
+                ->with(
+                    'error',
+                    'Debe seleccionar un edificio primero.'
+                );
         }
 
         return view('cajas.create');
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | GUARDAR CAJA
+    |--------------------------------------------------------------------------
+    */
+
     public function store(
         Request $request,
         CajaService $cajaService
     ) {
-
         $edificioId = $this->edificioId();
 
         if (!$edificioId) {
             return redirect()->back()
-                ->with('error', 'Debe seleccionar un edificio primero.');
+                ->with(
+                    'error',
+                    'Debe seleccionar un edificio primero.'
+                );
         }
 
         $request->validate([
@@ -59,6 +140,7 @@ class CajaController extends Controller
             'descripcion' => 'nullable|string',
             'saldo' => 'nullable|numeric|min:0',
         ]);
+
 
         try {
 
@@ -68,6 +150,7 @@ class CajaController extends Controller
                 $request->descripcion,
                 (float) ($request->saldo ?? 0)
             );
+
 
             return redirect()
                 ->route('cajas.index')
@@ -83,27 +166,59 @@ class CajaController extends Controller
                 ->withInput()
                 ->with(
                     'error',
-                    'No se pudo crear la caja: ' . $e->getMessage()
+                    'No se pudo crear la caja: ' .
+                    $e->getMessage()
                 );
         }
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | EDITAR CAJA
+    |--------------------------------------------------------------------------
+    */
+
     public function edit($id)
     {
-        $caja = Caja::where('id', $id)
-            ->where('edificio_id', $this->edificioId())
+        $caja = Caja::where(
+            'id',
+            $id
+        )
+            ->where(
+                'edificio_id',
+                $this->edificioId()
+            )
             ->firstOrFail();
 
-        return view('cajas.edit', compact('caja'));
+
+        return view(
+            'cajas.edit',
+            compact('caja')
+        );
     }
 
 
-    public function update(Request $request, $id)
-    {
-        $caja = Caja::where('id', $id)
-            ->where('edificio_id', $this->edificioId())
+    /*
+    |--------------------------------------------------------------------------
+    | ACTUALIZAR CAJA
+    |--------------------------------------------------------------------------
+    */
+
+    public function update(
+        Request $request,
+        $id
+    ) {
+        $caja = Caja::where(
+            'id',
+            $id
+        )
+            ->where(
+                'edificio_id',
+                $this->edificioId()
+            )
             ->firstOrFail();
+
 
         $request->validate([
             'nombre' => 'required|string|max:255',
@@ -111,14 +226,19 @@ class CajaController extends Controller
             'estado' => 'required|boolean',
         ]);
 
+
         $caja->update([
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
             'estado' => $request->estado,
         ]);
 
+
         return redirect()
             ->route('cajas.index')
-            ->with('success', 'Caja actualizada correctamente.');
+            ->with(
+                'success',
+                'Caja actualizada correctamente.'
+            );
     }
 }

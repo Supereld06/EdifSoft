@@ -17,6 +17,7 @@ use App\Http\Controllers\ReciboExpensaEstacionamientoController;
 use App\Http\Controllers\ExpensaAguaController;
 use App\Http\Controllers\CajaController;
 use App\Http\Controllers\MovimientoCajaController;
+use App\Http\Controllers\TipoMovimientoController;
 /*
 |--------------------------------------------------------------------------
 | Rutas protegidas (requieren login)
@@ -205,7 +206,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cajas/movimientos/{id}/anular', [MovimientoCajaController::class, 'confirmarAnulacion'])->name('cajas.movimiento.anular');
     Route::post('/cajas/movimientos/{id}/anular', [MovimientoCajaController::class, 'anular'])->name('cajas.movimiento.anular.store');
     Route::get('/cajas/{id}/movimientos/pdf', [MovimientoCajaController::class, 'pdf'])->name('cajas.movimientos.pdf');
-    Route::get('/cajas/{id}/movimientos/excel',[MovimientoCajaController::class, 'excel'])->name('cajas.movimientos.excel');
+    Route::get('/cajas/{id}/movimientos/excel', [MovimientoCajaController::class, 'excel'])->name('cajas.movimientos.excel');
+
+    /*
+    |--------------------------------------------------------------------------
+    | TIPOS DE MOVIMIENTO
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/tipos-movimiento',[TipoMovimientoController::class, 'index'])->name('tipos-movimiento.index');
+    Route::post('/tipos-movimiento',[TipoMovimientoController::class, 'store'])->name('tipos-movimiento.store');
+    Route::put('/tipos-movimiento/{id}',[TipoMovimientoController::class, 'update'])->name('tipos-movimiento.update');
+    Route::put('/tipos-movimiento/{id}/estado',[TipoMovimientoController::class, 'cambiarEstado'])->name('tipos-movimiento.estado');
+
 });
 
 /*

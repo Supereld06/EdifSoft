@@ -43,6 +43,7 @@ class CajaService
 
                 MovimientoCaja::create([
                     'caja_id' => $caja->id,
+                    'tipo_movimiento_id' => null,
                     'tipo' => 'ingreso',
                     'concepto' => 'Saldo inicial',
                     'monto' => $saldoInicial,
@@ -68,7 +69,8 @@ class CajaService
         string $concepto,
         ?string $referenciaTipo = null,
         ?int $referenciaId = null,
-        ?string $observacion = null
+        ?string $observacion = null,
+        ?int $tipoMovimientoId = null
     ): MovimientoCaja {
 
         if ($monto <= 0) {
@@ -77,7 +79,7 @@ class CajaService
             );
         }
 
-        return DB::transaction(function () use ($caja, $monto, $concepto, $referenciaTipo, $referenciaId, $observacion) {
+        return DB::transaction(function () use ($caja, $monto, $concepto, $referenciaTipo, $referenciaId, $observacion, $tipoMovimientoId) {
 
             $caja = Caja::where('id', $caja->id)
                 ->lockForUpdate()
@@ -104,6 +106,7 @@ class CajaService
 
             return MovimientoCaja::create([
                 'caja_id' => $caja->id,
+                'tipo_movimiento_id' => $tipoMovimientoId,
                 'tipo' => 'ingreso',
                 'concepto' => $concepto,
                 'monto' => $monto,
@@ -128,7 +131,8 @@ class CajaService
         string $concepto,
         ?string $referenciaTipo = null,
         ?int $referenciaId = null,
-        ?string $observacion = null
+        ?string $observacion = null,
+        ?int $tipoMovimientoId = null
     ): MovimientoCaja {
 
         if ($monto <= 0) {
@@ -137,7 +141,7 @@ class CajaService
             );
         }
 
-        return DB::transaction(function () use ($caja, $monto, $concepto, $referenciaTipo, $referenciaId, $observacion) {
+        return DB::transaction(function () use ($caja, $monto, $concepto, $referenciaTipo, $referenciaId, $observacion, $tipoMovimientoId) {
 
             $caja = Caja::where('id', $caja->id)
                 ->lockForUpdate()
@@ -380,6 +384,8 @@ class CajaService
 
             $reversion = MovimientoCaja::create([
                 'caja_id' => $caja->id,
+                'tipo_movimiento_id' =>
+                    $movimiento->tipo_movimiento_id,
                 'tipo' => $tipoReversion,
                 'concepto' => 'ANULACIÓN: ' . $movimiento->concepto,
                 'monto' => $movimiento->monto,

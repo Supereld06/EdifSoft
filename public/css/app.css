@@ -1216,6 +1216,210 @@ BOTÓN EDITAR
     font-size: 0.85rem;
 }
 
+/* ============================================================
+   MODALES EDIFSOFT
+   Estilo general para todos los modales del sistema
+   ============================================================ */
+
+.modal-edifsoft .modal-content {
+    border: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+}
+
+
+/* ------------------------------------------------------------
+   HEADER
+   ------------------------------------------------------------ */
+
+.modal-edifsoft .modal-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 14px 18px;
+}
+
+
+.modal-edifsoft .modal-title {
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+
+.modal-edifsoft .modal-header small {
+    font-size: 0.75rem;
+}
+
+
+/* ------------------------------------------------------------
+   ICONO DEL HEADER
+   ------------------------------------------------------------ */
+
+.modal-edifsoft .modal-icon {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 1rem;
+}
+
+
+.modal-edifsoft .modal-icon-success {
+    background: rgba(25, 135, 84, 0.12);
+    color: #198754;
+}
+
+
+.modal-edifsoft .modal-icon-danger {
+    background: rgba(220, 53, 69, 0.12);
+    color: #dc3545;
+}
+
+
+.modal-edifsoft .modal-icon-warning {
+    background: rgba(255, 193, 7, 0.15);
+    color: #997404;
+}
+
+
+.modal-edifsoft .modal-icon-primary {
+    background: rgba(13, 110, 253, 0.12);
+    color: #0d6efd;
+}
+
+
+.modal-edifsoft .modal-icon-info {
+    background: rgba(13, 202, 240, 0.12);
+    color: #087990;
+}
+
+
+/* ------------------------------------------------------------
+   BODY
+   ------------------------------------------------------------ */
+
+.modal-edifsoft .modal-body {
+    padding: 18px;
+}
+
+
+.modal-edifsoft .modal-body .form-label {
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+
+.modal-edifsoft .modal-body .form-control,
+.modal-edifsoft .modal-body .form-select {
+    min-height: 38px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+}
+
+
+.modal-edifsoft .modal-body textarea.form-control {
+    min-height: auto;
+}
+
+
+/* ------------------------------------------------------------
+   FOOTER
+   ------------------------------------------------------------ */
+
+.modal-edifsoft .modal-footer {
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    padding: 12px 18px;
+}
+
+
+.modal-edifsoft .modal-footer .btn {
+    min-width: 95px;
+}
+
+
+/* ------------------------------------------------------------
+   BOTONES
+   ------------------------------------------------------------ */
+
+.modal-edifsoft .btn {
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+
+.modal-edifsoft .btn i {
+    margin-right: 3px;
+}
+
+
+/* ------------------------------------------------------------
+   MODAL PEQUEÑO
+   ------------------------------------------------------------ */
+
+.modal-edifsoft.modal-sm .modal-content {
+    border-radius: 14px;
+}
+
+
+/* ------------------------------------------------------------
+   ANIMACIÓN SUAVE
+   ------------------------------------------------------------ */
+
+.modal-edifsoft .modal-dialog {
+    transform: translateY(-8px);
+    transition: transform 0.2s ease;
+}
+
+
+.modal-edifsoft.show .modal-dialog {
+    transform: translateY(0);
+}
+
+
+/* ------------------------------------------------------------
+   INPUTS CON ERROR
+   ------------------------------------------------------------ */
+
+.modal-edifsoft .is-invalid {
+    border-color: #dc3545;
+}
+
+
+.modal-edifsoft .mensaje-error {
+    color: #dc3545;
+    font-size: 0.75rem;
+    margin-top: 4px;
+}
+
+
+/* ------------------------------------------------------------
+   TEXTO AUXILIAR
+   ------------------------------------------------------------ */
+
+.modal-edifsoft .form-text {
+    font-size: 0.72rem;
+}
+
+
+/* ------------------------------------------------------------
+   BOTÓN CERRAR
+   ------------------------------------------------------------ */
+
+.modal-edifsoft .btn-close {
+    box-shadow: none;
+}
+
+
+
+
+
 
 
 
@@ -1361,6 +1565,24 @@ BOTÓN EDITAR
         font-size: .76rem;
         color: #198754;
         word-break: break-word;
+    }
+
+    .modal-edifsoft .modal-header {
+        padding: 12px 14px;
+    }
+
+    .modal-edifsoft .modal-body {
+        padding: 14px;
+    }
+
+    .modal-edifsoft .modal-footer {
+        padding: 10px 14px;
+    }
+
+    .modal-edifsoft .modal-icon {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
     }
 
 }

@@ -24,6 +24,11 @@ return new class extends Migration {
                 ->constrained('cajas')
                 ->cascadeOnDelete();
 
+            $table->foreignId('tipo_movimiento_id')
+                ->nullable()
+                ->constrained('tipos_movimiento')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
 
             /*
             |--------------------------------------------------------------------------
